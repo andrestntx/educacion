@@ -32,7 +32,12 @@ class UsersController extends \BaseController {
 
 		$user_default = new User;
 		$titles_table = $user_default->getMainAttributesNames();
-		$actions = array('show', 'edit', 'destroy');
+		$actions = array(
+			'show', 
+			'edit', 
+			//'show_models' => array('models' => 'exams', 'icon' => 'fa-book', 'name' => 'Ver Examenes'), 
+			'destroy'
+		);
 
 		return View::make('dashboard.pages.models.generic.list-table', compact(
 			'title_page', 'models', 'titles_table', 'module', 'actions'));

@@ -211,7 +211,7 @@
                 <ul class="dropdown-menu">
                     <!-- User image -->
                     <li class="user-header bg-light-blue">
-                        {{ HTML::image('images/avatars/avatar_1.jpg', 'Imagen Perfil - '.Auth::user()->username, array('class' => 'img-circle'))}}
+                        {{ HTML::image(Auth::user()->t02_url_photo_validated, 'Imagen Perfil - '.Auth::user()->username, array('class' => 'img-circle'))}}
                         <p>
                             {{Auth::user()->username}}
                             <small>{{Auth::user()->t02_name_role}}</small>

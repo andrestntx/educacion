@@ -6,6 +6,36 @@ class ModelEloquent extends Eloquent
 	protected $globalModel;
 	protected $attributeNames;
 	protected $mainAttributes;
+    protected $relationsArray;
+
+    public function isRelation($key)
+    {
+        if(is_array($this->getRelationsArray()))
+        {
+            if(array_key_exists($key, $this->getRelationsArray()))
+            {
+                return $this->getRelationsArray()[$key];
+            }
+        }
+        return false;
+    }
+
+    public function getRelationsArray()
+    {
+        return $this->relationsArray;
+    }
+
+    public function value($key)
+    {
+        if($relation = $this->isRelation($key))
+        {
+            return $this->{$relation.'_value'};
+        }
+        else
+        {
+           return $this->getAttribute($key);
+        }
+    } 
 
     public function getAttributeType($key)
     {

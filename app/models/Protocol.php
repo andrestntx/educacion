@@ -4,30 +4,42 @@ class Protocol extends ModelEloquent
 {
 	protected $table = 't06_protocol';
 	protected $primaryKey = 't06_id';
-	protected $fillable = array('t06_name');
+	protected $fillable = array('t06_name', 't06_description', 't06_user_id');
 	protected $globalModel = 2;
 	public $timestamps = true;
 	public $increments = true;
 	public $errors;
-	protected $attributeNames = array('t06_id' => 'Id', 't06_name' => 'Nombre');
-	protected $mainAttributes = array('t06_id', 't06_name');
+	protected $attributeNames = array('t06_url_pdf' => 'Pdf', 't06_id' => 'Id', 't06_description' => 'Descripción', 
+        't06_name' => 'Nombre', 't06_user_id' => 'Autor', 'created_at' => 'Creación', 'updated_at' => 'Actualización',
+    );
+	protected $mainAttributes = array('t06_id', 't06_name', 't06_user_id');
+    protected $relationsArray = array('t06_user_id' => 'user');
 
+    public function getUserValueAttribute()
+    {
+        return $this->user->t02_name;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('User', 't06_user_id');
+    }
 
 	public function isValid($data)
     {
         $rules = array(
-            't06_name'     => 'required|max:100|unique:t06_company',
-            't06_url_logo' => 'mimes:png|max:500'
+            't06_name'     => 'required|max:100|unique:t06_protocol',
+            't06_user_id' => 'required',
+            't06_url_pdf' => 'mimes:pdf'
         );
 
         if ($this->exists)
         {
 			$rules['t06_name'] .= ',t06_name,'.$this->t06_id.',t06_id';
         }
-        else // Si no existe...
+        else 
         {
-            // La clave es obligatoria:
-            $rules['t06_url_logo'] .= '|required';
+            $rules['t06_url_pdf'] .= '|required';
         }
         
         $validator = Validator::make($data, $rules);
@@ -48,9 +60,9 @@ class Protocol extends ModelEloquent
         {
             $this->fill($data);
             $this->save();
-            if(array_key_exists('t06_url_logo', $data))
+            if(array_key_exists('t06_url_pdf', $data))
             {
-            	$this->uploadLogo($data['t06_url_logo']);
+            	$this->uploadPdf('t06_url_pdf');
             }
             
             return true;
@@ -59,14 +71,11 @@ class Protocol extends ModelEloquent
         return false;
     }
 
-    public function uploadLogo($file)
+    public function uploadPdf($file)
     {
-    	if(is_file($file))
-    	{
-	    	$url_logo = Config::get('constant.path_companies_logos').'/'.$this->t06_id.'.png';
-	    	Image::make($file)->widen(225)->save($url_logo);
-	    	$this->t06_url_logo = $url_logo;
-	    	$this->save();
-    	}
+    	$url_pdf = Config::get('constant.path_protocols_pdf').'/'.$this->t06_id.'.pdf';
+        Input::file($file)->move(Config::get('constant.path_protocols_pdf'), $this->t06_id.'.pdf');
+    	$this->t06_url_pdf = $url_pdf;
+    	$this->save();
     }
 }

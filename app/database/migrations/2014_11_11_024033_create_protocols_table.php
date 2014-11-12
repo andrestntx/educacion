@@ -16,6 +16,7 @@ class CreateProtocolsTable extends Migration {
 		{
 		    $table->increments('t06_id');
 		    $table->string('t06_name', 100);
+		    $table->string('t06_description', 250)->nullable();
 		    $table->string('t06_url_pdf', 250)->nullable();
 		    $table->timestamps();
 

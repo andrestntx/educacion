@@ -25,10 +25,10 @@
                         </div>
                     @endif
                 @endforeach
-                @foreach($model->toArray() as $key => $value)
+                @foreach($model->attributesToArray() as $key => $value)
                     @if($model->getAttributeType($key) == 'string')
                         <div class="col-sm-6 col-lg-4">
-                            <p><b style="font-size:16px;">{{$model->getAttributeName($key)}}:</b>  {{$value}}</p>
+                            <p><b style="font-size:16px;">{{$model->getAttributeName($key)}}:</b> {{$model->value($key)}}</p>
                         </div>
                     @endif
                 @endforeach

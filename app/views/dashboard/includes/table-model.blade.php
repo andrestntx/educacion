@@ -11,9 +11,9 @@
             </tr>
             @foreach($models as $model)
                 <tr>
-                    @foreach($model->getMainAttributes() as $attribute)
+                    @foreach($model->getMainAttributes() as $key => $attribute)
                         <td>
-                            {{$attribute}}
+                            {{$model->value($key)}}
                         </td>
                     @endforeach()  
                     @if(isset($actions))

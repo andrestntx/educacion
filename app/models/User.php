@@ -24,7 +24,7 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
     protected $attributeNames = array('t02_id' => 'Id', 't02_name' => 'Nombre', 't02_tel' => 'Telefono', 
         'username' => 'Nombre de Usuario', 'email' => 'Correco electrónico', 'created_at' => 'Creación', 
         'updated_at' => 'Actualización', 't02_preferred_company_id' => 'Institución Preferida', 
-        't02_system_role_id' => 'Tipo de Usuario');
+        't02_system_role_id' => 'Tipo de Usuario', 't02_url_photo' => 'Foto de Perfil');
     protected $mainAttributes = array('t02_id', 't02_name', 'email');
 	public $timestamps = true;
 	protected $globalModel = 3;
@@ -58,6 +58,11 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
     public function systemRole()
     {
         return $this->belongsTo('SystemRole', 't02_system_role_id');
+    }
+
+    public function protocols()
+    {
+        return $this->hasMany('Protocol', 't06_user_id');
     }
 
     public function roles()

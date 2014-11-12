@@ -11,7 +11,7 @@
                   <div class="form-group col-md-12">            
                     {{ Form::label('t06_name', 'Nombre') }}
                     {{ Form::text('t06_name', null, array('required' => 'required', 
-                        'placeholder' => 'Nombre de la Institución', 'class' => 'form-control')) }}
+                        'placeholder' => 'Nombre', 'class' => 'form-control')) }}
                   </div>
                   <div class="form-group col-md-12">            
                     {{ Form::label('t06_description', 'Descripción') }}
@@ -23,18 +23,23 @@
                     <input id="t06_url_pdf" name="t06_url_pdf" type="file" class="file"></input>
                   </div>
                   <div class="form-group col-md-12">            
-                    {{ Form::label('categories', 'Categorias') }}
-                    {{ Form::select('categories', array('' => 'Vacio'), null, array('multiple' => 'multiple', 'required' => 'required', 
+                    {{ Form::label('t06_user_id', 'Autor') }}
+                    {{ Form::select('t06_user_id', $users, null, array('required' => 'required', 
                       'class' => 'form-control')) }}
                   </div>
                   <div class="form-group col-md-12">            
-                    {{ Form::label('areas', 'Areas') }}
-                    {{ Form::select('areas', array('' => 'Vacio'), null, array('multiple' => 'multiple', 'required' => 'required', 
+                    {{ Form::label('categories[]', 'Categorias') }}
+                    {{ Form::select('categories[]', array('' => 'Vacio'), null, array('multiple' => 'multiple', 'required' => 'required', 
                       'class' => 'form-control')) }}
                   </div>
                   <div class="form-group col-md-12">            
-                    {{ Form::label('roles', 'Perfiles') }}
-                    {{ Form::select('roles', array('' => 'Vacio'), null, array('multiple' => 'multiple', 'required' => 'required', 
+                    {{ Form::label('areas[]', 'Areas') }}
+                    {{ Form::select('areas[]', array('' => 'Vacio'), null, array('multiple' => 'multiple', 'required' => 'required', 
+                      'class' => 'form-control')) }}
+                  </div>
+                  <div class="form-group col-md-12">            
+                    {{ Form::label('roles[]', 'Perfiles') }}
+                    {{ Form::select('roles[]', array('' => 'Vacio'), null, array('multiple' => 'multiple', 'required' => 'required', 
                       'class' => 'form-control')) }}
                   </div>
                 </div>
@@ -50,7 +55,7 @@
               <div class="box-body">
                 <div class="row">
                   <div class="col-md-12">
-                    <input id="anexos" name="anexos" type="file" class="file" multiple></input>
+                    <input id="anexos" name="anexos[]" type="file" class="file" multiple></input>
                   </div>
                 </div>
               </div>
@@ -67,6 +72,12 @@
 
 @section('aditional-js')
   <script type="text/javascript">
-    $(".file").fileinput({showCaption: true, showUpload: false, showPreview: true, maxFileCount: 10}); 
+    $("#anexos").fileinput({showCaption: true, showUpload: false, showPreview: true, maxFileCount: 10}); 
+    $("#t06_url_pdf").fileinput({
+      showCaption: true, 
+      showUpload: false, 
+      showPreview: true, 
+      maxFileCount: 10
+    }); 
   </script>
 @stop
