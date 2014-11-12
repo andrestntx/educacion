@@ -1,5 +1,23 @@
 <?php
 
+	$url = parse_url(getenv("DATABASE_URL"));
+
+	if(is_array($url) && array_key_exists('host', $url))
+	{
+		$host = $url["host"];
+		$username = $url["user"];
+		$password = $url["pass"];
+		$database = substr($url["path"], 1);	
+	}
+	else
+	{
+		$host = 'localhost';
+		$username = 'postgres';
+		$password = 'juliandavid';
+		$database = 'educacion-medica';	
+	}
+	
+
 return array(
 
 	/*
@@ -26,7 +44,7 @@ return array(
 	|
 	*/
 
-	'default' => 'postgres',
+	'default' => 'pgsql',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -44,6 +62,8 @@ return array(
 	|
 	*/
 
+	
+
 	'connections' => array(
 
 		'sqlite' => array(
@@ -55,24 +75,24 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'educacion-medica',
-			'username'  => 'postgres',
-			'password'  => 'juliandavid',
+			'database'  => 'forge',
+			'username'  => 'forge',
+			'password'  => '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
 		),
 
-		'postgres' => array(
-			'driver'   => 'pgsql',
-			'host'     => 'localhost',
-			'database'  => 'educacion-medica',
-			'username'  => 'postgres',
-			'password'  => 'juliandavid',
-			'charset'  => 'utf8',
-			'prefix'   => '',
-			'schema'   => 'public',
-		),
+		'pgsql' => array(
+	        'driver'   => 'pgsql',
+	        'host'     => $host,
+	        'database' => $database,
+	        'username' => $username,
+	        'password' => $password,
+	        'charset'  => 'utf8',
+	        'prefix'   => '',
+	        'schema'   => 'public',
+	    ),
 
 		'sqlsrv' => array(
 			'driver'   => 'sqlsrv',
