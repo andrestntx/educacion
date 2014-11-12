@@ -22,6 +22,7 @@ class AuthController extends BaseController {
 
 		if(Auth::attempt($userdata))
 		{
+			Session::put('actual_company', Auth::user()->preferredCompany);
 			return Redirect::intended('dashboard');
 		}
 		else

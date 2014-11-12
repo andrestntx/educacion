@@ -16,7 +16,8 @@ class CreateCompanyTable extends Migration {
 		{
 		    $table->increments('t01_id');
 		    $table->string('t01_name', 100);
-		    $table->string('t01_url_logo', 250);
+		    $table->string('t01_url_logo', 250)->nullable();
+		    $table->timestamps();
 		});
 	}
 

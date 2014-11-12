@@ -3,10 +3,6 @@
 <!-- Ionicons -->
 <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css" /> 
 
-{{-- Si no hay conexión a internet
-<link href="{{ URL::to('assets/css/bootstrap/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ URL::to('assets/css/jquery/jquery-ui.css') }}" rel="stylesheet" type="text/css" /> --}}
-
 <!-- Morris chart -->
 <link href="{{ URL::to('assets/css/morris/morris.css') }}" rel="stylesheet" type="text/css" />
 <!-- jvectormap -->
@@ -19,3 +15,5 @@
 <link href="{{ URL::to('assets/css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}" rel="stylesheet" type="text/css" />
 <!-- Theme style -->
 <link href="{{ URL::to('assets/css/AdminLTE.css') }}" rel="stylesheet" type="text/css" />
+
+<link href="{{URL::to('assets/css/bootstrap-fileinput/fileinput.min.css')}}" media="all" rel="stylesheet" type="text/css" />

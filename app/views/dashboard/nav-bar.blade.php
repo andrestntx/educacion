@@ -28,7 +28,7 @@
                             <li><!-- start message -->
                                 <a href="#">
                                     <div class="pull-left">
-                                        {{ HTML::image('images/picturs/avatar_1.jpg', 'Imagen Perfil - '.Auth::user()->username, array('class' => 'img-circle'))}}
+                                        {{ HTML::image(Auth::user()->t02_url_photo_validated, 'Imagen Perfil - '.Auth::user()->username, array('class' => 'img-circle'))}}
                                     </div>
                                     <h4>
                                         Support Team
@@ -214,7 +214,7 @@
                         {{ HTML::image('images/avatars/avatar_1.jpg', 'Imagen Perfil - '.Auth::user()->username, array('class' => 'img-circle'))}}
                         <p>
                             {{Auth::user()->username}}
-                            <small>Miembro desde Oct. 2014</small>
+                            <small>{{Auth::user()->t02_name_role}}</small>
                         </p>
                     </li>
                     <!-- Menu Body -->

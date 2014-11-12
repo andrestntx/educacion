@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'pgsql',
+	'default' => 'postgres',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -63,7 +63,7 @@ return array(
 			'prefix'    => '',
 		),
 
-		'pgsql' => array(
+		'postgres' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
 			'database'  => 'educacion-medica',

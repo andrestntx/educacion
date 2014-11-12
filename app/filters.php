@@ -11,6 +11,25 @@
 |
 */
 
+//controlamos todos los roles de usuarios desde aquí
+Route::filter('system_roles', function($route,$request,$roles)
+{ 
+    $roles = explode("-", $roles);
+    if(!in_array(Auth::user()->t02_system_role_id, $roles))
+    {
+    	return Redirect::to('dashboard');
+    } 
+});
+
+Route::filter('user_roles', function($route,$request,$roles)
+{ 
+    $roles = explode("-", $roles);
+    if(!in_array(Auth::user()->t02_system_role_id, $roles))
+    {
+    	return Redirect::to('dashboard');
+    } 
+});
+
 App::before(function($request)
 {
 	//

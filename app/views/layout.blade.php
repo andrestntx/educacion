@@ -19,5 +19,7 @@
         @yield('footer')
         <!-- add new calendar event modal -->
         @include('script')
+
+        @yield('aditional-js')
     </body>
 </html>

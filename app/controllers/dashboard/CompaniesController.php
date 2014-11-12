@@ -7,12 +7,22 @@ class CompaniesController extends \BaseController {
 	 *
 	 * @return Response
 	 */
+
+	private static $module_id = 4;
+
 	public function index()
 	{
-		$title_page = 'Instituciones';
-		$title_model = 'Instituciones';
-		$action_model = 'Lista de Instituciones';
-		return View::make('dashboard/pages/layout', compact('title_model', 'action_model', 'title_page'));
+		$module = Module::find(self::$module_id);
+		$models = Company::orderBy('t01_id')->paginate(20);
+		$company_default = new Company;
+		$titles_table = $company_default->getMainAttributesNames();
+		$actions = array(
+			'show', 'edit', 
+			'show_models' => array('models' => 'users', 'icon' => 'fa-users', 'name' => 'Ver Usuarios'),
+			'destroy'
+		);
+
+		return View::make('dashboard.pages.models.generic.list-table', compact('models', 'titles_table', 'module', 'actions'));
 	}
 
 
@@ -21,8 +31,14 @@ class CompaniesController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create(){
+	public function create()
+	{
+		$module = Module::find(self::$module_id);
+		$company = new Company;
+		$action_model = 'Crear '.$module->model->singular_name;
 		
+		$form_data = array('route' => 'dashboard.'.$module->route.'.store', 'method' => 'POST', 'files' => true);
+		return View::make('dashboard.pages.models.company.form', compact('action_model', 'company', 'module', 'form_data'));
 	}
 
 
@@ -31,8 +47,20 @@ class CompaniesController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store(){
-		
+	public function store()
+	{
+		$module = Module::find(self::$module_id);
+        $company = new Company;
+        $data = Input::all();
+        
+        if ($company->validAndSave($data))
+        {
+            return Redirect::route('dashboard.'.$module->route.'.index');
+        }
+        else
+        {
+			return Redirect::route('dashboard.'.$module->route.'.create')->withInput()->withErrors($company->errors);
+        }
 	}
 
 
@@ -44,7 +72,12 @@ class CompaniesController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$model = Company::findOrFail($id);
+		$module = Module::find(self::$module_id);
+		$action_model = $module->model->singular_name.': '.$model->t01_name;
+
+		return View::make('dashboard.pages.models.generic.show', compact('action_model', 'model', 'module'));
+
 	}
 
 
@@ -56,7 +89,12 @@ class CompaniesController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		
+		$company = Company::findOrFail($id);
+		$module = Module::find(self::$module_id);
+		$action_model = 'Editar '.$module->model->singular_name.': '.$company->t01_name;
+
+		$form_data = array('route' => array('dashboard.'.$module->route.'.update', $company->id), 'method' => 'PUT', 'files' => true);
+		return View::make('dashboard.pages.models.company.form', compact('action_model', 'company', 'form_data', 'module'));
 	}
 
 
@@ -66,8 +104,19 @@ class CompaniesController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id){
-		
+	public function update($id)
+	{
+		$company = Company::findOrFail($id);
+		$module = Module::find(self::$module_id);
+        $data = Input::all();
+        if ($company->validAndSave($data))
+        {
+            return Redirect::route('dashboard.'.$module->route.'.index');
+        }
+        else
+        {
+			return Redirect::route(array('dashboard.'.$module->route.'.edit', $company->id))->withInput()->withErrors($company->errors);
+        }	
 	}
 
 
@@ -77,7 +126,23 @@ class CompaniesController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id){
-		
+	public function destroy($id)
+    {
+    	$company = Company::findOrFail($id);
+    	$module = Module::find(self::$module_id);
+        $company->delete();
+
+        if (Request::ajax())
+        {
+            return Response::json(array (
+                'success' => true,
+                'msg'     => 'Institución "' . $company->t01_name . '" eliminada',
+                'id'      => $company->id
+            ));
+        }
+        else
+        {
+            return Redirect::route('dashboard.'.$module->route.'.index');
+        }
 	}
 }

@@ -23,7 +23,8 @@ class CreateUsersHasRolesTable extends Migration {
 		    $table->foreign('t04_role_id')
 		      ->references('t03_id')->on('t03_user_role')
 		      ->onDelete('cascade');
-		      
+
+		    $table->primary(array('t04_user_id', 't04_role_id'));
 		});
 	}
 

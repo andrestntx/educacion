@@ -4,11 +4,6 @@
 <!-- Morris.js charts -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script> 
 
-{{-- Si no hay conexión a internet
-<script src="{{ URL::to('assets/js/plugins/bootstrap/bootstrap.min.js') }}" type="text/javascript"></script>
-<script src="{{ URL::to('assets/js/plugins/jquery/jquery-1.11.0.js') }}" type="text/javascript"></script>
-<script src="{{ URL::to('assets/js/plugins/jquery/jquery-ui.js') }}" type="text/javascript"></script> --}}
-
 <script src="{{ URL::to('assets/js/plugins/morris/morris.min.js') }}" type="text/javascript"></script>
 <!-- Sparkline -->
 <script src="{{ URL::to('assets/js/plugins/sparkline/jquery.sparkline.min.js') }}" type="text/javascript"></script>
@@ -34,3 +29,9 @@
 
 <!-- AdminLTE for demo purposes -->
 <script src="{{ URL::to('assets/js/AdminLTE/demo.js') }}" type="text/javascript"></script>
+
+<!-- Admin App -->
+<script src="{{ URL::to('assets/js/AdminLTE/admin.js') }}" type="text/javascript"></script>
+
+<!-- File Input -->
+<script src="{{ URL::to('assets/js/plugins/bootstrap-fileinput/fileinput.min.js') }}" type="text/javascript"></script>
