@@ -80,6 +80,30 @@ class GlobalModelTableSeeder extends Seeder {
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
         ));
+
+        DB::table('sys03_table')->insert(array(
+            'plural_name' => 'Perfiles',
+            'singular_name' => 'Perfil',
+            'form' => 'role',
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));
+
+        DB::table('sys03_table')->insert(array(
+            'plural_name' => 'Areas',
+            'singular_name' => 'Area',
+            'form' => 'role',
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));
+
+        DB::table('sys03_table')->insert(array(
+            'plural_name' => 'Categorías',
+            'singular_name' => 'Categoría',
+            'form' => 'category',
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));
     }
 }
 
@@ -154,6 +178,54 @@ class ModuleTableSeeder extends Seeder
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
         )); 
+
+        DB::table('sys02_module')->insert(array(
+            'sys02_name' => 'Eloquent Users of Company',
+            'route' => 'companies.users',
+            'controller' => 'CompaniesUsers',
+            'sys02_type_module_id' => 1,
+            'sys02_top_module_id' => 1,
+            'sys02_order' => 4,
+            'sys02_table_id' => 3,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));
+
+        DB::table('sys02_module')->insert(array(
+            'sys02_name' => 'Eloquent Roles of Auth Company',
+            'route' => 'roles',
+            'controller' => 'UserRole',
+            'sys02_type_module_id' => 1,
+            'sys02_top_module_id' => 1,
+            'sys02_order' => 5,
+            'sys02_table_id' => 5,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        )); 
+
+        DB::table('sys02_module')->insert(array(
+            'sys02_name' => 'Eloquent Areas of Auth Company',
+            'route' => 'areas',
+            'controller' => 'Areas',
+            'sys02_type_module_id' => 1,
+            'sys02_top_module_id' => 1,
+            'sys02_order' => 6,
+            'sys02_table_id' => 6,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));  
+
+        DB::table('sys02_module')->insert(array(
+            'sys02_name' => 'Eloquent Categories of Protocols',
+            'route' => 'protocols.categories',
+            'controller' => 'ProtocolCategories',
+            'sys02_type_module_id' => 1,
+            'sys02_top_module_id' => 1,
+            'sys02_order' => 7,
+            'sys02_table_id' => 7,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));  
     }
 }
 
@@ -189,6 +261,13 @@ class CompanyTableSeeder extends Seeder {
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
         ));
+
+        DB::table('t01_company')->insert(array(
+            't01_name' => 'Clinica Cooperativa',
+            't01_url_logo' => 'images/logo_sistema.jpg',
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));
     }
 }
 
@@ -210,7 +289,7 @@ class UserTableSeeder extends Seeder {
     public function run()
     {
         DB::table('t02_user')->insert(array(
-            'username' => 'andrestntx',
+            'username' => 'superadmin',
             'email' => 'andres@nuestramarca.com',
             'password' => Hash::make('123'),
             't02_name' => 'Andrés Mauricio Pinzón Puentes',
@@ -227,7 +306,7 @@ class UserTableSeeder extends Seeder {
             'password' => Hash::make('123'),
             't02_name' => 'Miguel Mejía',
             't02_tel' => '3142308171',
-            't02_preferred_company_id' => 1,
+            't02_preferred_company_id' => 2,
             't02_system_role_id' => 2,
             'created_at' => new DateTime,
             'updated_at' => new DateTime            
@@ -243,6 +322,11 @@ class UsersHasRolesTableSeeder extends Seeder {
             't04_user_id' => 1,
             't04_role_id' => 1,
         ));
+
+        DB::table('t04_users_has_roles')->insert(array(
+            't04_user_id' => 2,
+            't04_role_id' => 1,
+        ));
     }
 }
 
@@ -253,6 +337,12 @@ class UsersHasCompaniesTableSeeder extends Seeder {
         DB::table('t05_users_has_companies')->insert(array(
             't05_user_id' => 1,
             't05_company_id' => 1,
+            't05_active' => true
+        ));
+
+        DB::table('t05_users_has_companies')->insert(array(
+            't05_user_id' => 2,
+            't05_company_id' => 2,
             't05_active' => true
         ));
     }

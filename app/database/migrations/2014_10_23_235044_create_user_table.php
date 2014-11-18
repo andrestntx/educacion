@@ -29,8 +29,7 @@ class CreateUserTable extends Migration {
 		    $table->integer('t02_preferred_company_id')->unsigned();
 		    $table->foreign('t02_preferred_company_id')
 		      ->references('t01_id')->on('t01_company')
-		      ->onUpdate('cascade')
-		      ->onDelete('cascade');
+		      ->onUpdate('cascade');
 		});
 	}
 

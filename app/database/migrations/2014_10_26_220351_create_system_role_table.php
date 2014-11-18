@@ -25,7 +25,7 @@ class CreateSystemRoleTable extends Migration {
 		    $table->foreign('t02_system_role_id')
 		      ->references('sys01_id')->on('sys01_system_role')
 		      ->onUpdate('cascade')
-		      ->onDelete('cascade');
+		      ;
 		});
 
 			

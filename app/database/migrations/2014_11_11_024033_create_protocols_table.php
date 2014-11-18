@@ -24,7 +24,7 @@ class CreateProtocolsTable extends Migration {
 		    $table->foreign('t06_user_id')
 		      ->references('t02_id')->on('t02_user')
 		      ->onUpdate('cascade')
-		      ->onDelete('cascade');
+		      ;
 		});
 	}
 

@@ -37,14 +37,6 @@
           {{ Form::input('tel', 't02_tel', null, array( 
                 'placeholder' => 'Teléfono', 'class' => 'form-control')) }}
         </div>
-        <div class="form-group col-md-6">            
-          {{ Form::label('roles[]', 'Perfiles') }}
-          {{ Form::select('roles[]', $roles, $user->roles()->lists('t03_id'), array('class' => 'form-control', 'multiple' => 'multiple', 'required' => 'required')) }}
-        </div>
-        <div class="form-group col-md-6">            
-          {{ Form::label('areas[]', 'Areas') }}
-          {{ Form::select('areas[]', $areas, $user->areas()->lists('t07_id'), array('class' => 'form-control', 'multiple' => 'multiple', 'required' => 'required')) }}
-        </div>
       </div>
         
     </div><!-- /.box-body -->

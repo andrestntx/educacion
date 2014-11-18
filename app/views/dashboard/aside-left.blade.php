@@ -29,6 +29,7 @@
                     <i class="fa fa-dashboard"></i> <span>Inicio</span>
                 </a>
             </li>
+            @if(Auth::user()->t02_system_role_id == 1)
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i>
@@ -44,16 +45,56 @@
                     <i class="fa fa-laptop"></i> <span>Instituciones</span>
                 </a>
             </li>
+            @elseif(Auth::user()->t02_system_role_id == 2)
             <li>
-                <a href="{{url('dashboard/users')}}">
-                    <i class="fa fa-user"></i> <span>Usuarios</span>
+                <a href="{{url('dashboard/areas')}}">
+                    <i class="fa fa-sitemap"></i> <span>Areas</span>
                 </a>
             </li>
-            <li>
-                <a href="{{url('dashboard/protocols')}}">
-                    <i class="fa fa-book"></i> <span>Protocolos</span>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-user"></i> 
+                    <span>Usuarios</span>
+                    <i class="fa fa-angle-left pull-right"></i>
                 </a>
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="{{url('dashboard/users')}}">
+                            <i class="fa fa-users"></i> 
+                            <span>Ver Usuarios</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('dashboard/roles')}}">
+                            <i class="fa fa-magic"></i> <span>Perfiles</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i> 
+                    <span>Protocolos</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                    
+                </a>
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="{{url('dashboard/protocols')}}">
+                            <i class="fa fa-file-text"></i> 
+                            <span>Ver Protocolos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('dashboard/protocols/categories')}}">
+                            <i class="fa fa-folder-open"></i> <span>Categorias</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            @else
+            @endif
             <!-- 
             <li>
                 <a href="pages/widgets.html">

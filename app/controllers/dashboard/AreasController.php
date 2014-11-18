@@ -1,25 +1,22 @@
 <?php
 
-class CompaniesController extends \BaseController {
+class AreasController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-
-	private static $module_id = 4;
+	private static $module_id = 9;
 
 	public function index()
 	{
 		$module = Module::find(self::$module_id);
-		$models = Company::where('t01_id', '<>', 1)->orderBy('t01_id')->paginate(20);
-		$company_default = new Company;
-		$titles_table = $company_default->getMainAttributesNames();
+		$models = Auth::user()->preferredCompany->areas()->orderBy('t07_id')->paginate(20);
+		$userRole_default = new Area;
+		$titles_table = $userRole_default->getMainAttributesNames();
 		$actions = array(
-			'show', 'edit', 
-			'show_models' => array('models' => 'users', 'icon' => 'fa-users', 'name' => 'Ver Usuario'),
-			'destroy'
+			'show', 'edit', 'destroy'
 		);
 
 		return View::make('dashboard.pages.models.generic.list-table', compact('models', 'titles_table', 'module', 'actions'));
@@ -35,11 +32,11 @@ class CompaniesController extends \BaseController {
 	public function create()
 	{
 		$module = Module::find(self::$module_id);
-		$company = new Company;
+		$area = new Area;
 		$action_model = 'Crear '.$module->model->singular_name;
 		
-		$form_data = array('route' => 'dashboard.'.$module->route.'.store', 'method' => 'POST', 'files' => true);
-		return View::make('dashboard.pages.models.company.form', compact('action_model', 'company', 'module', 'form_data'));
+		$form_data = array('route' => 'dashboard.'.$module->route.'.store', 'method' => 'POST');
+		return View::make('dashboard.pages.models.area.form', compact('action_model', 'area', 'module', 'form_data'));
 	}
 
 
@@ -51,16 +48,16 @@ class CompaniesController extends \BaseController {
 	public function store()
 	{
 		$module = Module::find(self::$module_id);
-        $company = new Company;
+        $area = new Area;
         $data = Input::all();
         
-        if ($company->validAndSave($data))
+        if ($area->validAndSave($data))
         {
             return Redirect::route('dashboard.'.$module->route.'.index');
         }
         else
         {
-			return Redirect::route('dashboard.'.$module->route.'.create')->withInput()->withErrors($company->errors);
+			return Redirect::route('dashboard.'.$module->route.'.create')->withInput()->withErrors($area->errors);
         }
 	}
 
@@ -73,9 +70,9 @@ class CompaniesController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$model = Company::findOrFail($id);
+		$model = Area::findOrFail($id);
 		$module = Module::find(self::$module_id);
-		$action_model = $module->model->singular_name.': '.$model->t01_name;
+		$action_model = $module->model->singular_name.': '.$model->t07_name;
 
 		return View::make('dashboard.pages.models.generic.show', compact('action_model', 'model', 'module'));
 
@@ -90,12 +87,12 @@ class CompaniesController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$company = Company::findOrFail($id);
+		$area = Area::findOrFail($id);
 		$module = Module::find(self::$module_id);
-		$action_model = 'Editar '.$module->model->singular_name.': '.$company->t01_name;
+		$action_model = 'Editar '.$module->model->singular_name.': '.$area->t07_name;
 
-		$form_data = array('route' => array('dashboard.'.$module->route.'.update', $company->id), 'method' => 'PUT', 'files' => true);
-		return View::make('dashboard.pages.models.company.form', compact('action_model', 'company', 'form_data', 'module'));
+		$form_data = array('route' => array('dashboard.'.$module->route.'.update', $area->id), 'method' => 'PUT', 'files' => true);
+		return View::make('dashboard.pages.models.area.form', compact('action_model', 'area', 'form_data', 'module'));
 	}
 
 
@@ -107,16 +104,16 @@ class CompaniesController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$company = Company::findOrFail($id);
+		$area = Area::findOrFail($id);
 		$module = Module::find(self::$module_id);
         $data = Input::all();
-        if ($company->validAndSave($data))
+        if ($area->validAndSave($data))
         {
             return Redirect::route('dashboard.'.$module->route.'.index');
         }
         else
         {
-			return Redirect::route(array('dashboard.'.$module->route.'.edit', $company->id))->withInput()->withErrors($company->errors);
+			return Redirect::route(array('dashboard.'.$module->route.'.edit', $area->id))->withInput()->withErrors($area->errors);
         }	
 	}
 
@@ -129,16 +126,16 @@ class CompaniesController extends \BaseController {
 	 */
 	public function destroy($id)
     {
-    	$company = Company::findOrFail($id);
+    	$area = Area::findOrFail($id);
     	$module = Module::find(self::$module_id);
-        $company->delete();
+        $area->delete();
 
         if (Request::ajax())
         {
             return Response::json(array (
                 'success' => true,
-                'msg'     => 'Institución "' . $company->t01_name . '" eliminada',
-                'id'      => $company->id
+                'msg'     => 'Area "' . $area->t07_name . '" eliminada',
+                'id'      => $area->id
             ));
         }
         else

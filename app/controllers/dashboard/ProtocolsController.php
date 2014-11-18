@@ -13,7 +13,7 @@ class ProtocolsController extends \BaseController {
 	public function index()
 	{
 		$module = Module::find(self::$module_id);
-		$models = Protocol::orderBy('t06_id')->paginate(20);
+		$models = Auth::user()->preferredCompany->protocols()->orderBy('t06_id')->paginate(20);
 		$protocol_default = new Protocol;
 		$titles_table = $protocol_default->getMainAttributesNames();
 		$actions = array('show', 'edit', 'destroy');
@@ -33,10 +33,14 @@ class ProtocolsController extends \BaseController {
 		$protocol = new Protocol;
 		$action_model = 'Crear '.$module->model->singular_name;
 
-		$users = Session::get('actual_company')->users()->lists('t02_name', 't02_id');
+		$roles = Auth::user()->preferredCompany->roles()->lists('t03_name', 't03_id');
+		$areas = Auth::user()->preferredCompany->areas()->lists('t07_name', 't07_id');
+		$categories = Auth::user()->preferredCompany->protocolCategories()->lists('t09_name', 't09_id');
 		
 		$form_data = array('route' => 'dashboard.'.$module->route.'.store', 'method' => 'POST', 'files' => true);
-		return View::make('dashboard.pages.models.protocol.form', compact('action_model', 'protocol', 'module', 'form_data', 'users'));
+		return View::make('dashboard.pages.models.protocol.form', compact('action_model', 'protocol', 
+			'module', 'form_data', 'roles', 'areas', 'categories'
+		));
 	}
 
 
@@ -74,7 +78,13 @@ class ProtocolsController extends \BaseController {
 		$module = Module::find(self::$module_id);
 		$action_model = $module->model->singular_name.': '.$model->t01_name;
 
-		return View::make('dashboard.pages.models.generic.show', compact('action_model', 'model', 'module'));
+		$models = Auth::user()->preferredCompany->protocols()->orderBy('t06_id')->paginate(20);
+		$protocol_default = new Protocol;
+		$titles_table = $protocol_default->getMainAttributesNames();
+		$actions = array('show', 'edit', 'destroy');
+
+		return View::make('dashboard.pages.models.protocol.show', compact('action_model', 'model', 
+			'module', 'actions', 'models', 'titles_table'));
 	}
 
 
@@ -89,10 +99,15 @@ class ProtocolsController extends \BaseController {
 		$protocol = Protocol::findOrFail($id);
 		$module = Module::find(self::$module_id);
 		$action_model = 'Editar '.$module->model->singular_name.': '.$protocol->t06_name;
-		$users = Session::get('actual_company')->users()->lists('t02_name', 't02_id');
+
+		$roles = Auth::user()->preferredCompany->roles()->lists('t03_name', 't03_id');
+		$areas = Auth::user()->preferredCompany->areas()->lists('t07_name', 't07_id');
+		$categories = Auth::user()->preferredCompany->protocolCategories()->lists('t09_name', 't09_id');
 
 		$form_data = array('route' => array('dashboard.'.$module->route.'.update', $protocol->id), 'method' => 'PUT', 'files' => true);
-		return View::make('dashboard.pages.models.protocol.form', compact('action_model', 'users', 'protocol', 'form_data', 'module'));
+		return View::make('dashboard.pages.models.protocol.form', compact('action_model', 'roles', 
+			'protocol', 'form_data', 'module', 'areas', 'categories'
+		));
 	}
 
 

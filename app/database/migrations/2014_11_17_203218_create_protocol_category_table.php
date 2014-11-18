@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserRoleTable extends Migration {
+class CreateProtocolCategoryTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,14 @@ class CreateUserRoleTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t03_user_role', function($table)
+		Schema::create('t09_protocol_category', function($table)
 		{
-		    $table->increments('t03_id');
-		    $table->string('t03_name', 45);
-		    $table->text('t03_description')->nullable();	    
+		    $table->increments('t09_id');
+		    $table->string('t09_name', 45);
+		    $table->text('t09_description')->nullable();	    
 
-		    $table->integer('t03_company_id')->unsigned();	    
-		    $table->foreign('t03_company_id')
+		    $table->integer('t09_company_id')->unsigned();	    
+		    $table->foreign('t09_company_id')
 		      ->references('t01_id')->on('t01_company')
 		      ->onUpdate('cascade');
 
@@ -34,7 +34,7 @@ class CreateUserRoleTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t03_user_role');
+		Schema::drop('t09_protocol_category');
 	}
 
 }

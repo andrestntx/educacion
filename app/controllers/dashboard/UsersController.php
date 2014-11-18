@@ -10,33 +10,16 @@ class UsersController extends \BaseController {
 
 	private $module_id = 5;
 
-	public function index($company_id = null)
+	public function index()
 	{
-		$array_id = null;
-		$company = Company::findOrActual($company_id);
+		$models = Auth::user()->preferredCompany->users()->where('t02_system_role_id', '<>', 2)->orderBy('t02_id')->paginate(20);
 		$module = Module::find($this->module_id);
 		
-		if(!is_null($company_id))
-		{
-			$title_page = $company->t01_name;
-		}
-
-		if($company->id == 1)
-		{
-			$models = User::orderBy('t02_id')->paginate(20);
-		} 
-		else
-		{
-			$models = $company->users()->orderBy('t02_id')->paginate(20);
-		}
-
 		$user_default = new User;
 		$titles_table = $user_default->getMainAttributesNames();
 		$actions = array(
 			'show', 
-			'edit', 
-			//'show_models' => array('models' => 'exams', 'icon' => 'fa-book', 'name' => 'Ver Examenes'), 
-			'destroy'
+			'edit',	'destroy'
 		);
 
 		return View::make('dashboard.pages.models.generic.list-table', compact(
@@ -52,23 +35,17 @@ class UsersController extends \BaseController {
 	public function create($company_id = null)
 	{
 		$user = new User;
-		if(!is_null($company_id))
-		{
-			$this->module_id = 7;
-			$array_id = $company->id;
-			$user->companies = array($company->id);
-		}
 
 		$module = Module::find($this->module_id);
+		$roles = Auth::user()->preferredCompany->roles()->lists('t03_name', 't03_id');
+		$areas = Auth::user()->preferredCompany->areas()->lists('t07_name', 't07_id');
 		
-		$companies = Company::lists('t01_name', 't01_id');
 		$system_roles = SystemRole::lists('sys01_name', 'sys01_id');
 		$action_model = 'Crear '.$module->model->singular_name;
 		
 		$form_data = array('route' => 'dashboard.'.$module->route.'.store', 'method' => 'POST', 'files' => true);
 		return View::make('dashboard.pages.models.user.form', compact(
-			'action_model', 'companies', 'system_roles', 
-			'user', 'module', 'form_data', 'array_id'
+			 'user', 'module', 'form_data', 'roles', 'action_model', 'areas'
 		));
 	}
 
@@ -83,9 +60,12 @@ class UsersController extends \BaseController {
 		$module = Module::find($this->module_id);
         $company = new User;
         $data = Input::all();
-        
+        $data['t02_preferred_company_id'] = Auth::user()->preferredCompany->id;
+        $data['t02_system_role_id'] = 3; 
+
         if ($company->validAndSave($data))
         {
+        	$company->syncCompanies(array(Auth::user()->preferredCompany->id));
             return Redirect::route('dashboard.'.$module->route.'.index');
         }
         else
@@ -123,10 +103,11 @@ class UsersController extends \BaseController {
 		$module = Module::find($this->module_id);
 		$user = User::findOrFail($id);
 
-		$companies = Company::lists('t01_name', 't01_id');
-		$system_roles = SystemRole::lists('sys01_name', 'sys01_id');
 
 		$action_model = 'Editar '.$module->model->singular_name.': '.$user->t02_name;
+
+		$roles = Auth::user()->preferredCompany->roles()->lists('t03_name', 't03_id');
+		$areas = Auth::user()->preferredCompany->areas()->lists('t07_name', 't07_id');
 
 		$form_data = array(
 			'route' => array('dashboard.'.$module->route.'.update', $user->id), 
@@ -135,8 +116,8 @@ class UsersController extends \BaseController {
 		);
 
 		return View::make('dashboard.pages.models.user.form', compact(
-				'action_model', 'user', 'companies', 'system_roles', 'form_data', 
-				'module'
+				'action_model', 'user', 'form_data', 
+				'module', 'roles', 'areas'
 			)
 		);
 	}
@@ -154,6 +135,9 @@ class UsersController extends \BaseController {
 		$user = User::findOrFail($id);
         
         $data = Input::all();
+
+        $data['t02_preferred_company_id'] = Auth::user()->preferredCompany->id;
+        $data['t02_system_role_id'] = 3; 
         if ($user->validAndSave($data))
         {
             return Redirect::route('dashboard.'.$module->route.'.index');

@@ -25,7 +25,7 @@ class CreateModuleTable extends Migration {
 		    $table->foreign('sys02_top_module_id')
 		      ->references('sys02_id')->on('sys02_module')
 		      ->onUpdate('cascade')
-		      ->onDelete('cascade');
+		      ;
 
 		    $table->integer('sys02_order');
 		});

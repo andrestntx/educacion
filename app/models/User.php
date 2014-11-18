@@ -50,6 +50,12 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
     }
 
     /*** Relations ***/
+
+    public function protocols()
+    {
+        return $this->hasMany('Protocol', 't06_user_id');
+    }
+
 	public function preferredCompany()
     {
         return $this->belongsTo('Company', 't02_preferred_company_id');
@@ -60,14 +66,14 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
         return $this->belongsTo('SystemRole', 't02_system_role_id');
     }
 
-    public function protocols()
-    {
-        return $this->hasMany('Protocol', 't06_user_id');
-    }
-
     public function roles()
     {
         return $this->belongsToMany('UserRole', 't04_users_has_roles', 't04_user_id', 't04_role_id');
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany('Area', 't08_users_has_areas', 't08_user_id', 't08_area_id');
     }
 
     public function companies()
@@ -143,17 +149,40 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
                 $this->uploadLogo($data['t02_url_photo']);
             }
 
-            $data_companies = array();
-            foreach ($data['companies_id'] as $key => $company_id) 
+            if(array_key_exists('roles', $data))
             {
-                $data_companies[$company_id] = array('t05_active' => true);
+                $this->syncRoles($data['roles']);
             }
-            $this->companies()->sync($data_companies);
+
+            if(array_key_exists('areas', $data))
+            {
+                $this->syncAreas($data['areas']);
+            }
 
             return true;
         }
         
         return false;
+    }
+
+    public function syncRoles($roles = array())
+    {
+        $this->roles()->sync($roles);
+    }
+
+    public function syncAreas($areas = array())
+    {
+        $this->areas()->sync($areas);
+    }
+
+    public function syncCompanies($companies = array())
+    {
+        $data_companies = array();
+        foreach ($companies as $company_id) 
+        {
+            $data_companies[$company_id] = array('t05_active' => true);
+        }
+        $this->companies()->sync($data_companies);
     }
 
     public function uploadLogo($file)

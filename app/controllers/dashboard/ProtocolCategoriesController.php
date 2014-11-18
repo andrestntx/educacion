@@ -1,25 +1,22 @@
 <?php
 
-class CompaniesController extends \BaseController {
+class ProtocolCategoriesController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-
-	private static $module_id = 4;
+	private static $module_id = 10;
 
 	public function index()
 	{
 		$module = Module::find(self::$module_id);
-		$models = Company::where('t01_id', '<>', 1)->orderBy('t01_id')->paginate(20);
-		$company_default = new Company;
-		$titles_table = $company_default->getMainAttributesNames();
+		$models = Auth::user()->preferredCompany->protocolCategories()->orderBy('t09_id')->paginate(20);
+		$category_default = new ProtocolCategory;
+		$titles_table = $category_default->getMainAttributesNames();
 		$actions = array(
-			'show', 'edit', 
-			'show_models' => array('models' => 'users', 'icon' => 'fa-users', 'name' => 'Ver Usuario'),
-			'destroy'
+			'show', 'edit', 'destroy'
 		);
 
 		return View::make('dashboard.pages.models.generic.list-table', compact('models', 'titles_table', 'module', 'actions'));
@@ -35,11 +32,11 @@ class CompaniesController extends \BaseController {
 	public function create()
 	{
 		$module = Module::find(self::$module_id);
-		$company = new Company;
+		$category = new ProtocolCategory;
 		$action_model = 'Crear '.$module->model->singular_name;
 		
-		$form_data = array('route' => 'dashboard.'.$module->route.'.store', 'method' => 'POST', 'files' => true);
-		return View::make('dashboard.pages.models.company.form', compact('action_model', 'company', 'module', 'form_data'));
+		$form_data = array('route' => 'dashboard.'.$module->route.'.store', 'method' => 'POST');
+		return View::make('dashboard.pages.models.protocolcategory.form', compact('action_model', 'category', 'module', 'form_data'));
 	}
 
 
@@ -51,16 +48,16 @@ class CompaniesController extends \BaseController {
 	public function store()
 	{
 		$module = Module::find(self::$module_id);
-        $company = new Company;
+        $category = new ProtocolCategory;
         $data = Input::all();
         
-        if ($company->validAndSave($data))
+        if ($category->validAndSave($data))
         {
             return Redirect::route('dashboard.'.$module->route.'.index');
         }
         else
         {
-			return Redirect::route('dashboard.'.$module->route.'.create')->withInput()->withErrors($company->errors);
+			return Redirect::route('dashboard.'.$module->route.'.create')->withInput()->withErrors($category->errors);
         }
 	}
 
@@ -73,9 +70,9 @@ class CompaniesController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$model = Company::findOrFail($id);
+		$model = ProtocolCategory::findOrFail($id);
 		$module = Module::find(self::$module_id);
-		$action_model = $module->model->singular_name.': '.$model->t01_name;
+		$action_model = $module->model->singular_name.': '.$model->t09_name;
 
 		return View::make('dashboard.pages.models.generic.show', compact('action_model', 'model', 'module'));
 
@@ -90,12 +87,12 @@ class CompaniesController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$company = Company::findOrFail($id);
+		$category = ProtocolCategory::findOrFail($id);
 		$module = Module::find(self::$module_id);
-		$action_model = 'Editar '.$module->model->singular_name.': '.$company->t01_name;
+		$action_model = 'Editar '.$module->model->singular_name.': '.$category->t09_name;
 
-		$form_data = array('route' => array('dashboard.'.$module->route.'.update', $company->id), 'method' => 'PUT', 'files' => true);
-		return View::make('dashboard.pages.models.company.form', compact('action_model', 'company', 'form_data', 'module'));
+		$form_data = array('route' => array('dashboard.'.$module->route.'.update', $category->id), 'method' => 'PUT', 'files' => true);
+		return View::make('dashboard.pages.models.protocolcategory.form', compact('action_model', 'category', 'form_data', 'module'));
 	}
 
 
@@ -107,16 +104,16 @@ class CompaniesController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$company = Company::findOrFail($id);
+		$category = ProtocolCategory::findOrFail($id);
 		$module = Module::find(self::$module_id);
         $data = Input::all();
-        if ($company->validAndSave($data))
+        if ($category->validAndSave($data))
         {
             return Redirect::route('dashboard.'.$module->route.'.index');
         }
         else
         {
-			return Redirect::route(array('dashboard.'.$module->route.'.edit', $company->id))->withInput()->withErrors($company->errors);
+			return Redirect::route(array('dashboard.'.$module->route.'.edit', $category->id))->withInput()->withErrors($category->errors);
         }	
 	}
 
@@ -129,16 +126,16 @@ class CompaniesController extends \BaseController {
 	 */
 	public function destroy($id)
     {
-    	$company = Company::findOrFail($id);
+    	$category = ProtocolCategory::findOrFail($id);
     	$module = Module::find(self::$module_id);
-        $company->delete();
+        $category->delete();
 
         if (Request::ajax())
         {
             return Response::json(array (
                 'success' => true,
-                'msg'     => 'Institución "' . $company->t01_name . '" eliminada',
-                'id'      => $company->id
+                'msg'     => 'Categoría "' . $category->t09_name . '" eliminada',
+                'id'      => $category->id
             ));
         }
         else

@@ -19,12 +19,12 @@ class CreateUsersHasCompaniesTable extends Migration {
 		    $table->integer('t05_user_id')->unsigned();
 		    $table->foreign('t05_user_id')
 		      ->references('t02_id')->on('t02_user')
-		      ->onDelete('cascade');
+		      ->onUpdate('cascade');
 	
 			$table->integer('t05_company_id')->unsigned();	    
 		    $table->foreign('t05_company_id')
 		      ->references('t01_id')->on('t01_company')
-		      ->onDelete('cascade');
+		      ->onUpdate('cascade');
 
 		    $table->primary(array('t05_user_id', 't05_company_id'));
 		});

@@ -1,9 +1,15 @@
 @extends('dashboard.pages.layout')
     @section('title_page') {{$module->model->plural_name}}: {{$action_model}} @stop
     @section('h1_page') 
-    	<a href="{{route('dashboard.'.$module->route.'.index')}}" title="Volver atrás" class="btn btn-info">
-    		<i class="fa fa-arrow-left"></i> 
-    	</a> 
+        @if(isset($route_index))
+            <a href="{{$route_index}}" title="Volver atrás" class="btn btn-info">
+                <i class="fa fa-arrow-left"></i> 
+            </a> 
+        @else
+        	<a href="{{route('dashboard.'.$module->route.'.index')}}" title="Volver atrás" class="btn btn-info">
+        		<i class="fa fa-arrow-left"></i> 
+        	</a> 
+        @endif
     	{{$module->model->plural_name}}
     @stop
     @section('h2_page') 

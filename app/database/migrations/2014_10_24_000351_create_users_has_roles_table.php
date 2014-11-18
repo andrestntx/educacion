@@ -17,12 +17,12 @@ class CreateUsersHasRolesTable extends Migration {
 		    $table->integer('t04_user_id')->unsigned();
 		    $table->foreign('t04_user_id')
 		      ->references('t02_id')->on('t02_user')
-		      ->onDelete('cascade');
+		      ->onUpdate('cascade');
 	
 			$table->integer('t04_role_id')->unsigned();	    
 		    $table->foreign('t04_role_id')
 		      ->references('t03_id')->on('t03_user_role')
-		      ->onDelete('cascade');
+		      ->onUpdate('cascade');
 
 		    $table->primary(array('t04_user_id', 't04_role_id'));
 		});

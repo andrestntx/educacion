@@ -21,9 +21,29 @@ class Company extends ModelEloquent
 	    return $this->hasMany('User', 't02_preferred_company_id');
 	}
 
+	public function protocolCategories()
+	{
+	    return $this->hasMany('ProtocolCategory', 't09_company_id');
+	}
+
+	public function protocols()
+    {
+        return $this->hasManyThrough('Protocol', 'User', 't02_preferred_company_id', 't06_user_id');
+    }
+
+	public function roles()
+	{
+	    return $this->hasMany('UserRole', 't03_company_id');
+	}
+
+	public function areas()
+	{
+	    return $this->hasMany('Area', 't07_company_id');
+	}
+
 	public function users()
 	{
-	    return $this->belongsToMany('User', 't05_users_has_companies', 't05_user_id', 't05_company_id');
+		return $this->belongsToMany('User', 't05_users_has_companies', 't05_company_id', 't05_user_id');
 	}
 	/***** End Relations *****/
 
@@ -62,9 +82,8 @@ class Company extends ModelEloquent
         {
 			$rules['t01_name'] .= ',t01_name,'.$this->t01_id.',t01_id';
         }
-        else // Si no existe...
+        else 
         {
-            // La clave es obligatoria:
             $rules['t01_url_logo'] .= '|required';
         }
         

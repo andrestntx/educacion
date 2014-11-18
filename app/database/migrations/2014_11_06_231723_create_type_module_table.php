@@ -26,7 +26,7 @@ class CreateTypeModuleTable extends Migration {
 		    $table->foreign('sys02_type_module_id')
 		      ->references('sys04_id')->on('sys04_type_module')
 		      ->onUpdate('cascade')
-		      ->onDelete('cascade');
+		      ;
 		});
 	}
 

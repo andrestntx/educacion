@@ -29,7 +29,7 @@ class CreateGlobalModelTable extends Migration {
 		    $table->foreign('sys02_table_id')
 		      ->references('sys03_id')->on('sys03_table')
 		      ->onUpdate('cascade')
-		      ->onDelete('cascade');
+		      ;
 		});
 	}
 
