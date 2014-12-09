@@ -36,6 +36,23 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
+    public function isAdmin()
+    {
+        if($this->t02_system_role_id == 2)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public function isRegistred()
+    {
+        if($this->t02_system_role_id == 3)
+        {
+            return true;
+        }
+        return false;
+    }
 
     public function getT02UrlPhotoValidatedAttribute()
     {
@@ -50,6 +67,11 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
     }
 
     /*** Relations ***/
+
+    public function protocolsForStudy()
+    {
+        return $this->preferredCompany->protocols()->orderBy('t06_id')->get();
+    }
 
     public function protocols()
     {

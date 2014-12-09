@@ -20,7 +20,7 @@ function deleteModel(button_id)
       } else 
       {
          row.show();
-         var result_html = '<div class="alert alert-success alert-dismissable"> <i class="fa fa-check"></i> <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> El registro no pudo ser eliminado </div>';
+         var result_html = '<div class="alert alert-danger alert-dismissable"> <i class="fa fa-frown-o"></i> <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'+result.msg+'</div>';
          $('.box-footer').append(result_html);
       }
    }, 'json');

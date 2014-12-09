@@ -16,17 +16,17 @@
     	{{$action_model}} 
     @stop
     @section('content_page')
-    <div class="col-md-7">
+    <div class="col-md-9">
         <div class="box box-primary">
             <div class="box-header">
                 <i class="fa fa-file-text"></i>
-     			<h3 class="box-title">{{$action_model}}</h3>
+                <h3 class="box-title">{{$action_model}}</h3>
             </div><!-- /.box-header -->
             <div class="box-body" style="font-size:16px;">
                 <div class="row">
                     @foreach($model->toArray() as $key => $value)
                         @if($model->getAttributeType($key) == 'png' || $model->getAttributeType($key) == 'jpg')
-                            <div class="col-sm-6 col-lg-4">
+                            <div class="col-sm-6">
                                 <p><b style="font-size:16px;">{{$model->getAttributeName($key)}}</b></p>
                                 {{ HTML::image($value, $model->getAttributeName($key), array('class' => 'fileinput-new thumbnail', 'style' => 'max-width:200px; height:150px;')) }}
                             </div>
@@ -34,7 +34,7 @@
                     @endforeach
                     @foreach($model->attributesToArray() as $key => $value)
                         @if($model->getAttributeType($key) == 'string')
-                            <div class="col-sm-6 col-lg-4">
+                            <div class="col-sm-6">
                                 <p><b style="font-size:16px;">{{$model->getAttributeName($key)}}:</b> {{$model->value($key)}}</p>
                             </div>
                         @endif
@@ -62,18 +62,48 @@
                 @endif
             </div>
         </div><!-- /.box -->
+    </div>   
+    <div class="col-md-3 col-xs-12">
+        <div class="col-lg-12">
+            <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner">
+                    <h3>{{$number_annex}}</h3>
+                    <p style="font-size:20px;">
+                        Anexos 
+                    </p>
+                </div>
+                <a href="{{route('dashboard.protocols.annex.index', $model->id)}}">
+                    <div class="icon">
+                        <i class="ion ion-ios7-cloud-upload"></i>
+                    </div>
+                </a>
+                <a href="{{route('dashboard.protocols.annex.index', $model->id)}}" class="small-box-footer" style="font-size:16px;">
+                    Ver los Anexos <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>  
+        </div><!-- ./col -->
+
+        <div class="col-lg-12">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{$number_questions}}</h3>
+                    <p style="font-size:20px;">
+                        Preguntas 
+                    </p>
+                </div>
+                <a href="{{route('dashboard.protocols.questions.index', $model->id)}}">
+                    <div class="icon">
+                        <i class="ion ion-clipboard"></i>
+                    </div>
+                </a>
+                <a href="{{route('dashboard.protocols.questions.index', $model->id)}}" class="small-box-footer" style="font-size:16px;">
+                    Ver las Preguntas <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>  
+        </div><!-- ./col -->
     </div>
-    <div class="col-md-5">
-        <div class="box box-warning">
-            <div class="box-header">
-                <i class="fa fa-paperclip"></i>
-                <h3 class="box-title">Anexos del Protocolo</h3>
-            </div><!-- /.box-header -->
-            <div class="box-body"
-                <a href="#" class="btn btn-primary"><i class="fa {{$module->model->icon}}"></i> Crear {{$module->model->singular_name}}</a>
-                @include('dashboard.includes.table-model')
-            </div>
-        </div>
-    </div>
-    	
+    
+     	
     @stop

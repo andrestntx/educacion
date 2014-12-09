@@ -45,14 +45,17 @@ Route::group(array('before' => 'auth'), function()
 			
 			Route::resource('protocols/categories', 'ProtocolCategoriesController');
 			Route::resource('protocols', 'ProtocolsController');
-				
-
+			Route::resource('protocols.annex', 'AnnexController');
+			Route::resource('protocols.questions', 'QuestionsController');
 		});
 
 		/***** Only acces Roles 2=> Registrered *****/
 		Route::group(array('before' => 'system_roles:3'), function()
 		{
-
+			Route::get('estudiar/{protocol}', array('as' => 'dashboard.study', 'uses' => 'ExamsController@studyProtocol'));
+			Route::get('examenes/{protocol}', array('as' => 'dashboard.exams', 'uses' => 'ExamsController@showExams'));
+			Route::get('examenes/presentar/{protocol}/', array('as' => 'dashboard.exams.create', 'uses' => 'ExamsController@create'));
+			Route::post('examenes/presentar/{protocol}/', array('as' => 'dashboard.exams.store', 'uses' => 'ExamsController@store'));
 		});
 		
 		/***** Acces All Roles *****/

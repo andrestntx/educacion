@@ -78,13 +78,12 @@ class ProtocolsController extends \BaseController {
 		$module = Module::find(self::$module_id);
 		$action_model = $module->model->singular_name.': '.$model->t01_name;
 
-		$models = Auth::user()->preferredCompany->protocols()->orderBy('t06_id')->paginate(20);
-		$protocol_default = new Protocol;
-		$titles_table = $protocol_default->getMainAttributesNames();
-		$actions = array('show', 'edit', 'destroy');
+		$number_annex = $model->annex()->count();
+		$number_questions = $model->questions()->count();
 
 		return View::make('dashboard.pages.models.protocol.show', compact('action_model', 'model', 
-			'module', 'actions', 'models', 'titles_table'));
+			'module', 'number_questions', 'number_annex'
+		));
 	}
 
 

@@ -16,10 +16,19 @@ class DatabaseSeeder extends Seeder {
         $this->call('ModuleTableSeeder');
         $this->call('SystemRoleTableSeeder');
 		$this->call('CompanyTableSeeder');
-		$this->call('UserTableSeeder');
+		
+        $this->call('UserTableSeeder');
 		$this->call('UserRoleTableSeeder');
 		$this->call('UsersHasRolesTableSeeder');
         $this->call('UsersHasCompaniesTableSeeder');
+        
+        $this->call('AreaTableSeeder');
+        
+        $this->call('ProtocolCategoryTableSeeder');
+        $this->call('ProtocolTableSeeder');
+        $this->call('ProtocolHasCategoriesTableSeeder');
+        $this->call('ProtocolHasRolesTableSeeder');
+        $this->call('ProtocolHasAreasTableSeeder');
 	}
 
 }
@@ -101,6 +110,30 @@ class GlobalModelTableSeeder extends Seeder {
             'plural_name' => 'Categorías',
             'singular_name' => 'Categoría',
             'form' => 'category',
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));
+
+        DB::table('sys03_table')->insert(array(
+            'plural_name' => 'Anexos',
+            'singular_name' => 'Anexo',
+            'form' => 'annex',
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));
+
+        DB::table('sys03_table')->insert(array(
+            'plural_name' => 'Preguntas',
+            'singular_name' => 'Pregunta',
+            'form' => 'question',
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));
+
+        DB::table('sys03_table')->insert(array(
+            'plural_name' => 'Examenes',
+            'singular_name' => 'Examen',
+            'form' => 'exam',
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
         ));
@@ -226,6 +259,30 @@ class ModuleTableSeeder extends Seeder
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
         ));  
+
+        DB::table('sys02_module')->insert(array(
+            'sys02_name' => 'Eloquent Annex of Protocols',
+            'route' => 'protocols.annex',
+            'controller' => 'Annex',
+            'sys02_type_module_id' => 1,
+            'sys02_top_module_id' => 1,
+            'sys02_order' => 8,
+            'sys02_table_id' => 8,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));  
+
+        DB::table('sys02_module')->insert(array(
+            'sys02_name' => 'Eloquent Questions of Protocols',
+            'route' => 'protocols.questions',
+            'controller' => 'Question',
+            'sys02_type_module_id' => 1,
+            'sys02_top_module_id' => 1,
+            'sys02_order' => 9,
+            'sys02_table_id' => 9,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));
     }
 }
 
@@ -263,7 +320,7 @@ class CompanyTableSeeder extends Seeder {
         ));
 
         DB::table('t01_company')->insert(array(
-            't01_name' => 'Clinica Cooperativa',
+            't01_name' => 'Angiografía de Colombia',
             't01_url_logo' => 'images/logo_sistema.jpg',
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
@@ -281,6 +338,13 @@ class UserRoleTableSeeder extends Seeder {
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
         ));
+
+        DB::table('t03_user_role')->insert(array(
+            't03_name' => 'Perfil de Prueba',
+            't03_company_id' => 2,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        )); 
     }
 }
 
@@ -344,6 +408,80 @@ class UsersHasCompaniesTableSeeder extends Seeder {
             't05_user_id' => 2,
             't05_company_id' => 2,
             't05_active' => true
+        ));
+    }
+}
+
+class AreaTableSeeder extends Seeder
+{
+    public function run()
+    {
+       DB::table('t07_area')->insert(array(
+            't07_name' => 'Toda la Institución',
+            't07_description' => 'Área general',
+            't07_company_id' => 2,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        )); 
+    }
+}
+
+class ProtocolCategoryTableSeeder extends Seeder
+{
+    public function run()
+    {
+       DB::table('t09_protocol_category')->insert(array(
+            't09_name' => 'Todos los Protocolos',
+            't09_description' => 'Categoría general',
+            't09_company_id' => 2,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        )); 
+    }
+}
+
+class ProtocolTableSeeder extends Seeder
+{
+    public function run()
+    {
+       DB::table('t06_protocol')->insert(array(
+            't06_name' => 'Protocolo de Prueba',
+            't06_user_id' => 2,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        )); 
+    }
+}
+
+class ProtocolHasCategoriesTableSeeder extends Seeder {
+ 
+    public function run()
+    {
+        DB::table('t10_protocols_has_categories')->insert(array(
+            't10_protocol_id' => 1,
+            't10_category_id' => 1,
+        ));
+    }
+}
+
+class ProtocolHasRolesTableSeeder extends Seeder {
+ 
+    public function run()
+    {
+        DB::table('t13_protocols_has_roles')->insert(array(
+            't13_protocol_id' => 1,
+            't13_role_id' => 1,
+        ));
+    }
+}
+
+class ProtocolHasAreasTableSeeder extends Seeder {
+ 
+    public function run()
+    {
+        DB::table('t12_protocols_has_areas')->insert(array(
+            't12_protocol_id' => 1,
+            't12_area_id' => 1,
         ));
     }
 }

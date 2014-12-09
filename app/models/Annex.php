@@ -4,15 +4,15 @@ class Annex extends ModelEloquent
 {
 	protected $table = 't11_annex';
 	protected $primaryKey = 't11_id';
-	protected $fillable = array('t11_name', 't11_description', 't11_user_id');
+	protected $fillable = array('t11_name', 't11_description', 't11_protocol_id');
 	protected $globalModel = 2;
 	public $timestamps = true;
 	public $increments = true;
 	public $errors;
-	protected $attributeNames = array('t11_url_pdf' => 'Pdf', 't11_id' => 'Id', 't11_description' => 'Descripción', 
-        't11_name' => 'Nombre', 't11_user_id' => 'Autor', 'created_at' => 'Creación', 'updated_at' => 'Actualización',
+	protected $attributeNames = array('t11_url' => 'Archivo', 't11_id' => 'Id', 't11_description' => 'Descripción', 
+        't11_name' => 'Nombre', 'created_at' => 'Creación', 'updated_at' => 'Actualización',
     );
-	protected $mainAttributes = array('t11_id', 't11_name', 't11_user_id');
+	protected $mainAttributes = array('t11_name');
     protected $relationsArray = array('t11_user_id' => 'user');
 
     public function getUserValueAttribute()
@@ -29,16 +29,12 @@ class Annex extends ModelEloquent
     {
         $rules = array(
             't11_name'     => 'required|max:100|unique:t11_annex',
-            't11_user_id' => 'required'
+            't11_protocol_id' => 'required'
         );
 
         if ($this->exists)
         {
 			$rules['t11_name'] .= ',t11_name,'.$this->t11_id.',t11_id';
-        }
-        else 
-        {
-            $rules['t11_url_pdf'] .= '|required';
         }
         
         $validator = Validator::make($data, $rules);
@@ -59,9 +55,9 @@ class Annex extends ModelEloquent
         {
             $this->fill($data);
             $this->save();
-            if(array_key_exists('t11_url_pdf', $data))
+            if(array_key_exists('t11_url', $data))
             {
-            	$this->uploadPdf('t11_url_pdf');
+            	$this->uploadAnnex('t11_url');
             }
             
             return true;
@@ -70,11 +66,13 @@ class Annex extends ModelEloquent
         return false;
     }
 
-    public function uploadAnexo($file)
+    public function uploadAnnex($file)
     {
-        $url_pdf = Config::get('constant.path_anexos').'/'.$this->t11_id.'.pdf';
-        Input::file($file)->move(Config::get('constant.path_anexos'), $this->t11_id.'.pdf');
-        $this->t11_url_pdf = $url_pdf;
+        $path = Config::get('constant.path_annex');
+        $name = $this->t11_id.'.'.Input::file($file)->getClientOriginalExtension();
+        $url = $path.'/'.$name;
+        Input::file($file)->move($path, $name);
+        $this->t11_url = $url;
         $this->save();
     }
 }

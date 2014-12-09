@@ -94,6 +94,13 @@
                 </ul>
             </li>
             @else
+                @foreach(Auth::user()->protocolsForStudy() as $p)
+                <li>
+                    <a href="{{url('dashboard/estudiar/'.$p->t06_id)}}">
+                        <i class="fa fa-file-text"></i> <span>{{$p->t06_name}}</span>
+                    </a>
+                </li>
+                @endforeach
             @endif
             <!-- 
             <li>

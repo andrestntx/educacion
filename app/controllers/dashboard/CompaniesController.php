@@ -17,7 +17,7 @@ class CompaniesController extends \BaseController {
 		$company_default = new Company;
 		$titles_table = $company_default->getMainAttributesNames();
 		$actions = array(
-			'show', 'edit', 
+			'edit', 
 			'show_models' => array('models' => 'users', 'icon' => 'fa-users', 'name' => 'Ver Usuario'),
 			'destroy'
 		);
@@ -56,6 +56,7 @@ class CompaniesController extends \BaseController {
         
         if ($company->validAndSave($data))
         {
+        	$company->createDefaultData();
             return Redirect::route('dashboard.'.$module->route.'.index');
         }
         else
@@ -131,15 +132,17 @@ class CompaniesController extends \BaseController {
     {
     	$company = Company::findOrFail($id);
     	$module = Module::find(self::$module_id);
-        $company->delete();
+    	try {
+    		$company->delete();
+    		$result = array('success' => true, 'msg' => 'Institución "' . $company->t01_name . '" eliminada', 'id' => $company->id);
+    	} catch (Exception $e) {
+    		$result = array('success' => false, 'msg' => 'La Institución no se puede eliminar', 'id' => $company->id);
+    	}
+   
 
         if (Request::ajax())
         {
-            return Response::json(array (
-                'success' => true,
-                'msg'     => 'Institución "' . $company->t01_name . '" eliminada',
-                'id'      => $company->id
-            ));
+            return Response::json($result);
         }
         else
         {

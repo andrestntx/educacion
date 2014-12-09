@@ -103,7 +103,7 @@ class CompaniesUsersController extends \BaseController {
 		$action_model = 'Editar '.$module->model->singular_name.': '.$user->t02_name;
 
 		$form_data = array(
-			'route' => array('dashboard.'.$module->route.'.update', $user->id), 
+			'route' => array('dashboard.'.$module->route.'.update', $company_id, $user->id), 
 			'method' => 'PUT', 
 			'files' => true
 		);

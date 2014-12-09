@@ -126,4 +126,13 @@ class Company extends ModelEloquent
 	    	$this->save();
     	}
     }
+
+    public function createDefaultData()
+    {
+    	Area::create(array('t07_name' =>  'Todas las áreas', 't07_company_id' => $this->id));
+    	ProtocolCategory::create(array('t09_name' =>  'Todas los Protocolos', 't09_company_id' => $this->id));
+    	UserRole::create(array('t03_name' =>  'Perfil general', 't03_company_id' => $this->id));
+
+    	return true;
+    }
 }

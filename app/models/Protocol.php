@@ -42,7 +42,22 @@ class Protocol extends ModelEloquent
         return $this->belongsToMany('UserRole', 't13_protocols_has_roles', 't13_protocol_id', 't13_role_id');
     }
 
+    public function annex()
+    {
+        return $this->hasMany('Annex', 't11_protocol_id');
+    }
+
+    public function questions()
+    {
+        return $this->hasMany('Question', 't14_protocol_id');
+    }
+
     /***** End Relations *****/
+
+    public function randomQuestions()
+    {
+        return $this->questions;
+    }
 
 	public function isValid($data)
     {
