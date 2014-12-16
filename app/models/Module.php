@@ -2,27 +2,27 @@
 
 class Module extends Eloquent
 {
-	protected $table = 'sys02_module';
-	protected $primaryKey = 'sys02_id';
-	protected $fillable = array('sys02_name');
+	protected $table = 'module';
+	protected $primaryKey = 'id';
+	protected $fillable = array('name');
 	public $timestamps = true;
 	public $increments = true;
 	public $errors;
 
     public function model()
     {
-        return $this->belongsTo('GlobalModel', 'sys02_table_id');
+        return $this->belongsTo('GlobalModel', 'table_id');
     }
 
 	public function isValid($data)
     {
         $rules = array(
-            'sys02_name'     => 'required|max:100|unique:sys02_module'
+            'name'     => 'required|max:100|unique:module'
         );
 
         if ($this->exists)
         {
-			$rules['sys02_name'] .= ',sys02_name,'.$this->sys02_id.',sys02_id';
+			$rules['name'] .= ',name,'.$this->id.',id';
         }
         
         $validator = Validator::make($data, $rules);
@@ -52,19 +52,19 @@ class Module extends Eloquent
 
    /* public static function ordered()
     {
-        $modules = self::orderBy('sys02_top_module_id')->orderBy('sys02_order')->get();
+        $modules = self::orderBy('top_module_id')->orderBy('order')->get();
         $orderedModules = array();
         $top_module_id = 1;
 
         foreach ($modules as $module) 
         {
-            if($module->sys02_order == 0)
+            if($module->order == 0)
             {
                 $orderedModules[$module->id]['module'] = $module;
             }
             else
             {
-                $orderedModules[$module->sys02_top_module_id]['sons'][$module->id]['module'] = $module;
+                $orderedModules[$module->top_module_id]['sons'][$module->id]['module'] = $module;
             } 
         }
         return $orderedModules;

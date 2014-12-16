@@ -11,16 +11,8 @@ class ProtocolCategoriesController extends \BaseController {
 
 	public function index()
 	{
-		$module = Module::find(self::$module_id);
-		$models = Auth::user()->preferredCompany->protocolCategories()->orderBy('t09_id')->paginate(20);
-		$category_default = new ProtocolCategory;
-		$titles_table = $category_default->getMainAttributesNames();
-		$actions = array(
-			'show', 'edit', 'destroy'
-		);
-
-		return View::make('dashboard.pages.models.generic.list-table', compact('models', 'titles_table', 'module', 'actions'));
-		
+		$categories = Auth::user()->preferredCompany->protocolCategories()->orderBy('id')->get();
+		return View::make('dashboard.pages.protocol.category.lists-table', compact('categories'));
 	}
 
 
@@ -31,12 +23,11 @@ class ProtocolCategoriesController extends \BaseController {
 	 */
 	public function create()
 	{
-		$module = Module::find(self::$module_id);
-		$category = new ProtocolCategory;
-		$action_model = 'Crear '.$module->model->singular_name;
 		
-		$form_data = array('route' => 'dashboard.'.$module->route.'.store', 'method' => 'POST');
-		return View::make('dashboard.pages.models.protocolcategory.form', compact('action_model', 'category', 'module', 'form_data'));
+		$category = new ProtocolCategory;
+		
+		$form_data = array('route' => 'protocolos.categorias.store', 'method' => 'POST');
+		return View::make('dashboard.pages.protocol.category.form', compact('action_model', 'category', 'module', 'form_data'));
 	}
 
 
@@ -47,17 +38,16 @@ class ProtocolCategoriesController extends \BaseController {
 	 */
 	public function store()
 	{
-		$module = Module::find(self::$module_id);
         $category = new ProtocolCategory;
         $data = Input::all();
         
         if ($category->validAndSave($data))
         {
-            return Redirect::route('dashboard.'.$module->route.'.index');
+            return Redirect::route('protocolos.categorias.index');
         }
         else
         {
-			return Redirect::route('dashboard.'.$module->route.'.create')->withInput()->withErrors($category->errors);
+			return Redirect::route('protocolos.categorias.create')->withInput()->withErrors($category->errors);
         }
 	}
 
@@ -70,12 +60,8 @@ class ProtocolCategoriesController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$model = ProtocolCategory::findOrFail($id);
-		$module = Module::find(self::$module_id);
-		$action_model = $module->model->singular_name.': '.$model->t09_name;
-
-		return View::make('dashboard.pages.models.generic.show', compact('action_model', 'model', 'module'));
-
+		$category = ProtocolCategory::findOrFail($id);
+		return View::make('dashboard.pages.protocol.category.show', compact('category'));
 	}
 
 
@@ -88,11 +74,8 @@ class ProtocolCategoriesController extends \BaseController {
 	public function edit($id)
 	{
 		$category = ProtocolCategory::findOrFail($id);
-		$module = Module::find(self::$module_id);
-		$action_model = 'Editar '.$module->model->singular_name.': '.$category->t09_name;
-
-		$form_data = array('route' => array('dashboard.'.$module->route.'.update', $category->id), 'method' => 'PUT', 'files' => true);
-		return View::make('dashboard.pages.models.protocolcategory.form', compact('action_model', 'category', 'form_data', 'module'));
+		$form_data = array('route' => array('protocolos.categorias.update', $category->id), 'method' => 'PUT', 'files' => true);
+		return View::make('dashboard.pages.protocol.category.form', compact('category', 'form_data'));
 	}
 
 
@@ -105,15 +88,15 @@ class ProtocolCategoriesController extends \BaseController {
 	public function update($id)
 	{
 		$category = ProtocolCategory::findOrFail($id);
-		$module = Module::find(self::$module_id);
+		
         $data = Input::all();
         if ($category->validAndSave($data))
         {
-            return Redirect::route('dashboard.'.$module->route.'.index');
+            return Redirect::route('protocolos.categorias.index');
         }
         else
         {
-			return Redirect::route(array('dashboard.'.$module->route.'.edit', $category->id))->withInput()->withErrors($category->errors);
+			return Redirect::route(array('protocolos.categorias.edit', $category->id))->withInput()->withErrors($category->errors);
         }	
 	}
 
@@ -127,20 +110,20 @@ class ProtocolCategoriesController extends \BaseController {
 	public function destroy($id)
     {
     	$category = ProtocolCategory::findOrFail($id);
-    	$module = Module::find(self::$module_id);
+    	
         $category->delete();
 
         if (Request::ajax())
         {
             return Response::json(array (
                 'success' => true,
-                'msg'     => 'Categoría "' . $category->t09_name . '" eliminada',
+                'msg'     => 'Categoría "' . $category->name . '" eliminada',
                 'id'      => $category->id
             ));
         }
         else
         {
-            return Redirect::route('dashboard.'.$module->route.'.index');
+            return Redirect::route('protocolos.categorias.index');
         }
 	}
 }

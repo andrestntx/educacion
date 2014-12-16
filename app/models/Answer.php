@@ -1,25 +1,25 @@
 <?php 
 
-class Answer extends ModelEloquent
+class Answer extends Eloquent
 {
-	protected $table = 't15_answer';
-	protected $primaryKey = 't15_id';
-	protected $fillable = array('t15_text', 't15_question_id', 't15_correct');
+	protected $table = 'answer';
+	protected $primaryKey = 'id';
+	protected $fillable = array('text', 'question_id', 'correct');
 	protected $globalModel = 2;
 	public $timestamps = true;
 	public $increments = true;
 	public $errors;
-	protected $attributeNames = array('t15_text' => 'Respuesta', 'created_at' => 'Creación', 'updated_at' => 'Actualización');
-	protected $mainAttributes = array('t15_text');
-    protected $relationsArray = array('t15_question_id' => 'question');
+	protected $attributeNames = array('text' => 'Respuesta', 'created_at' => 'Creación', 'updated_at' => 'Actualización');
+	protected $mainAttributes = array('text');
+    protected $relationsArray = array('question_id' => 'question');
 
     public function getUserValueAttribute()
     {
-        return $this->question->t14_text;
+        return $this->question->text;
     }
 
     public function question()
     {
-        return $this->belongsTo('Question', 't15_question_id');
+        return $this->belongsTo('Question', 'question_id');
     }
 }

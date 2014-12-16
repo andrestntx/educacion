@@ -7,19 +7,11 @@ class UserRolesController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	private static $module_id = 8;
 
 	public function index()
 	{
-		$module = Module::find(self::$module_id);
-		$models = Auth::user()->preferredCompany->roles()->orderBy('t03_id')->paginate(20);
-		$userRole_default = new UserRole;
-		$titles_table = $userRole_default->getMainAttributesNames();
-		$actions = array(
-			'show', 'edit', 'destroy'
-		);
-
-		return View::make('dashboard.pages.models.generic.list-table', compact('models', 'titles_table', 'module', 'actions'));
+		$roles = Auth::user()->preferredCompany->roles()->orderBy('id')->get();
+		return View::make('dashboard.pages.user.role.lists-table', compact('roles'));
 		
 	}
 
@@ -31,12 +23,9 @@ class UserRolesController extends \BaseController {
 	 */
 	public function create()
 	{
-		$module = Module::find(self::$module_id);
 		$role = new UserRole;
-		$action_model = 'Crear '.$module->model->singular_name;
-		
-		$form_data = array('route' => 'dashboard.'.$module->route.'.store', 'method' => 'POST');
-		return View::make('dashboard.pages.models.userrole.form', compact('action_model', 'role', 'module', 'form_data'));
+		$form_data = array('route' => 'usuarios.perfiles.store', 'method' => 'POST');
+		return View::make('dashboard.pages.user.role.form', compact('role', 'form_data'));
 	}
 
 
@@ -47,17 +36,16 @@ class UserRolesController extends \BaseController {
 	 */
 	public function store()
 	{
-		$module = Module::find(self::$module_id);
         $role = new UserRole;
         $data = Input::all();
         
         if ($role->validAndSave($data))
         {
-            return Redirect::route('dashboard.'.$module->route.'.index');
+            return Redirect::route('usuarios.perfiles.index');
         }
         else
         {
-			return Redirect::route('dashboard.'.$module->route.'.create')->withInput()->withErrors($role->errors);
+			return Redirect::route('usuarios.perfiles.create')->withInput()->withErrors($role->errors);
         }
 	}
 
@@ -70,11 +58,8 @@ class UserRolesController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$model = UserRole::findOrFail($id);
-		$module = Module::find(self::$module_id);
-		$action_model = $module->model->singular_name.': '.$model->t03_name;
-
-		return View::make('dashboard.pages.models.generic.show', compact('action_model', 'model', 'module'));
+		$role = UserRole::findOrFail($id);
+		return View::make('dashboard.pages.user.role.show', compact('action_role', 'role'));
 
 	}
 
@@ -88,11 +73,8 @@ class UserRolesController extends \BaseController {
 	public function edit($id)
 	{
 		$role = UserRole::findOrFail($id);
-		$module = Module::find(self::$module_id);
-		$action_model = 'Editar '.$module->model->singular_name.': '.$role->t03_name;
-
-		$form_data = array('route' => array('dashboard.'.$module->route.'.update', $role->id), 'method' => 'PUT', 'files' => true);
-		return View::make('dashboard.pages.models.userrole.form', compact('action_model', 'role', 'form_data', 'module'));
+		$form_data = array('route' => array('usuarios.perfiles.update', $role->id), 'method' => 'PUT', 'files' => true);
+		return View::make('dashboard.pages.user.role.form', compact('role', 'form_data'));
 	}
 
 
@@ -105,15 +87,15 @@ class UserRolesController extends \BaseController {
 	public function update($id)
 	{
 		$role = UserRole::findOrFail($id);
-		$module = Module::find(self::$module_id);
+		
         $data = Input::all();
         if ($role->validAndSave($data))
         {
-            return Redirect::route('dashboard.'.$module->route.'.index');
+            return Redirect::route('usuarios.perfiles.index');
         }
         else
         {
-			return Redirect::route(array('dashboard.'.$module->route.'.edit', $role->id))->withInput()->withErrors($role->errors);
+			return Redirect::route(array('usuarios.perfiles.edit', $role->id))->withInput()->withErrors($role->errors);
         }	
 	}
 
@@ -127,20 +109,20 @@ class UserRolesController extends \BaseController {
 	public function destroy($id)
     {
     	$role = UserRole::findOrFail($id);
-    	$module = Module::find(self::$module_id);
+    	
         $role->delete();
 
         if (Request::ajax())
         {
             return Response::json(array (
                 'success' => true,
-                'msg'     => 'Perfil "' . $role->t03_name . '" eliminado',
+                'msg'     => 'Perfil "' . $role->name . '" eliminado',
                 'id'      => $role->id
             ));
         }
         else
         {
-            return Redirect::route('dashboard.'.$module->route.'.index');
+            return Redirect::route('usuarios.perfiles.index');
         }
 	}
 }

@@ -12,19 +12,19 @@ class CreateProtocolsHasCategoriesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t10_protocols_has_categories', function($table)
+		Schema::create('protocols_has_categories', function($table)
 		{
-		    $table->integer('t10_protocol_id')->unsigned();
-		    $table->foreign('t10_protocol_id')
-		      ->references('t06_id')->on('t06_protocol')
+		    $table->integer('protocol_id')->unsigned();
+		    $table->foreign('protocol_id')
+		      ->references('id')->on('protocol')
 		      ->onUpdate('cascade');
 	
-			$table->integer('t10_category_id')->unsigned();	    
-		    $table->foreign('t10_category_id')
-		      ->references('t09_id')->on('t09_protocol_category')
+			$table->integer('category_id')->unsigned();	    
+		    $table->foreign('category_id')
+		      ->references('id')->on('protocol_category')
 		      ->onUpdate('cascade');
 
-		    $table->primary(array('t10_protocol_id', 't10_category_id'));
+		    $table->primary(array('protocol_id', 'category_id'));
 		});
 	}
 
@@ -35,7 +35,7 @@ class CreateProtocolsHasCategoriesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t10_protocols_has_categories');
+		Schema::drop('protocols_has_categories');
 	}
 
 }

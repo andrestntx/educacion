@@ -12,18 +12,18 @@ class CreateExamTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t16_exam', function($table)
+		Schema::create('exam', function($table)
 		{
-		    $table->increments('t16_id');
+		    $table->increments('id');
 
-		    $table->integer('t16_protocol_id')->unsigned();	    
-		    $table->foreign('t16_protocol_id')
-		      ->references('t06_id')->on('t06_protocol')
+		    $table->integer('protocol_id')->unsigned();	    
+		    $table->foreign('protocol_id')
+		      ->references('id')->on('protocol')
 		      ->onUpdate('cascade');
 
-		    $table->integer('t16_user_id')->unsigned();	    
-		    $table->foreign('t16_user_id')
-		      ->references('t02_id')->on('t02_user')
+		    $table->integer('user_id')->unsigned();	    
+		    $table->foreign('user_id')
+		      ->references('id')->on('user')
 		      ->onUpdate('cascade');
 
 		    $table->timestamps();
@@ -37,7 +37,7 @@ class CreateExamTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t16_exam');
+		Schema::drop('exam');
 	}
 
 }

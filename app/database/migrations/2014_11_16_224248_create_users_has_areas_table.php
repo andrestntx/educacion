@@ -12,20 +12,20 @@ class CreateUsersHasAreasTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t08_users_has_areas', function($table)
+		Schema::create('users_has_areas', function($table)
 		{
 	    
-		    $table->integer('t08_user_id')->unsigned();
-		    $table->foreign('t08_user_id')
-		      ->references('t02_id')->on('t02_user')
+		    $table->integer('user_id')->unsigned();
+		    $table->foreign('user_id')
+		      ->references('id')->on('user')
 		      ->onUpdate('cascade');
 	
-			$table->integer('t08_area_id')->unsigned();	    
-		    $table->foreign('t08_area_id')
-		      ->references('t07_id')->on('t07_area')
+			$table->integer('area_id')->unsigned();	    
+		    $table->foreign('area_id')
+		      ->references('id')->on('area')
 		      ->onUpdate('cascade');
 
-		    $table->primary(array('t08_user_id', 't08_area_id'));
+		    $table->primary(array('user_id', 'area_id'));
 		});
 	}
 
@@ -36,7 +36,7 @@ class CreateUsersHasAreasTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t08_users_has_areas');	
+		Schema::drop('users_has_areas');	
 	}
 
 }

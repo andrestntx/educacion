@@ -12,15 +12,15 @@ class CreateAnswerTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t15_answer', function($table)
+		Schema::create('answer', function($table)
 		{
-		    $table->increments('t15_id');
-		    $table->string('t15_text', 200);
-		    $table->boolean('t15_correct');
+		    $table->increments('id');
+		    $table->string('text', 200);
+		    $table->boolean('correct');
 
-		    $table->integer('t15_question_id')->unsigned();	    
-		    $table->foreign('t15_question_id')
-		      ->references('t14_id')->on('t14_question')
+		    $table->integer('question_id')->unsigned();	    
+		    $table->foreign('question_id')
+		      ->references('id')->on('question')
 		      ->onUpdate('cascade')
 		      ->onDelete('cascade');
 
@@ -35,7 +35,7 @@ class CreateAnswerTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t15_answer');
+		Schema::drop('answer');
 	}
 
 }

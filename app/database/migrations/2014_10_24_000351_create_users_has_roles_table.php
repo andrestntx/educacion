@@ -12,19 +12,19 @@ class CreateUsersHasRolesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t04_users_has_roles', function($table)
+		Schema::create('users_has_roles', function($table)
 		{
-		    $table->integer('t04_user_id')->unsigned();
-		    $table->foreign('t04_user_id')
-		      ->references('t02_id')->on('t02_user')
+		    $table->integer('user_id')->unsigned();
+		    $table->foreign('user_id')
+		      ->references('id')->on('user')
 		      ->onUpdate('cascade');
 	
-			$table->integer('t04_role_id')->unsigned();	    
-		    $table->foreign('t04_role_id')
-		      ->references('t03_id')->on('t03_user_role')
+			$table->integer('role_id')->unsigned();	    
+		    $table->foreign('role_id')
+		      ->references('id')->on('user_role')
 		      ->onUpdate('cascade');
 
-		    $table->primary(array('t04_user_id', 't04_role_id'));
+		    $table->primary(array('user_id', 'role_id'));
 		});
 	}
 
@@ -35,7 +35,7 @@ class CreateUsersHasRolesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t04_users_has_roles');
+		Schema::drop('users_has_roles');
 	}
 
 }

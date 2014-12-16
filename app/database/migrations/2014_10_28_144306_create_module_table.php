@@ -12,22 +12,22 @@ class CreateModuleTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('sys02_module', function($table)
+		Schema::create('module', function($table)
 		{
-		    $table->increments('sys02_id');
+		    $table->increments('id');
 		    $table->string('route', 100)->nullable();
 		    $table->string('controller', 100)->nullable();
-		    $table->string('sys02_name', 100);
-		    $table->string('sys02_description', 250)->nullable();
+		    $table->string('name', 100);
+		    $table->string('description', 250)->nullable();
 		    $table->timestamps();
 
-		    $table->integer('sys02_top_module_id')->unsigned()->nullable();
-		    $table->foreign('sys02_top_module_id')
-		      ->references('sys02_id')->on('sys02_module')
+		    $table->integer('top_module_id')->unsigned()->nullable();
+		    $table->foreign('top_module_id')
+		      ->references('id')->on('module')
 		      ->onUpdate('cascade')
 		      ;
 
-		    $table->integer('sys02_order');
+		    $table->integer('order');
 		});
 	}
 
@@ -38,7 +38,7 @@ class CreateModuleTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('sys02_module');
+		Schema::drop('module');
 	}
 
 }

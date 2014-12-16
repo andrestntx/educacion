@@ -12,17 +12,17 @@ class CreateProtocolsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t06_protocol', function($table)
+		Schema::create('protocol', function($table)
 		{
-		    $table->increments('t06_id');
-		    $table->string('t06_name', 100);
-		    $table->string('t06_description', 250)->nullable();
-		    $table->string('t06_url_pdf', 250)->nullable();
+		    $table->increments('id');
+		    $table->string('name', 100);
+		    $table->string('description', 250)->nullable();
+		    $table->string('url_pdf', 250)->nullable();
 		    $table->timestamps();
 
-		    $table->integer('t06_user_id')->unsigned();
-		    $table->foreign('t06_user_id')
-		      ->references('t02_id')->on('t02_user')
+		    $table->integer('user_id')->unsigned();
+		    $table->foreign('user_id')
+		      ->references('id')->on('user')
 		      ->onUpdate('cascade')
 		      ;
 		});
@@ -35,7 +35,7 @@ class CreateProtocolsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t06_protocol');
+		Schema::drop('protocol');
 	}
 
 }

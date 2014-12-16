@@ -13,60 +13,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 |
 */
 
-Route::get('/', function()
-{
-	return Redirect::to('dashboard');
-});
-
-Route::group(array('before' => 'auth'), function()
-{
-		
-	Route::group(array('prefix' => 'dashboard'), function() 
-	{
-		Route::resource('companies', 'CompaniesController');
-		Route::resource('companies.users', 'CompaniesUsersController');
-
-
-		/***** Only acces Role 1 => Super Admin *****/
-		Route::group(array('before' => 'system_roles:1'), function()
-		{
-			Route::group(array('prefix' => 'config'), function() 
-			{
-				Route::resource('models', 'GlobalModelController', array('only' => array('index', 'show', 'edit', 'update')));
-			});
-		});
-
-		/***** Only acces Roles 2=> Admin *****/
-		Route::group(array('before' => 'system_roles:2'), function()
-		{
-			Route::resource('areas', 'AreasController');
-			Route::resource('users', 'UsersController');
-			Route::resource('roles', 'UserRolesController');
-			
-			Route::resource('protocols/categories', 'ProtocolCategoriesController');
-			Route::resource('protocols', 'ProtocolsController');
-			Route::resource('protocols.annex', 'AnnexController');
-			Route::resource('protocols.questions', 'QuestionsController');
-		});
-
-		/***** Only acces Roles 2=> Registrered *****/
-		Route::group(array('before' => 'system_roles:3'), function()
-		{
-			Route::get('estudiar/{protocol}', array('as' => 'dashboard.study', 'uses' => 'ExamsController@studyProtocol'));
-			Route::get('examenes/{protocol}', array('as' => 'dashboard.exams', 'uses' => 'ExamsController@showExams'));
-			Route::get('examenes/presentar/{protocol}/', array('as' => 'dashboard.exams.create', 'uses' => 'ExamsController@create'));
-			Route::post('examenes/presentar/{protocol}/', array('as' => 'dashboard.exams.store', 'uses' => 'ExamsController@store'));
-		});
-		
-		/***** Acces All Roles *****/
-		Route::controller('/', 'DashboardController');
-		
-	});
-});
-
-
 /***** Auth *****/
-Route::get('login', 'AuthController@getLogin');
+Route::get('login', array('as' => 'login', 'uses' => 'AuthController@getLogin'));	
 
 /***** Routes Api REST *****/
 Route::group(array('prefix' => 'api'), function() 
@@ -81,8 +29,49 @@ Route::group(array('prefix' => 'api'), function()
 	});
 });
 
-/***** Routes Errors *****/
+Route::group(array('before' => 'auth'), function()
+{	
+	Route::post('actualizar-perfil/{user}', array('as' => 'usuarios.update-profile', 'uses' => 'UsersController@updateProfile'));
+	
+	/***** Only acces Role 1 => Super Admin *****/
+	Route::group(array('before' => 'system_roles:1'), function()
+	{
+		Route::resource('instituciones', 'CompaniesController');
+		Route::resource('instituciones.usuarios', 'CompaniesUsersController');
+	});
 
+	/***** Only acces Roles 2=> Admin *****/
+	Route::group(array('before' => 'system_roles:2'), function()
+	{
+		Route::resource('areas', 'AreasController');
+		Route::resource('usuarios/perfiles', 'UserRolesController');
+		Route::resource('usuarios', 'UsersController');
+		
+		
+		Route::resource('protocolos/categorias', 'ProtocolCategoriesController');
+		Route::resource('protocolos', 'ProtocolsController');
+		Route::resource('protocolos.anexos', 'AnnexController');
+		Route::resource('protocolos.preguntas', 'QuestionsController');
+	});
+
+	/***** Only acces Roles 3=> Registrered *****/
+	Route::group(array('before' => 'system_roles:3'), function()
+	{
+		Route::get('estudiar/{protocol}', array('as' => 'estudiar', 'uses' => 'ExamsController@studyProtocol'));
+		Route::get('examenes/presentar/{protocol}', array('as' => 'examenes.create', 'uses' => 'ExamsController@create'));
+		Route::post('examenes/presentar/{protocol}', array('as' => 'examenes.store', 'uses' => 'ExamsController@store'));
+	});
+	
+	/***** Acces All Roles *****/
+	Route::controller('/', 'DashboardController');
+
+});
+
+
+
+
+/***** Routes Errors *****/
+/*
 App::error(function(ModelNotFoundException $e)
 {
     return Response::view('dashboard/pages/404', array(), 404);
@@ -99,3 +88,4 @@ App::missing(function($exception)
 		return Response::view('auth/404', array(), 404);
 	}	
 });
+*/

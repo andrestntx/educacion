@@ -12,15 +12,15 @@ class CreateAreaTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t07_area', function($table)
+		Schema::create('area', function($table)
 		{
-		    $table->increments('t07_id');
-		    $table->string('t07_name', 45);
-		    $table->text('t07_description')->nullable();	    
+		    $table->increments('id');
+		    $table->string('name', 45);
+		    $table->text('description')->nullable();	    
 
-		    $table->integer('t07_company_id')->unsigned();	    
-		    $table->foreign('t07_company_id')
-		      ->references('t01_id')->on('t01_company')
+		    $table->integer('company_id')->unsigned();	    
+		    $table->foreign('company_id')
+		      ->references('id')->on('company')
 		      ->onUpdate('cascade');
 
 		    $table->timestamps();
@@ -34,7 +34,7 @@ class CreateAreaTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t07_area');
+		Schema::drop('area');
 	}
 
 }

@@ -12,19 +12,19 @@ class CreateTypeModuleTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('sys04_type_module', function($table)
+		Schema::create('type_module', function($table)
 		{
-		    $table->increments('sys04_id');
-		    $table->string('sys04_name', 100);
-		    $table->string('sys04_description', 250)->nullable();
+		    $table->increments('id');
+		    $table->string('name', 100);
+		    $table->string('description', 250)->nullable();
 		    $table->timestamps();
 		});
 
-		Schema::table('sys02_module', function($table)
+		Schema::table('module', function($table)
 		{
-			$table->integer('sys02_type_module_id')->unsigned();
-		    $table->foreign('sys02_type_module_id')
-		      ->references('sys04_id')->on('sys04_type_module')
+			$table->integer('type_module_id')->unsigned();
+		    $table->foreign('type_module_id')
+		      ->references('id')->on('type_module')
 		      ->onUpdate('cascade')
 		      ;
 		});
@@ -37,12 +37,12 @@ class CreateTypeModuleTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('sys02_module', function($table)
+		Schema::table('module', function($table)
 		{
-			$table->dropForeign('sys02_module_sys02_type_module_id_foreign');
+			$table->dropForeign('module_type_module_id_foreign');
 		});
 
-		Schema::drop('sys04_type_module');
+		Schema::drop('type_module');
 	}
 
 }

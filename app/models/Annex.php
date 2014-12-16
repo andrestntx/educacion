@@ -1,40 +1,40 @@
 <?php 
 
-class Annex extends ModelEloquent
+class Annex extends Eloquent
 {
-	protected $table = 't11_annex';
-	protected $primaryKey = 't11_id';
-	protected $fillable = array('t11_name', 't11_description', 't11_protocol_id');
+	protected $table = 'annex';
+	protected $primaryKey = 'id';
+	protected $fillable = array('name', 'description', 'protocol_id');
 	protected $globalModel = 2;
 	public $timestamps = true;
 	public $increments = true;
 	public $errors;
-	protected $attributeNames = array('t11_url' => 'Archivo', 't11_id' => 'Id', 't11_description' => 'Descripción', 
-        't11_name' => 'Nombre', 'created_at' => 'Creación', 'updated_at' => 'Actualización',
+	protected $attributeNames = array('url' => 'Archivo', 'id' => 'Id', 'description' => 'Descripción', 
+        'name' => 'Nombre', 'created_at' => 'Creación', 'updated_at' => 'Actualización',
     );
-	protected $mainAttributes = array('t11_name');
-    protected $relationsArray = array('t11_user_id' => 'user');
+	protected $mainAttributes = array('name');
+    protected $relationsArray = array('user_id' => 'user');
 
     public function getUserValueAttribute()
     {
-        return $this->user->t02_name;
+        return $this->user->name;
     }
 
     public function user()
     {
-        return $this->belongsTo('User', 't11_user_id');
+        return $this->belongsTo('User', 'user_id');
     }
 
 	public function isValid($data)
     {
         $rules = array(
-            't11_name'     => 'required|max:100|unique:t11_annex',
-            't11_protocol_id' => 'required'
+            'name'     => 'required|max:100|unique:annex',
+            'protocol_id' => 'required'
         );
 
         if ($this->exists)
         {
-			$rules['t11_name'] .= ',t11_name,'.$this->t11_id.',t11_id';
+			$rules['name'] .= ',name,'.$this->id.',id';
         }
         
         $validator = Validator::make($data, $rules);
@@ -55,9 +55,9 @@ class Annex extends ModelEloquent
         {
             $this->fill($data);
             $this->save();
-            if(array_key_exists('t11_url', $data))
+            if(array_key_exists('url', $data))
             {
-            	$this->uploadAnnex('t11_url');
+            	$this->uploadAnnex('url');
             }
             
             return true;
@@ -68,11 +68,14 @@ class Annex extends ModelEloquent
 
     public function uploadAnnex($file)
     {
-        $path = Config::get('constant.path_annex');
-        $name = $this->t11_id.'.'.Input::file($file)->getClientOriginalExtension();
-        $url = $path.'/'.$name;
-        Input::file($file)->move($path, $name);
-        $this->t11_url = $url;
-        $this->save();
+        if(Input::file($file))
+        {
+            $path = Config::get('constant.path_annex');
+            $name = $this->id.'.'.Input::file($file)->getClientOriginalExtension();
+            $url = $path.'/'.$name;
+            Input::file($file)->move($path, $name);
+            $this->url = $url;
+            $this->save();
+        }
     }
 }

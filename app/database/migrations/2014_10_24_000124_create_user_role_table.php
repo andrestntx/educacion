@@ -12,15 +12,15 @@ class CreateUserRoleTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t03_user_role', function($table)
+		Schema::create('user_role', function($table)
 		{
-		    $table->increments('t03_id');
-		    $table->string('t03_name', 45);
-		    $table->text('t03_description')->nullable();	    
+		    $table->increments('id');
+		    $table->string('name', 45);
+		    $table->text('description')->nullable();	    
 
-		    $table->integer('t03_company_id')->unsigned();	    
-		    $table->foreign('t03_company_id')
-		      ->references('t01_id')->on('t01_company')
+		    $table->integer('company_id')->unsigned();	    
+		    $table->foreign('company_id')
+		      ->references('id')->on('company')
 		      ->onUpdate('cascade');
 
 		    $table->timestamps();
@@ -34,7 +34,7 @@ class CreateUserRoleTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t03_user_role');
+		Schema::drop('user_role');
 	}
 
 }

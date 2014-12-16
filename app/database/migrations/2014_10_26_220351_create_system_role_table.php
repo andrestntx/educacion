@@ -12,18 +12,18 @@ class CreateSystemRoleTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('sys01_system_role', function($table)
+		Schema::create('system_role', function($table)
 		{
-			$table->increments('sys01_id');
-			$table->string('sys01_name');
+			$table->increments('id');
+			$table->string('name');
 			$table->timestamps();
 		});
 
-		Schema::table('t02_user', function($table)
+		Schema::table('user', function($table)
 		{
-		    $table->integer('t02_system_role_id')->unsigned();
-		    $table->foreign('t02_system_role_id')
-		      ->references('sys01_id')->on('sys01_system_role')
+		    $table->integer('system_role_id')->unsigned();
+		    $table->foreign('system_role_id')
+		      ->references('id')->on('system_role')
 		      ->onUpdate('cascade')
 		      ;
 		});
@@ -38,12 +38,12 @@ class CreateSystemRoleTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('t02_user', function($table)
+		Schema::table('user', function($table)
 		{
-			$table->dropForeign('t02_user_t02_system_role_id_foreign');
+			$table->dropForeign('user_system_role_id_foreign');
 		});
 		
-		Schema::drop('sys01_system_role');
+		Schema::drop('system_role');
 	}
 
 }

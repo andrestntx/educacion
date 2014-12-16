@@ -1,10 +1,10 @@
 <?php 
 	return array(
-		'path_companies_logos' => 'images/companies/logos',
+		'path_companies_logos' => 'img/companies/logos',
 		'path_protocols_pdf' => 'protocols',
 		'path_annex' => 'annex',
-		'path_users_photos' => 'images/avatars',
-		'url_company_logo_demo' => 'images/companies/logos/demo.png',
-		'url_user_photo' => 'images/user.png'
+		'path_users_photos' => 'img/avatars',
+		'url_company_logo_demo' => 'img/companies/logos/demo.png',
+		'url_user_photo' => 'img/user.png'
 	);
  ?>

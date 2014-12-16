@@ -7,22 +7,10 @@ class QuestionsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	private $module_id = 12;
 
 	public function index($protocol_id)
 	{
-		$protocol = Protocol::findOrFail($protocol_id);
-		$models = $protocol->questions()->orderBy('t14_id')->paginate(20);
-		$module = Module::find($this->module_id);
-		
-		$question_default = new Question;
-		$titles_table = $question_default->getMainAttributesNames();
-		$actions = array('edit', 'destroy');
-		$model_father_id = $protocol_id;
-		$route_destroy = array('dashboard.'.$module->route.'.destroy', $protocol_id, 'USER_ID');
-		
-		return View::make('dashboard.pages.models.question.lists', compact(
-			'title_page', 'models', 'titles_table', 'module', 'actions', 'model_father_id', 'route_destroy', 'protocol')); 
+		return Redirect::route('protocolos.show', $protocol_id);		
 	}
 
 
@@ -34,17 +22,11 @@ class QuestionsController extends \BaseController {
 	public function create($protocol_id)
 	{
 		$protocol = Protocol::findOrFail($protocol_id);
-		$module = Module::find($this->module_id);	
 		$question = new Question;
 
-		$number_answers = Input::get('answers');
-
-		$action_model = 'Crear '.$module->model->singular_name;
-		$route_index = route('dashboard.'.$module->route.'.index', $protocol_id);
-		$form_data = array('route' => array('dashboard.'.$module->route.'.store', $protocol_id), 'method' => 'POST', 'files' => true);
-		return View::make('dashboard.pages.models.question.form', compact(
-			'action_model', 'question', 'module', 'form_data', 'route_index', 'protocol', 'number_answers'
-		));
+		$number_answers = Input::get('respuestas');
+		$form_data = array('route' => array('protocolos.preguntas.store', $protocol_id), 'method' => 'POST', 'files' => true);
+		return View::make('dashboard.pages.question.form', compact('question', 'form_data', 'protocol', 'number_answers'));
 	}
 
 
@@ -55,17 +37,16 @@ class QuestionsController extends \BaseController {
 	 */
 	public function store($protocol_id)
 	{
-		$module = Module::find($this->module_id);
         $question = new Question;
         $data = Input::all();
 
         if ($question->validAndSave($data) && $question->saveAnswers($data['answers']))
         {
-            return Redirect::route('dashboard.'.$module->route.'.index', $protocol_id);
+            return Redirect::route('protocolos.preguntas.index', $protocol_id);
         }
         else
         {
-			return Redirect::route('dashboard.'.$module->route.'.create', array($protocol_id, 'answers='.count($data['answers'])))->withInput()->withErrors($question->errors);
+			return Redirect::route('protocolos.preguntas.create', array($protocol_id, 'respuestas='.count($data['answers'])))->withInput()->withErrors($question->errors);
         } 
 	}
 
@@ -91,24 +72,16 @@ class QuestionsController extends \BaseController {
 	public function edit($protocol_id, $id)
 	{
 		$protocol = Protocol::findOrFail($protocol_id);
-		$module = Module::find($this->module_id);
-		$question = Question::findOrFail($id);
+		$question = $protocol->questions()->findOrFail($id);
 		$number_answers = $question->answers->count();
 
-		$action_model = 'Editar '.$module->model->singular_name.': '.$question->t11_name;
-
 		$form_data = array(
-			'route' => array('dashboard.'.$module->route.'.update', $protocol->id, $question->id), 
+			'route' => array('protocolos.preguntas.update', $protocol->id, $question->id), 
 			'method' => 'PUT', 
 			'files' => true
 		);
 
-		$route_index = route('dashboard.'.$module->route.'.index', $protocol_id);
-		return View::make('dashboard.pages.models.question.form-edit', compact(
-				'action_model', 'question', 'form_data', 
-				'module', 'route_index', 'protocol', 'number_answers'
-			)
-		);
+		return View::make('dashboard.pages.question.form', compact('question', 'form_data', 'protocol', 'number_answers'));
 	}
 
 
@@ -120,17 +93,16 @@ class QuestionsController extends \BaseController {
 	 */
 	public function update($protocol_id, $id)
 	{
-		$module = Module::find($this->module_id);
         $question = Question::find($id);
         $data = Input::all();
 
         if ($question->validAndSave($data) && $question->updateAnswers($data['answers']))
         {
-            return Redirect::route('dashboard.'.$module->route.'.index', $protocol_id);
+            return Redirect::route('protocolos.preguntas.index', $protocol_id);
         }
         else
         {
-			return Redirect::route('dashboard.'.$module->route.'.edit', array($protocol_id, $id))->withInput()->withErrors($question->errors);
+			return Redirect::route('protocolos.preguntas.edit', array($protocol_id, $id))->withInput()->withErrors($question->errors);
         } 
 	}
 
@@ -143,7 +115,6 @@ class QuestionsController extends \BaseController {
 	 */
 	public function destroy($protocol_id, $id)
 	{
-		$module = Module::find($this->module_id);
     	$question = Question::findOrFail($id);
         $question->delete();
 
@@ -151,13 +122,13 @@ class QuestionsController extends \BaseController {
         {
             return Response::json(array (
                 'success' => true,
-                'msg'     => 'Pregunta "' . $question->t15_text . '" eliminada',
+                'msg'     => 'Pregunta "' . $question->text . '" eliminada',
                 'id'      => $question->id
             ));
         }
         else
         {
-            return Redirect::route('dashboard.'.$module->route.'.index', $protocol_id);
+            return Redirect::route('protocolos.show', $protocol_id);
         }
 	}
 

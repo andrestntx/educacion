@@ -12,14 +12,14 @@ class CreateQuestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t14_question', function($table)
+		Schema::create('question', function($table)
 		{
-		    $table->increments('t14_id');
-		    $table->string('t14_text', 200);
+		    $table->increments('id');
+		    $table->string('text', 200);
 
-		    $table->integer('t14_protocol_id')->unsigned();	    
-		    $table->foreign('t14_protocol_id')
-		      ->references('t06_id')->on('t06_protocol')
+		    $table->integer('protocol_id')->unsigned();	    
+		    $table->foreign('protocol_id')
+		      ->references('id')->on('protocol')
 		      ->onUpdate('cascade');
 
 		    $table->timestamps();
@@ -33,7 +33,7 @@ class CreateQuestionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t14_question');
+		Schema::drop('question');
 	}
 
 }

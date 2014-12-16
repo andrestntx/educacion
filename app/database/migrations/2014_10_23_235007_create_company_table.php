@@ -12,11 +12,11 @@ class CreateCompanyTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t01_company', function($table)
+		Schema::create('company', function($table)
 		{
-		    $table->increments('t01_id');
-		    $table->string('t01_name', 100);
-		    $table->string('t01_url_logo', 250)->nullable();
+		    $table->increments('id');
+		    $table->string('name', 100);
+		    $table->string('url_logo', 250)->nullable();
 		    $table->timestamps();
 		});
 	}
@@ -28,7 +28,7 @@ class CreateCompanyTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t01_company');
+		Schema::drop('company');
 	}
 
 }

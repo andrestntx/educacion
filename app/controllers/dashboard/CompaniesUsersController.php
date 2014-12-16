@@ -7,21 +7,12 @@ class CompaniesUsersController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	private $module_id = 7;
-
 
 	public function index($company_id)
 	{
-		$models = Company::findOrFail($company_id)->users()->orderBy('t02_id')->paginate(20);
-		$module = Module::find($this->module_id);
-		$user_default = new User;
-		$titles_table = $user_default->getMainAttributesNames();
-		$actions = array('show', 'edit', 'destroy');
-		$model_father_id = $company_id;
-		$route_create = route('dashboard.'.$module->route.'.create', $company_id);
-		$route_destroy = array('dashboard.'.$module->route.'.destroy', $company_id, 'USER_ID');
-		return View::make('dashboard.pages.models.generic.list-table', compact(
-			'title_page', 'models', 'titles_table', 'module', 'actions', 'route_create', 'model_father_id', 'route_destroy')); 
+		$company = Company::findOrFail($company_id);
+		$users = $company->users()->admin()->orderBy('id')->get();
+		return View::make('dashboard.pages.user.lists-table-superadmin', compact('company', 'users')); 
 	}
 
 
@@ -33,14 +24,9 @@ class CompaniesUsersController extends \BaseController {
 	public function create($company_id)
 	{
 		Company::findOrFail($company_id);
-		$module = Module::find($this->module_id);
 		$user = new User;
-		$action_model = 'Crear '.$module->model->singular_name;
-		$route_index = route('dashboard.'.$module->route.'.index', $company_id);
-		$form_data = array('route' => array('dashboard.'.$module->route.'.store', $company_id), 'method' => 'POST', 'files' => true);
-		return View::make('dashboard.pages.models.user.form-superadmin', compact(
-			'action_model', 'user', 'module', 'form_data', 'route_index'
-		));
+		$form_data = array('route' => array('instituciones.usuarios.store', $company_id), 'method' => 'POST', 'files' => true);
+		return View::make('dashboard.pages.user.form', compact('user', 'form_data'));
 	}
 
 
@@ -51,19 +37,18 @@ class CompaniesUsersController extends \BaseController {
 	 */
 	public function store($company_id)
 	{
-		$module = Module::find($this->module_id);
-        $company = new User;
+        $user = new User;
         $data = Input::all();
-        $data['t02_preferred_company_id'] = $company_id;
-        $data['t02_system_role_id'] = 2; 
-        if ($company->validAndSave($data))
+        $data['preferred_company_id'] = $company_id;
+        $data['system_role_id'] = 2; 
+        if ($user->validAndSave($data))
         {
-        	$company->syncCompanies(array($company_id));
-            return Redirect::route('dashboard.'.$module->route.'.index', $company_id);
+        	$user->syncCompanies(array($company_id));
+            return Redirect::route('instituciones.usuarios.index', $company_id);
         }
         else
         {
-			return Redirect::route('dashboard.'.$module->route.'.create', $company_id)->withInput()->withErrors($company->errors);
+			return Redirect::route('instituciones.usuarios.create', $company_id)->withInput()->withErrors($user->errors);
         }
 	}
 
@@ -77,14 +62,9 @@ class CompaniesUsersController extends \BaseController {
 	public function show($company_id, $id)
 	{
 		Company::findOrFail($company_id);
-		$module = Module::find($this->module_id);
-		$model = User::findOrFail($id);
-		$action_model = $module->model->singular_name.': '.$model->t02_name;
-		$route_index = route('dashboard.'.$module->route.'.index', $company_id);
-		$route_edit = route('dashboard.'.$module->route.'.edit', array($company_id, $id));
-		$model_father_id = $company_id;
+		$user = User::findOrFail($id);
 
-		return View::make('dashboard.pages.models.generic.show', compact('action_model', 'model', 'module', 'route_index', 'route_edit', 'model_father_id'));
+		return View::make('dashboard.pages.user..show', compact('user'));
 	}
 
 
@@ -96,22 +76,15 @@ class CompaniesUsersController extends \BaseController {
 	 */
 	public function edit($company_id, $id)
 	{
-		Company::findOrFail($company_id);
-		$module = Module::find($this->module_id);
-		$user = User::findOrFail($id);
-
-		$action_model = 'Editar '.$module->model->singular_name.': '.$user->t02_name;
+		$user = Company::findOrFail($company_id)->users()->findOrFail($id);
 
 		$form_data = array(
-			'route' => array('dashboard.'.$module->route.'.update', $company_id, $user->id), 
+			'route' => array('instituciones.usuarios.update', $company_id, $user->id), 
 			'method' => 'PUT', 
 			'files' => true
 		);
-
-		$route_index = route('dashboard.'.$module->route.'.index', $company_id);
-		return View::make('dashboard.pages.models.user.form-superadmin', compact(
-				'action_model', 'user', 'companies', 'system_roles', 'form_data', 
-				'module', 'route_index'
+		return View::make('dashboard.pages.user.form', compact(
+				'user', 'form_data'
 			)
 		);
 	}
@@ -125,19 +98,16 @@ class CompaniesUsersController extends \BaseController {
 	 */
 	public function update($company_id, $id)
 	{
-		$module = Module::find($this->module_id);
 		$user = User::findOrFail($id);
         
         $data = Input::all();
-        $data['t02_preferred_company_id'] = $company_id;
-        $data['t02_system_role_id'] = 2; 
         if ($user->validAndSave($data))
         {
-            return Redirect::route('dashboard.'.$module->route.'.index', $company_id);
+            return Redirect::route('instituciones.usuarios.index', $company_id);
         }
         else
         {
-			return Redirect::route('dashboard.'.$module->route.'.edit', $user->id)->withInput()->withErrors($user->errors);
+			return Redirect::route('instituciones.usuarios.edit', array($company_id, $user->id))->withInput()->withErrors($user->errors);
         }	
 	}
 
@@ -150,21 +120,22 @@ class CompaniesUsersController extends \BaseController {
 	 */
 	public function destroy($company_id, $id)
 	{
-		$module = Module::find($this->module_id);
     	$user = User::findOrFail($id);
-        $user->delete();
+        try {
+        	$user->delete();
+        	$result = array('success' => true, 'msg'     => 'Usuario "' . $user->name . '" eliminado', 'id'      => $user->id);
+        } catch (Exception $e) {
+        	$result = array('success' => false, 'msg' => $e->getMessage(), 'id' => $user->id);
+        }
+        
 
         if (Request::ajax())
         {
-            return Response::json(array (
-                'success' => true,
-                'msg'     => 'Usuario "' . $user->t02_name . '" eliminado',
-                'id'      => $user->id
-            ));
+            return Response::json($result);
         }
         else
         {
-            return Redirect::route('dashboard.'.$module->route.'.index', $company_id);
+            return Redirect::route('instituciones.usuarios.index', $company_id);
         }
 	}
 

@@ -12,12 +12,12 @@ class CreateUserTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t02_user', function($table)
+		Schema::create('user', function($table)
 		{
-		    $table->increments('t02_id');
-		    $table->string('t02_name', 255)->nullable();
-		    $table->string('t02_url_photo', 255)->nullable();
-		    $table->string('t02_tel', 45)->nullable();
+		    $table->increments('id');
+		    $table->string('name', 255)->nullable();
+		    $table->string('url_photo', 255)->nullable();
+		    $table->string('tel', 45)->nullable();
 		    $table->string('username', 45);
 		    $table->unique('username');
 		    $table->string('email', 100);
@@ -26,9 +26,9 @@ class CreateUserTable extends Migration {
 		    $table->timestamps();
 		    $table->rememberToken();
 
-		    $table->integer('t02_preferred_company_id')->unsigned();
-		    $table->foreign('t02_preferred_company_id')
-		      ->references('t01_id')->on('t01_company')
+		    $table->integer('preferred_company_id')->unsigned();
+		    $table->foreign('preferred_company_id')
+		      ->references('id')->on('company')
 		      ->onUpdate('cascade');
 		});
 	}
@@ -40,7 +40,7 @@ class CreateUserTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t02_user');
+		Schema::drop('user');
 	}
 
 }

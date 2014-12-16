@@ -12,16 +12,16 @@ class CreateAnnexTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t11_annex', function($table)
+		Schema::create('annex', function($table)
 		{
-		    $table->increments('t11_id');
-		    $table->string('t11_name', 45);
-		    $table->text('t11_description')->nullable();
-		    $table->text('t11_url')->nullable();	    
+		    $table->increments('id');
+		    $table->string('name', 45);
+		    $table->text('description')->nullable();
+		    $table->text('url')->nullable();	    
 
-		    $table->integer('t11_protocol_id')->unsigned();	    
-		    $table->foreign('t11_protocol_id')
-		      ->references('t06_id')->on('t06_protocol')
+		    $table->integer('protocol_id')->unsigned();	    
+		    $table->foreign('protocol_id')
+		      ->references('id')->on('protocol')
 		      ->onUpdate('cascade');
 
 		    $table->timestamps();
@@ -35,7 +35,7 @@ class CreateAnnexTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t11_annex');
+		Schema::drop('annex');
 	}
 
 }

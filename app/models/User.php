@@ -5,7 +5,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
-class User extends ModelEloquent implements UserInterface, RemindableInterface {
+class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait;
 
@@ -15,19 +15,13 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
 	 * @var string
 	 */
 
-	protected $table = 't02_user';
-	protected $primaryKey = 't02_id';
+	protected $table = 'user';
+	protected $primaryKey = 'id';
 	protected $fillable = array(
-        'username', 'password', 'email', 't02_name', 't02_tel','t02_preferred_company_id', 't02_system_role_id', 
+        'username', 'password', 'email', 'name', 'tel','preferred_company_id', 'system_role_id', 
         'password'
     );
-    protected $attributeNames = array('t02_id' => 'Id', 't02_name' => 'Nombre', 't02_tel' => 'Telefono', 
-        'username' => 'Nombre de Usuario', 'email' => 'Correco electrónico', 'created_at' => 'Creación', 
-        'updated_at' => 'Actualización', 't02_preferred_company_id' => 'Institución Preferida', 
-        't02_system_role_id' => 'Tipo de Usuario', 't02_url_photo' => 'Foto de Perfil');
-    protected $mainAttributes = array('t02_id', 't02_name', 'email');
 	public $timestamps = true;
-	protected $globalModel = 3;
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -36,9 +30,30 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
+    public function editTypeUser()
+    {
+        if($this->isSuperAdmin())
+        { 
+            return 'Administrador';
+        }
+        else
+        {
+            return 'Usuario'; 
+        } 
+    }
+
+    public function isSuperAdmin()
+    {
+        if($this->system_role_id == 1)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public function isAdmin()
     {
-        if($this->t02_system_role_id == 2)
+        if($this->system_role_id == 2)
         {
             return true;
         }
@@ -47,72 +62,75 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
 
     public function isRegistred()
     {
-        if($this->t02_system_role_id == 3)
+        if($this->system_role_id == 3)
         {
             return true;
         }
         return false;
     }
 
-    public function getT02UrlPhotoValidatedAttribute()
+    /*** Scopes ***/
+
+    public function scopeAdmin($query)
     {
-        if (File::exists($this->t02_url_photo))
-        {
-            return $this->t02_url_photo;
-        }
-        else
-        {
-            return Config::get('constant.url_user_photo');
-        }
+        return $query->where('system_role_id', '=', 2);
     }
+
+    public function scopeRegistred($query)
+    {
+        return $query->where('system_role_id', '=', 3);
+    }
+
+    /*** End Scopes ***/
 
     /*** Relations ***/
 
     public function protocolsForStudy()
     {
-        return $this->preferredCompany->protocols()->orderBy('t06_id')->get();
+        return $this->preferredCompany->protocols()->orderBy('id')->get();
     }
 
     public function protocols()
     {
-        return $this->hasMany('Protocol', 't06_user_id');
+        return $this->hasMany('Protocol', 'user_id');
     }
 
 	public function preferredCompany()
     {
-        return $this->belongsTo('Company', 't02_preferred_company_id');
+        return $this->belongsTo('Company', 'preferred_company_id');
     }
 
     public function systemRole()
     {
-        return $this->belongsTo('SystemRole', 't02_system_role_id');
+        return $this->belongsTo('SystemRole', 'system_role_id');
     }
 
     public function roles()
     {
-        return $this->belongsToMany('UserRole', 't04_users_has_roles', 't04_user_id', 't04_role_id');
+        return $this->belongsToMany('UserRole', 'users_has_roles', 'user_id', 'role_id');
     }
 
     public function areas()
     {
-        return $this->belongsToMany('Area', 't08_users_has_areas', 't08_user_id', 't08_area_id');
+        return $this->belongsToMany('Area', 'users_has_areas', 'user_id', 'area_id');
     }
 
     public function companies()
     {
-        return $this->belongsToMany('Company', 't05_users_has_companies', 't05_user_id', 't05_company_id');
+        return $this->belongsToMany('Company', 'users_has_companies', 'user_id', 'company_id');
     }
     /*** End Relations ***/
 
+    /*** Mutators **/ 
     public function getCompaniesIdAttribute()
     {
-        return $this->companies->lists('t01_id');
+        return $this->companies->lists('id');
     }
 
-    public function getT02NameRoleAttribute()
+    public function getNameRoleAttribute()
     {
-    	if ($this->t02_system_role_id == 1 || $this->t02_system_role_id == 2) {
-    		return $this->systemRole->sys01_name;
+    	if ($this->system_role_id == 1 || $this->system_role_id == 2) {
+    		return $this->systemRole->name;
     	}
     	else
     	{
@@ -127,24 +145,38 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
         }
     }
 
+    public function getImageAttribute()
+    {
+        if (File::exists($this->url_photo))
+        {
+            return $this->url_photo;
+        }
+        else
+        {
+            return Config::get('constant.url_user_photo');
+        }
+    }
+
+    /*** End Mutators **/ 
+
     public function isValid($data)
     {
         $rules = array(
-            'username'     => 'required|max:100|unique:t02_user',
-            'email'     => 'required|max:100|unique:t02_user',
-            'password' =>  'confirmed',
-            't02_preferred_company_id' => 'required',
-            't02_system_role_id' => 'required'
+            'username'     => 'required|max:100|unique:user',
+            'email'     => 'required|max:100|unique:user',
+            'password' =>  'confirmed'
         );
 
         if ($this->exists)
         {
-			$rules['username'] .= ',username,'.$this->t02_id.',t02_id';
-			$rules['email'] .= ',email,'.$this->t02_id.',t02_id';
+			$rules['username'] .= ',username,'.$this->id.',id';
+			$rules['email'] .= ',email,'.$this->id.',id';
         }
         else 
         {
             $rules['password'] .= '|required';
+            $rules['preferred_company_id'] = 'required';
+            $rules['system_role_id'] = 'required';
         }
         
         $validator = Validator::make($data, $rules);
@@ -166,9 +198,9 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
             $this->fill($data);
             $this->save();
 
-            if(array_key_exists('t02_url_photo', $data))
+            if(array_key_exists('url_photo', $data))
             {
-                $this->uploadLogo($data['t02_url_photo']);
+                $this->uploadLogo($data['url_photo']);
             }
 
             if(array_key_exists('roles', $data))
@@ -202,7 +234,7 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
         $data_companies = array();
         foreach ($companies as $company_id) 
         {
-            $data_companies[$company_id] = array('t05_active' => true);
+            $data_companies[$company_id] = array('active' => true);
         }
         $this->companies()->sync($data_companies);
     }
@@ -213,7 +245,7 @@ class User extends ModelEloquent implements UserInterface, RemindableInterface {
         {
             $url = Config::get('constant.path_users_photos').'/'.$this->id.'.png';
             Image::make($file)->widen(225)->save($url);
-            $this->t02_url_photo = $url;
+            $this->url_photo = $url;
             $this->save();
         }
     }

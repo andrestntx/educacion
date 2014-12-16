@@ -12,21 +12,22 @@ class CreateUsersHasCompaniesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t05_users_has_companies', function($table)
+		Schema::create('users_has_companies', function($table)
 		{
-			$table->boolean('t05_active');
+			$table->boolean('active');
 		    
-		    $table->integer('t05_user_id')->unsigned();
-		    $table->foreign('t05_user_id')
-		      ->references('t02_id')->on('t02_user')
-		      ->onUpdate('cascade');
+		    $table->integer('user_id')->unsigned();
+		    $table->foreign('user_id')
+		      ->references('id')->on('user')
+		      ->onUpdate('cascade')
+		      ->onDelete('cascade');
 	
-			$table->integer('t05_company_id')->unsigned();	    
-		    $table->foreign('t05_company_id')
-		      ->references('t01_id')->on('t01_company')
+			$table->integer('company_id')->unsigned();	    
+		    $table->foreign('company_id')
+		      ->references('id')->on('company')
 		      ->onUpdate('cascade');
 
-		    $table->primary(array('t05_user_id', 't05_company_id'));
+		    $table->primary(array('user_id', 'company_id'));
 		});
 	}
 
@@ -37,7 +38,7 @@ class CreateUsersHasCompaniesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t05_users_has_companies');	
+		Schema::drop('users_has_companies');	
 	}
 
 }

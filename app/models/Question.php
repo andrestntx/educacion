@@ -1,38 +1,34 @@
 <?php 
 
-class Question extends ModelEloquent
+class Question extends Eloquent
 {
-	protected $table = 't14_question';
-	protected $primaryKey = 't14_id';
-	protected $fillable = array('t14_text', 't14_protocol_id');
-	protected $globalModel = 2;
+	protected $table = 'question';
+	protected $primaryKey = 'id';
+	protected $fillable = array('text', 'protocol_id');
 	public $timestamps = true;
 	public $increments = true;
-	public $errors;
-	protected $attributeNames = array('t14_text' => 'Pregunta', 'created_at' => 'Creación', 'updated_at' => 'Actualización');
-	protected $mainAttributes = array('t14_text');
-    protected $relationsArray = array('t14_protocol_id' => 'protocol');
+    protected $relationsArray = array('protocol_id' => 'protocol');
 
     public function getUserValueAttribute()
     {
-        return $this->protocol->t06_name;
+        return $this->protocol->name;
     }
 
     public function protocol()
     {
-        return $this->belongsTo('Protocol', 't14_protocol_id');
+        return $this->belongsTo('Protocol', 'protocol_id');
     }
 
     public function answers()
     {
-        return $this->hasMany('Answer', 't15_question_id');
+        return $this->hasMany('Answer', 'question_id');
     }
 
 	public function isValid($data)
     {
         $rules = array(
-            't14_text'     => 'required|max:150',
-            't14_protocol_id' => 'required'
+            'text'     => 'required|max:150',
+            'protocol_id' => 'required'
         );
         
         $validator = Validator::make($data, $rules);
@@ -64,13 +60,13 @@ class Question extends ModelEloquent
     {
         foreach ($data as $value) 
         {
-            if(array_key_exists('t15_correct', $value))
+            if(array_key_exists('correct', $value))
             {
                 $answer = new Answer($value);
             }
             else
             {
-                $answer = new Answer(array('t15_text' => $value['t15_text'], 't15_correct' => false));
+                $answer = new Answer(array('text' => $value['text'], 'correct' => false));
             }
             
             $this->answers()->save($answer);
@@ -82,13 +78,13 @@ class Question extends ModelEloquent
     {
         foreach ($data as $id => $value) 
         {
-            if(array_key_exists('t15_correct', $value))
+            if(array_key_exists('correct', $value))
             {
-                $answer = Answer::where('t15_id', $id)->update($value);
+                $answer = Answer::where('id', $id)->update($value);
             }
             else
             {
-                $answer = Answer::where('t15_id', $id)->update(array('t15_text' => $value['t15_text'], 't15_correct' => false));
+                $answer = Answer::where('id', $id)->update(array('text' => $value['text'], 'correct' => false));
             }
         }
         return true;

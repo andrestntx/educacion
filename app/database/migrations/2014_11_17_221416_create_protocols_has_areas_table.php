@@ -12,19 +12,19 @@ class CreateProtocolsHasAreasTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t12_protocols_has_areas', function($table)
+		Schema::create('protocols_has_areas', function($table)
 		{
-		    $table->integer('t12_protocol_id')->unsigned();
-		    $table->foreign('t12_protocol_id')
-		      ->references('t06_id')->on('t06_protocol')
+		    $table->integer('protocol_id')->unsigned();
+		    $table->foreign('protocol_id')
+		      ->references('id')->on('protocol')
 		      ->onUpdate('cascade');
 	
-			$table->integer('t12_area_id')->unsigned();	    
-		    $table->foreign('t12_area_id')
-		      ->references('t07_id')->on('t07_area')
+			$table->integer('area_id')->unsigned();	    
+		    $table->foreign('area_id')
+		      ->references('id')->on('area')
 		      ->onUpdate('cascade');
 
-		    $table->primary(array('t12_protocol_id', 't12_area_id'));
+		    $table->primary(array('protocol_id', 'area_id'));
 		});
 	}
 
@@ -35,7 +35,7 @@ class CreateProtocolsHasAreasTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t12_protocols_has_areas');
+		Schema::drop('protocols_has_areas');
 	}
 
 }

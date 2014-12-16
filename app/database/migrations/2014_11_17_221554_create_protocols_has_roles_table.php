@@ -12,19 +12,19 @@ class CreateProtocolsHasRolesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t13_protocols_has_roles', function($table)
+		Schema::create('protocols_has_roles', function($table)
 		{
-		    $table->integer('t13_protocol_id')->unsigned();
-		    $table->foreign('t13_protocol_id')
-		      ->references('t06_id')->on('t06_protocol')
+		    $table->integer('protocol_id')->unsigned();
+		    $table->foreign('protocol_id')
+		      ->references('id')->on('protocol')
 		      ->onUpdate('cascade');
 	
-			$table->integer('t13_role_id')->unsigned();	    
-		    $table->foreign('t13_role_id')
-		      ->references('t03_id')->on('t03_user_role')
+			$table->integer('role_id')->unsigned();	    
+		    $table->foreign('role_id')
+		      ->references('id')->on('user_role')
 		      ->onUpdate('cascade');
 
-		    $table->primary(array('t13_protocol_id', 't13_role_id'));
+		    $table->primary(array('protocol_id', 'role_id'));
 		});
 	}
 
@@ -35,7 +35,7 @@ class CreateProtocolsHasRolesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t13_protocols_has_roles');
+		Schema::drop('protocols_has_roles');
 	}
 
 }

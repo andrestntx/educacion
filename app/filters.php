@@ -15,18 +15,18 @@
 Route::filter('system_roles', function($route,$request,$roles)
 { 
     $roles = explode("-", $roles);
-    if(!in_array(Auth::user()->t02_system_role_id, $roles))
+    if(!in_array(Auth::user()->system_role_id, $roles))
     {
-    	return Redirect::to('dashboard');
+    	return Redirect::to('/');
     } 
 });
 
 Route::filter('user_roles', function($route,$request,$roles)
 { 
     $roles = explode("-", $roles);
-    if(!in_array(Auth::user()->t02_system_role_id, $roles))
+    if(!in_array(Auth::user()->system_role_id, $roles))
     {
-    	return Redirect::to('dashboard');
+    	return Redirect::to('/');
     } 
 });
 

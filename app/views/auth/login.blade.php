@@ -1,37 +1,41 @@
-@extends ('auth/layout')
+@extends ('auth.layout')
+    @section('title_auth')
+        <h1 class="h2 text-light text-center push-top-bottom animation-slideDown">
+            <i class="fa fa-cube"></i> <strong>Educación Continuada</strong>
+        </h1>
+    @stop
 
-@section('title_auth') Iniciar Sesión @stop
-
-@section('form_auth')
-    {{ Form::open(array('url' => 'api/auth/login', 'method' => 'post')) }}
-        <div class="body bg-gray">
+    @section('buttons_header')
+        <a href="{{url('/')}}" class="btn btn-effect-ripple btn-primary" data-toggle="tooltip" data-placement="left" title="Olvidaste tu contraseña?"><i class="fa fa-exclamation-circle"></i></a>
+    @stop
+    @section('title_header')
+        <h2>Iniciar Sesión</h2>
+    @stop
+    @section('form_auth')
+        {{ Form::open(array('url' => 'api/auth/login', 'method' => 'post', 'class' => 'form-horizontal', 'id' => 'form-login')) }}
             <div class="form-group">
-                {{ Form::text('username', Input::old('username'), array('class' => 'form-control', 'placeholder' => 'Nombre de usuario')) }}
+                <div class="col-xs-12">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Usuario..">
+                </div>
             </div>
             <div class="form-group">
-                {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Contraseña')) }}
-            </div>          
-            <div class="form-group">
-                <input type="checkbox" name="remember_me"/> Recordarme
+                <div class="col-xs-12">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña..">
+                </div>
             </div>
-        </div>
-        <div class="footer">                                                               
-            <button type="submit" class="btn bg-olive btn-block">Iniciar ahora</button>  
-            
-            <p><a href="#">Olvidé mi contraseña</a></p>
-            @include('alerts')
-
-            {{-- <a href="register.html" class="text-center">Register a new membership</a> --}}
-        </div>
-    </form>
-@stop
-
-@section('adicional_auth')
-<div class="margin text-center">
-    <span>Inicia sesión con las redes sociales</span>
-    <br/>
-    <button class="btn bg-light-blue btn-circle"><i class="fa fa-facebook"></i></button>
-    <button class="btn bg-aqua btn-circle"><i class="fa fa-twitter"></i></button>
-    <button class="btn bg-red btn-circle"><i class="fa fa-google-plus"></i></button>
-</div>
+            <div class="form-group form-actions">
+                <div class="col-xs-8">
+                    <label class="csscheckbox csscheckbox-primary">
+                        <input type="checkbox" id="login-remember-me" name="remember" value="true">
+                        <span></span>
+                    </label>
+                    Recordarme
+                </div>
+                <div class="col-xs-4 text-right">
+                    <button type="submit" class="btn btn-effect-ripple btn-sm btn-primary"><i class="fa fa-check"></i> Iniciar</button>
+                </div>
+            </div>
+        {{Form::close()}}
+    @stop
+    </div>
 @stop

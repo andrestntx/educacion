@@ -6,7 +6,7 @@ class AuthController extends BaseController {
  	{
  		if (Auth::check())
         {
-            return Redirect::to('dashboard');
+            return Redirect::to('/');
         }
         else
         {
@@ -19,14 +19,15 @@ class AuthController extends BaseController {
 	{
 		$userdata = Input::only('username','password');
 		$userdata['username'] = trim($userdata['username']);
+		$remember = Input::get('remember');
 
-		if(Auth::attempt($userdata))
+		if(Auth::attempt($userdata, $remember))
 		{
 			Session::put('actual_company', Auth::user()->preferredCompany);
-			return Redirect::intended('dashboard');
+			return Redirect::intended('/');
 		}
 		else
-		{
+		{	
 			return Redirect::to('login')->with('error', 'Datos invalidos, verifique su nombre de usuario y contraseña')->withInput();
 		}
 	}

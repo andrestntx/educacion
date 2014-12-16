@@ -2,26 +2,26 @@
 	/**
 	* 
 	*/
-	class ProtocolCategory extends ModelEloquent
+	class ProtocolCategory extends Eloquent
 	{
-		protected $table = 't09_protocol_category';
-		protected $primaryKey = 't09_id';
-		protected $fillable = array('t09_name', 't09_description', 't09_company_id');
+		protected $table = 'protocol_category';
+		protected $primaryKey = 'id';
+		protected $fillable = array('name', 'description', 'company_id');
 		protected  $globalModel = 4;
 		public $timestamps = true;
 		public $increments = true;
 		public $errors;
-		protected $attributeNames = array('t09_id' => 'Id', 't09_name' => 'Nombre', 't09_description' => 'Descripción', 
-			'created_at' => 'Creación', 't09_company_id' => 'Institución',
+		protected $attributeNames = array('id' => 'Id', 'name' => 'Nombre', 'description' => 'Descripción', 
+			'created_at' => 'Creación', 'company_id' => 'Institución',
 	        'updated_at' => 'Actualización');
-		protected $mainAttributes = array('t09_id', 't09_name', 't09_description', 'created_at');
+		protected $mainAttributes = array('id', 'name', 'description', 'created_at');
 
 
 		public function isValid($data)
 	    {
 	        $rules = array(
-	            't09_name'     => 'required|max:100',
-	            't09_company_id' => 'required'
+	            'name'     => 'required|max:100',
+	            'company_id' => 'required'
 	        );
 
 	        $validator = Validator::make($data, $rules);

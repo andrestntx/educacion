@@ -8,22 +8,11 @@ class UsersController extends \BaseController {
 	 * @return Response
 	 */
 
-	private $module_id = 5;
-
 	public function index()
 	{
-		$models = Auth::user()->preferredCompany->users()->where('t02_system_role_id', '<>', 2)->orderBy('t02_id')->paginate(20);
-		$module = Module::find($this->module_id);
-		
-		$user_default = new User;
-		$titles_table = $user_default->getMainAttributesNames();
-		$actions = array(
-			'show', 
-			'edit',	'destroy'
-		);
+		$users = Auth::user()->preferredCompany->users()->where('system_role_id', '<>', 2)->orderBy('id')->paginate(20);
 
-		return View::make('dashboard.pages.models.generic.list-table', compact(
-			'title_page', 'models', 'titles_table', 'module', 'actions'));
+		return View::make('dashboard.pages.user.lists-table', compact('users'));
 	}
 
 
@@ -32,20 +21,18 @@ class UsersController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create($company_id = null)
+	public function create()
 	{
 		$user = new User;
 
-		$module = Module::find($this->module_id);
-		$roles = Auth::user()->preferredCompany->roles()->lists('t03_name', 't03_id');
-		$areas = Auth::user()->preferredCompany->areas()->lists('t07_name', 't07_id');
+		$roles = Auth::user()->preferredCompany->roles()->lists('name', 'id');
+		$areas = Auth::user()->preferredCompany->areas()->lists('name', 'id');
 		
-		$system_roles = SystemRole::lists('sys01_name', 'sys01_id');
-		$action_model = 'Crear '.$module->model->singular_name;
+		$system_roles = SystemRole::lists('name', 'id');
 		
-		$form_data = array('route' => 'dashboard.'.$module->route.'.store', 'method' => 'POST', 'files' => true);
-		return View::make('dashboard.pages.models.user.form', compact(
-			 'user', 'module', 'form_data', 'roles', 'action_model', 'areas'
+		$form_data = array('route' => 'usuarios.store', 'method' => 'POST', 'files' => true);
+		return View::make('dashboard.pages.user.form', compact(
+			 'user', 'form_data', 'roles', 'areas'
 		));
 	}
 
@@ -57,20 +44,19 @@ class UsersController extends \BaseController {
 	 */
 	public function store()
 	{
-		$module = Module::find($this->module_id);
         $company = new User;
         $data = Input::all();
-        $data['t02_preferred_company_id'] = Auth::user()->preferredCompany->id;
-        $data['t02_system_role_id'] = 3; 
+        $data['preferred_company_id'] = Auth::user()->preferredCompany->id;
+        $data['system_role_id'] = 3; 
 
         if ($company->validAndSave($data))
         {
         	$company->syncCompanies(array(Auth::user()->preferredCompany->id));
-            return Redirect::route('dashboard.'.$module->route.'.index');
+            return Redirect::route('usuarios.index');
         }
         else
         {
-			return Redirect::route('dashboard.'.$module->route.'.create')->withInput()->withErrors($company->errors);
+			return Redirect::route('usuarios.create')->withInput()->withErrors($company->errors);
         }
 	}
 
@@ -83,11 +69,9 @@ class UsersController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$module = Module::find($this->module_id);
-		$model = User::findOrFail($id);
-		$action_model = $module->model->singular_name.': '.$model->t02_name;
+		$user = User::findOrFail($id);
 
-		return View::make('dashboard.pages.models.generic.show', compact('action_model', 'model', 'module'));
+		return View::make('dashboard.pages.user.show', compact('user'));
 
 	}
 
@@ -100,24 +84,19 @@ class UsersController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$module = Module::find($this->module_id);
 		$user = User::findOrFail($id);
 
-
-		$action_model = 'Editar '.$module->model->singular_name.': '.$user->t02_name;
-
-		$roles = Auth::user()->preferredCompany->roles()->lists('t03_name', 't03_id');
-		$areas = Auth::user()->preferredCompany->areas()->lists('t07_name', 't07_id');
+		$roles = Auth::user()->preferredCompany->roles()->lists('name', 'id');
+		$areas = Auth::user()->preferredCompany->areas()->lists('name', 'id');
 
 		$form_data = array(
-			'route' => array('dashboard.'.$module->route.'.update', $user->id), 
+			'route' => array('usuarios.update', $user->id), 
 			'method' => 'PUT', 
 			'files' => true
 		);
 
-		return View::make('dashboard.pages.models.user.form', compact(
-				'action_model', 'user', 'form_data', 
-				'module', 'roles', 'areas'
+		return View::make('dashboard.pages.user.form', compact(
+				'user', 'form_data', 'roles', 'areas'
 			)
 		);
 	}
@@ -131,20 +110,17 @@ class UsersController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$module = Module::find($this->module_id);
 		$user = User::findOrFail($id);
         
         $data = Input::all();
 
-        $data['t02_preferred_company_id'] = Auth::user()->preferredCompany->id;
-        $data['t02_system_role_id'] = 3; 
         if ($user->validAndSave($data))
         {
-            return Redirect::route('dashboard.'.$module->route.'.index');
+            return Redirect::route('usuarios.index');
         }
         else
         {
-			return Redirect::route('dashboard.'.$module->route.'.edit', $user->id)->withInput()->withErrors($user->errors);
+			return Redirect::route('usuarios.edit', $user->id)->withInput()->withErrors($user->errors);
         }	
 	}
 
@@ -157,7 +133,6 @@ class UsersController extends \BaseController {
 	 */
 	public function destroy($id)
     {
-    	$module = Module::find($this->module_id);
     	$user = User::findOrFail($id);
         $user->delete();
 
@@ -165,13 +140,29 @@ class UsersController extends \BaseController {
         {
             return Response::json(array (
                 'success' => true,
-                'msg'     => 'Usuario "' . $user->t02_name . '" eliminado',
+                'msg'     => 'Usuario "' . $user->name . '" eliminado',
                 'id'      => $user->id
             ));
         }
         else
         {
-            return Redirect::route('dashboard.'.$module->model->route.'.index');
+            return Redirect::route('usuarios.index');
         }
+	}
+
+	public function updateProfile($id)
+	{
+		$user = User::findOrFail($id);
+        
+        $data = Input::all();
+
+        if ($user->validAndSave($data))
+        {
+            return Redirect::to('/');
+        }
+        else
+        {
+        	return Redirect::intended('/')->withErrors($user->errors);
+        }	
 	}
 }

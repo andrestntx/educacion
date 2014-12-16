@@ -10,10 +10,10 @@ class GlobalModelController extends \BaseController {
 	public function index()
 	{
 		$globalModel = GlobalModel::getGlobalModel();
-		$models = GlobalModel::where('sys03_id', '>', 1)->paginate(20);
+		$models = GlobalModel::where('id', '>', 1)->paginate(20);
 
 		$table = array(
-			'sys03_id' => array('title' => 'Id', 'type' => 'string'), 
+			'id' => array('title' => 'Id', 'type' => 'string'), 
 			'singular_name' => array('title' => 'Nombre singular', 'type' => 'string'), 
 			'plural_name' => array('title' => 'Nombre plural', 'type' => 'string'),
 			'created_at' => array('title' => 'Creación', 'type' => 'string'), 
@@ -25,7 +25,7 @@ class GlobalModelController extends \BaseController {
 			)
 		);
 
-		return View::make('dashboard/pages/models/list-table', compact('models', 'table', 'globalModel'));
+		return View::make('pages/models/list-table', compact('models', 'table', 'globalModel'));
 	}
 
 
@@ -42,7 +42,7 @@ class GlobalModelController extends \BaseController {
 		$action_model = $globalModel->singular_name.': '.$model->singular_name;
 		$attributes = $model->getAttributesArray();
 
-		return View::make('dashboard/pages/models/show', compact('action_model', 'attributes', 'model', 'globalModel'));
+		return View::make('pages/models/show', compact('action_model', 'attributes', 'model', 'globalModel'));
 
 	}
 
@@ -60,7 +60,7 @@ class GlobalModelController extends \BaseController {
 		$action_model = 'Editar '.$globalModel->singular_name.': '.$model->singular_name;
 
 		$form_data = array('route' => array('dashboard.'.$globalModel->route.'.update', $model->id), 'method' => 'PUT', 'files' => true);
-		return View::make('dashboard/pages/models/form', compact('action_model', 'model', 'form_data', 'globalModel'));
+		return View::make('pages/models/form', compact('action_model', 'model', 'form_data', 'globalModel'));
 	}
 
 

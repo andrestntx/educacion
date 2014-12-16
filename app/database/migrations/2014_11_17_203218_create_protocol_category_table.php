@@ -12,15 +12,15 @@ class CreateProtocolCategoryTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('t09_protocol_category', function($table)
+		Schema::create('protocol_category', function($table)
 		{
-		    $table->increments('t09_id');
-		    $table->string('t09_name', 45);
-		    $table->text('t09_description')->nullable();	    
+		    $table->increments('id');
+		    $table->string('name', 45);
+		    $table->text('description')->nullable();	    
 
-		    $table->integer('t09_company_id')->unsigned();	    
-		    $table->foreign('t09_company_id')
-		      ->references('t01_id')->on('t01_company')
+		    $table->integer('company_id')->unsigned();	    
+		    $table->foreign('company_id')
+		      ->references('id')->on('company')
 		      ->onUpdate('cascade');
 
 		    $table->timestamps();
@@ -34,7 +34,7 @@ class CreateProtocolCategoryTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('t09_protocol_category');
+		Schema::drop('protocol_category');
 	}
 
 }

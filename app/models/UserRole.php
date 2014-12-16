@@ -2,26 +2,26 @@
 	/**
 	* 
 	*/
-	class UserRole extends ModelEloquent
+	class UserRole extends Eloquent
 	{
-		protected $table = 't03_user_role';
-		protected $primaryKey = 't03_id';
-		protected $fillable = array('t03_name', 't03_description', 't03_company_id');
+		protected $table = 'user_role';
+		protected $primaryKey = 'id';
+		protected $fillable = array('name', 'description', 'company_id');
 		protected  $globalModel = 4;
 		public $timestamps = true;
 		public $increments = true;
 		public $errors;
-		protected $attributeNames = array('t03_id' => 'Id', 't03_name' => 'Nombre', 't03_description' => 'Descripción', 
-			'created_at' => 'Creación', 't03_company_id' => 'Institución',
+		protected $attributeNames = array('id' => 'Id', 'name' => 'Nombre', 'description' => 'Descripción', 
+			'created_at' => 'Creación', 'company_id' => 'Institución',
 	        'updated_at' => 'Actualización');
-		protected $mainAttributes = array('t03_id', 't03_name', 't03_description', 'created_at');
+		protected $mainAttributes = array('id', 'name', 'description', 'created_at');
 
 
 		public function isValid($data)
 	    {
 	        $rules = array(
-	            't03_name'     => 'required|max:100',
-	            't03_company_id' => 'required'
+	            'name'     => 'required|max:100',
+	            'company_id' => 'required'
 	        );
 
 	        $validator = Validator::make($data, $rules);

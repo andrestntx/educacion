@@ -2,12 +2,12 @@
 
 class SystemRole extends Eloquent
 {
-	protected $table = 'sys01_system_role';
-	protected $primaryKey = 'sys01_id';
+	protected $table = 'system_role';
+	protected $primaryKey = 'id';
 	public $timestamps = true;
 
 	public function users()
 	{
-	    return $this->hasMany('User', 't02_system_role_id');
+	    return $this->hasMany('User', 'system_role_id');
 	}
 }

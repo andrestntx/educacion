@@ -1,57 +1,57 @@
 <?php 
 
-class Company extends ModelEloquent
+class Company extends Eloquent
 {
-	protected $table = 't01_company';
-	protected $primaryKey = 't01_id';
-	protected $fillable = array('t01_name');
+	protected $table = 'company';
+	protected $primaryKey = 'id';
+	protected $fillable = array('name');
 	protected $globalModel = 2;
 	public $timestamps = true;
 	public $increments = true;
 	public $errors;
-	protected $attributeNames = array('t01_id' => 'Id', 't01_name' => 'Nombre', 't01_tel' => 'Telefono', 
-        't01_email' => 'Correco electrónico', 'created_at' => 'Creación', 
-        'updated_at' => 'Actualización', 't01_url_logo' => 'Logo');
-	protected $mainAttributes = array('t01_id', 't01_name', 'created_at');
+	protected $attributeNames = array('id' => 'Id', 'name' => 'Nombre', 'tel' => 'Telefono', 
+        'email' => 'Correco electrónico', 'created_at' => 'Creación', 
+        'updated_at' => 'Actualización', 'url_logo' => 'Logo');
+	protected $mainAttributes = array('id', 'name', 'created_at');
 
 
 	/***** Relations *****/
 	public function usersPreferCompany()
 	{
-	    return $this->hasMany('User', 't02_preferred_company_id');
+	    return $this->hasMany('User', 'preferred_company_id');
 	}
 
 	public function protocolCategories()
 	{
-	    return $this->hasMany('ProtocolCategory', 't09_company_id');
+	    return $this->hasMany('ProtocolCategory', 'company_id');
 	}
 
 	public function protocols()
     {
-        return $this->hasManyThrough('Protocol', 'User', 't02_preferred_company_id', 't06_user_id');
+        return $this->hasManyThrough('Protocol', 'User', 'preferred_company_id', 'user_id');
     }
 
 	public function roles()
 	{
-	    return $this->hasMany('UserRole', 't03_company_id');
+	    return $this->hasMany('UserRole', 'company_id');
 	}
 
 	public function areas()
 	{
-	    return $this->hasMany('Area', 't07_company_id');
+	    return $this->hasMany('Area', 'company_id');
 	}
 
 	public function users()
 	{
-		return $this->belongsToMany('User', 't05_users_has_companies', 't05_company_id', 't05_user_id');
+		return $this->belongsToMany('User', 'users_has_companies', 'company_id', 'user_id');
 	}
 	/***** End Relations *****/
 
-	public function getT01UrlLogoValidatedAttribute()
+	public function getLogoAttribute()
 	{
-		if (File::exists($this->t01_url_logo))
+		if (File::exists($this->url_logo))
 		{
-			return $this->t01_url_logo;
+			return $this->url_logo;
 		}
 		else
 		{
@@ -74,17 +74,17 @@ class Company extends ModelEloquent
 	public function isValid($data)
     {
         $rules = array(
-            't01_name'     => 'required|max:100|unique:t01_company',
-            't01_url_logo' => 'mimes:png|max:500'
+            'name'     => 'required|max:100|unique:company',
+            'url_logo' => 'mimes:jpeg,png|max:500'
         );
 
         if ($this->exists)
         {
-			$rules['t01_name'] .= ',t01_name,'.$this->t01_id.',t01_id';
+			$rules['name'] .= ',name,'.$this->id.',id';
         }
         else 
         {
-            $rules['t01_url_logo'] .= '|required';
+            $rules['url_logo'] .= '|required';
         }
         
         $validator = Validator::make($data, $rules);
@@ -105,9 +105,9 @@ class Company extends ModelEloquent
         {
             $this->fill($data);
             $this->save();
-            if(array_key_exists('t01_url_logo', $data))
+            if(array_key_exists('url_logo', $data))
             {
-            	$this->uploadLogo($data['t01_url_logo']);
+            	$this->uploadLogo($data['url_logo']);
             }
             
             return true;
@@ -120,18 +120,18 @@ class Company extends ModelEloquent
     {
     	if(is_file($file))
     	{
-	    	$url_logo = Config::get('constant.path_companies_logos').'/'.$this->t01_id.'.png';
+	    	$url_logo = Config::get('constant.path_companies_logos').'/'.$this->id.'.'.$file->getClientOriginalExtension();
 	    	Image::make($file)->widen(225)->save($url_logo);
-	    	$this->t01_url_logo = $url_logo;
+	    	$this->url_logo = $url_logo;
 	    	$this->save();
     	}
     }
 
     public function createDefaultData()
     {
-    	Area::create(array('t07_name' =>  'Todas las áreas', 't07_company_id' => $this->id));
-    	ProtocolCategory::create(array('t09_name' =>  'Todas los Protocolos', 't09_company_id' => $this->id));
-    	UserRole::create(array('t03_name' =>  'Perfil general', 't03_company_id' => $this->id));
+    	Area::create(array('name' =>  'Todas las áreas', 'company_id' => $this->id));
+    	ProtocolCategory::create(array('name' =>  'Todas los Protocolos', 'company_id' => $this->id));
+    	UserRole::create(array('name' =>  'Perfil general', 'company_id' => $this->id));
 
     	return true;
     }

@@ -13,9 +13,9 @@ class CreateGlobalModelTable extends Migration {
 	
 	public function up()
 	{
-		Schema::create('sys03_table', function($table)
+		Schema::create('table', function($table)
 		{
-		    $table->increments('sys03_id');
+		    $table->increments('id');
 		    $table->string('singular_name', 100);
 		    $table->string('plural_name', 100)->nullable();
 		    $table->string('icon', 100)->nullable();
@@ -23,11 +23,11 @@ class CreateGlobalModelTable extends Migration {
 		    $table->timestamps();
 		});
 
-		Schema::table('sys02_module', function($table)
+		Schema::table('module', function($table)
 		{
-			$table->integer('sys02_table_id')->unsigned()->nullable();
-		    $table->foreign('sys02_table_id')
-		      ->references('sys03_id')->on('sys03_table')
+			$table->integer('table_id')->unsigned()->nullable();
+		    $table->foreign('table_id')
+		      ->references('id')->on('table')
 		      ->onUpdate('cascade')
 		      ;
 		});
@@ -41,12 +41,12 @@ class CreateGlobalModelTable extends Migration {
 	
 	public function down()
 	{
-		Schema::table('sys02_module', function($table)
+		Schema::table('module', function($table)
 		{
-			$table->dropForeign('sys02_module_sys02_table_id_foreign');
+			$table->dropForeign('module_table_id_foreign');
 		});
 
-		Schema::drop('sys03_table');
+		Schema::drop('table');
 	}
 
 }
