@@ -2,7 +2,7 @@
 @section('title_page') Institución {{Auth::user()->preferredCompany->name}} @stop
 @section('content_body_page')
 	<div class="row">
-		<div class="col-sm-9">
+		<div class="col-sm-12">
 			<div class="block">
 				<div class="block-title">
 					<h2>Mis Notas</h2>
@@ -14,9 +14,10 @@
 			                    <tr>
 			                        <th title="Nombre del Protocolo">Nombre</th>
 			                        <th title="Descripción del Protocolo">Descripción</th>
-			                        <th class="text-center" title="Número de Intentos"># Intentos</th>
+			                        <th class="text-center" title="Número de Intentos">Número de Intentos</th>
+			                        <th class="text-center" title="Mejor Calificación">Mejor Calificación</th>
 			                        <th title="Ultima actulaización del Protocolo">Último Intento</th>
-			                        <th class="text-center" title="Mejor Calificación">Calificación</th>
+			                        <th class="text-center" title="Última Calificación">Última Calificación</th>
 			                    </tr>
 			                </thead>
 			                <tbody>
@@ -24,24 +25,15 @@
 			                        <tr>
 			                            <td><a href="{{route('estudiar', $protocol->id)}}" title="Ver Protocolo">{{$protocol->name}}</a></td>
 			                            <td>{{ $protocol->description }}</td>
-			                            <td class="text-center">{{ $protocol->exams()->count() }}</a></td>
-			                            <td> @if($protocol->last_exam) {{ $protocol->last_exam }} @else Sin examenes @endif</td>
-			                            <td class="text-center"> @if($protocol->best_exam) {{ $protocol->best_exam }} @else NA @endif</td>
+			                            <td class="text-center">{{ Auth::user()->numberExamsProtocol($protocol->id) }}</a></td>
+			                            <td class="text-center">{{ Auth::user()->bestExamProtocol_score($protocol->id) }}</td>
+			                            <td> {{ Auth::user()->lastExamProtocol_update($protocol->id) }} </td>
+			                        	<td class="text-center"> {{ Auth::user()->lastExamProtocol_score($protocol->id) }}</td>
 			                        </tr>
 			                    @endforeach
 			                </tbody>
 			            </table>
 			        </div>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-3">
-			<div class="block">
-				<div class="block-title">
-					<h2>{{Auth::user()->preferredCompany->name}}</h2>
-				</div>
-				<div class="block-section">
-					<img src="{{url(Auth::user()->preferredCompany->logo)}}" style="display:block; margin: 0 auto; max-width:300px; width:80%;">
 				</div>
 			</div>
 		</div>

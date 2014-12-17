@@ -29,7 +29,7 @@
       <label class="col-md-4 control-label" for="url_pdf">PDF del Protocolo </label>
       <div class="col-md-6">
           <div class="input-group">
-              <input id="url_pdf" name="url_pdf" type="file" class="file"></input>
+              <input id="url_pdf" name="url_pdf" type="file"></input>
           </div>
       </div>
     </div>   
@@ -78,16 +78,4 @@
 @stop
 
 @section('js_aditional')
-  <script type="text/javascript">
-    $("#url_pdf").fileinput({
-      initialPreview: "<div class='file-preview-text' title='{{$protocol->name}}'>" +
-        "{{$protocol->description}}" +
-        "<span class='wrap-indicator' onclick='$(\"#show-detailed-text\").modal(\"show\")' title='{{$protocol->name}}'>[…]</span>" +
-        "</div>",
-      showCaption: true, 
-      showUpload: false, 
-      showPreview: true, 
-      maxFileCount: 10
-    }); 
-  </script>
 @stop

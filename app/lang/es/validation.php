@@ -116,6 +116,9 @@ return array(
 
 'attributes' => array(
     'username' => 'usuario',
-    'password' => 'contraseña'
+    'password' => 'contraseña',
+    'url_photo' => 'foto de perfil',
+    'url_logo' => 'logo',
+    'url_pdf' => 'PDF'
 ),
 );

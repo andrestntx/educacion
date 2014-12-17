@@ -12,7 +12,7 @@
               @foreach($question->answers as $answer)
                 <div class="radio">
                   <label style="font-size:16px;" for="answers[{{$question->id}}][{{$answer->id}}]">
-                      <input type="radio" name="answers[{{$question->id}}]" id="answers[{{$question->id}}][{{$answer->id}}]" value="{{$answer->id}}" />
+                      <input type="radio" name="answers[{{$question->id}}]" id="answers[{{$question->id}}][{{$answer->id}}]" value="{{$answer->id}}" required/>
                       {{$answer->text}}
                   </label>
                 </div>
@@ -22,7 +22,11 @@
         @endforeach
         <div class="form-group form-actions">
           <div class="col-md-8 col-md-offset-4">
-              <button type="submit" class="btn btn-effect-ripple btn-primary">Enviar Examen</button>
+              @if($protocol->questions->isEmpty())
+                <button type="submit" class="btn btn-effect-ripple btn-primary" disabled>Enviar Examen</button>
+              @else
+                <button type="submit" class="btn btn-effect-ripple btn-primary">Enviar Examen</button>
+              @endif
           </div>
         </div>
   {{Form::close()}}

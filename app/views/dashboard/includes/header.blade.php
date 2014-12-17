@@ -9,22 +9,14 @@
             </a>
         </li>
         <!-- END Main Sidebar Toggle Button -->
-
-        <!-- Header Link -->
-        <li class="hidden-xs animation-fadeInQuick">
-            <a href=""><strong>Bienvenido</strong></a>
-        </li>
-        <!-- END Header Link -->
     </ul>
     <!-- END Left Header Navigation -->
-
+    
     <!-- Right Header Navigation -->
     <ul class="nav navbar-nav-custom pull-right">
         <!-- Search Form -->
         <li>
-            <form action="page_ready_search_results.html" method="post" class="navbar-form-custom" role="search">
-                <input type="text" id="top-search" name="top-search" class="form-control" placeholder="Buscar..">
-            </form>
+          <strong class="hidden-xs" style="height: 50px; line-height: 50px; padding: 0 10px; margin: 0; font-weight: 200; font-size: 16px; color:white;">{{Auth::user()->name}} - {{Auth::user()->name_role}}</strong>  
         </li>
         <!-- END Search Form -->
 

@@ -75,7 +75,7 @@ class Company extends Eloquent
     {
         $rules = array(
             'name'     => 'required|max:100|unique:company',
-            'url_logo' => 'mimes:jpeg,png|max:500'
+            'url_logo' => 'mimes:jpeg,png,bmp|max:1500'
         );
 
         if ($this->exists)
@@ -105,10 +105,10 @@ class Company extends Eloquent
         {
             $this->fill($data);
             $this->save();
-            if(array_key_exists('url_logo', $data))
+            /*if(array_key_exists('url_logo', $data))
             {
             	$this->uploadLogo($data['url_logo']);
-            }
+            }*/
             
             return true;
         }

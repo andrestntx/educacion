@@ -1,4 +1,5 @@
 @extends('dashboard.pages.form-layouts.horizontal')
+@section('class_icon_page') fa fa-user @stop
 @section('title_page')
   @if($user->exists) 
     Editar {{Auth::user()->editTypeUser()}} : {{$user->name}}

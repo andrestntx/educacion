@@ -1,4 +1,5 @@
 @extends('dashboard.pages.layout')
+@section('class_icon_page') fa fa-hospital-o @stop
 @section('title_page')Institución {{Auth::user()->preferredCompany->name}} @stop
 @section('content_body_page')
 	<div class="row">

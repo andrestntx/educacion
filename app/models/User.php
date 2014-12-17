@@ -30,6 +30,88 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
+
+    /* Exams */
+
+    public function hasExmasProtocol($protocol_id)
+    {
+        if($this->numberExamsProtocol($protocol_id) > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function examsProtocol($protocol_id)
+    {
+        return $this->exams()->whereProtocolId($protocol_id);
+    }
+
+    public function numberExamsProtocol($protocol_id)
+    {
+        return $this->examsProtocol($protocol_id)->count();
+    }
+
+    public function lastExamProtocol($protocol_id)
+    {
+        $exam = $this->examsProtocol($protocol_id)->get()->sortByDesc('updated_at')->first();
+
+        if(!is_null($exam))
+        {
+            return $exam;
+        }
+
+        return null;
+    }
+
+    public function lastExamProtocol_update($protocol_id)
+    {
+        if($this->hasExmasProtocol($protocol_id))
+        {
+            return $this->lastExamProtocol($protocol_id)->updated_at;
+        }
+
+        return 'Sin examenes';
+    }
+
+    public function lastExamProtocol_score($protocol_id)
+    {
+        if($this->hasExmasProtocol($protocol_id))
+        {
+            return $this->lastExamProtocol($protocol_id)->score;
+        } 
+
+        return 'NA';
+    }
+
+    public function bestExamProtocol($protocol_id)
+    {
+        $exam = $this->examsProtocol($protocol_id)->get()->sortByDesc(function($exam)
+        {
+            return $exam->score;
+        })->first();
+
+        if(!is_null($exam))
+        {
+            return $exam;
+        }
+
+        return null;
+    }
+
+    public function bestExamProtocol_score($protocol_id)
+    {
+        if($this->hasExmasProtocol($protocol_id))
+        {
+            return $this->bestExamProtocol($protocol_id)->score;
+        }
+
+        return 'NA';
+    }
+
+    /* End Exams */
+
     public function editTypeUser()
     {
         if($this->isSuperAdmin())
@@ -88,6 +170,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     public function protocolsForStudy()
     {
         return $this->preferredCompany->protocols()->orderBy('id')->get();
+    }
+
+    public function exams()
+    {
+        return $this->hasMany('Exam', 'user_id');
     }
 
     public function protocols()
@@ -164,7 +251,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         $rules = array(
             'username'     => 'required|max:100|unique:user',
             'email'     => 'required|max:100|unique:user',
-            'password' =>  'confirmed'
+            'password' =>  'confirmed',
+            'url_photo' => 'mimes:jpeg,png,bmp|max:1500'
         );
 
         if ($this->exists)
@@ -243,8 +331,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     {
         if(is_file($file))
         {
-            $url = Config::get('constant.path_users_photos').'/'.$this->id.'.png';
-            Image::make($file)->widen(225)->save($url);
+            $url = Config::get('constant.path_users_photos').'/'.$this->id.'.'.$file->getClientOriginalExtension();
+            Image::make($file)->widen(300)->save($url);
             $this->url_photo = $url;
             $this->save();
         }

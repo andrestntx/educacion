@@ -1,22 +1,13 @@
 @extends('dashboard.pages.layout')
-@section('title_page')
-    @if(Auth::user()->isSuperAdmin())
-        {{$company->name}}: Administradores
-    @else
-        Usuarios
-    @endif
-@stop
+@section('class_icon_page') fa fa-users @stop
+@section('title_page') {{$company->name}}: Administradores @stop
 @section('breadcrumbs')
 
 @stop
 @section('content_body_page')
     <div class="row" id="title_page" style="margin-bottom: 10px;">
     	<div class="col-md-12">
-            @if(Auth::user()->isSuperAdmin())
-                <a href="{{route('instituciones.usuarios.create', $company->id)}}" class="btn btn-primary">Nuevo Administrador</a>
-            @else
-                <a href="{{route('usuarios.create')}}" class="btn btn-primary">Nuevo Usuario</a>
-            @endif
+            <a href="{{route('instituciones.usuarios.create', $company->id)}}" class="btn btn-primary"><i class="fa fa-user"></i> Nuevo Administrador</a>
         </div>
     </div>
     <div class="block full">

@@ -1,7 +1,6 @@
 @extends('dashboard.pages.form-layouts.horizontal')
-@section('title_page')
-    Nueva Institución
-@stop
+@section('class_icon_page') fa fa-hospital-o @stop
+@section('title_page') Nueva Institución @stop
 @section('title_form') Datos de la Institución @stop
 @section('form')
   {{ Form::model($company, $form_data) }}

@@ -92,14 +92,16 @@ class CompaniesController extends \BaseController {
 	{
 		$company = Company::findOrFail($id);
         $data = Input::all();
+
         if ($company->validAndSave($data))
         {
             return Redirect::route('instituciones.index');
         }
         else
         {
-			return Redirect::route(array('instituciones.edit', $company->id))->withInput()->withErrors($company->errors);
-        }	
+			return Redirect::route('instituciones.edit', $company->id)->withInput()->withErrors($company->errors);
+        }
+
 	}
 
 

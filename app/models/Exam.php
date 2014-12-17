@@ -18,7 +18,12 @@
 
 	    public function getScoreAttribute()
 	    {
-	    	return $this->answers()->whereCorrect(true)->count() / $this->answers()->count() * 100;
+	    	if($this->answers()->count() > 0)
+	    	{
+	    		return $this->answers()->whereCorrect(true)->count() / $this->answers()->count() * 100;
+	    	}
+
+	    	return 0;
 	    }
 	}
  ?>

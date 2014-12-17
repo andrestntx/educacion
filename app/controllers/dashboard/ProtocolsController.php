@@ -41,15 +41,14 @@ class ProtocolsController extends \BaseController {
 	{
         $protocol = new Protocol;
         $data = Input::all();
+        $pdf = Input::file('url_pdf');
         
-        if ($protocol->validAndSave($data))
+	    if($protocol->validAndSave($data, $pdf))
         {
             return Redirect::route('protocolos.index');
         }
-        else
-        {
-			return Redirect::route('protocolos.create')->withInput()->withErrors($protocol->errors);
-        }
+
+		return Redirect::route('protocolos.create')->withInput()->withErrors($protocol->errors);
 	}
 
 
@@ -101,15 +100,16 @@ class ProtocolsController extends \BaseController {
 	public function update($id)
 	{
 		$protocol = Protocol::findOrFail($id);
-		
-        $data = Input::all();
-        if ($protocol->validAndSave($data))
+		$data = Input::all();
+		$pdf = Input::file('url_pdf');
+        
+        if ($protocol->validAndSave($data, $pdf))
         {
             return Redirect::route('protocolos.index');
         }
         else
         {
-			return Redirect::route(array('protocolos.edit', $protocol->id))->withInput()->withErrors($protocol->errors);
+			return Redirect::route('protocolos.edit', $protocol->id)->withInput()->withErrors($protocol->errors);
         }
 	}
 

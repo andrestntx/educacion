@@ -20,31 +20,6 @@ class Protocol extends Eloquent
         return $this->user->name;
     }
 
-    public function getBestExamAttribute()
-    {
-        $exam = $this->exams->sortByDesc(function($exam)
-        {
-            return $exam->score;
-        })->first();
-
-        if(!is_null($exam)){
-            return $exam->score;
-        }
-
-        return null;
-    }
-
-    public function getLastExamAttribute()
-    {
-        $exam = $this->exams->sortByDesc('updated_at')->first();
-
-        if(!is_null($exam)){
-            return $exam->updated_at;
-        }
-
-        return null;
-    }
-
     /***** Relations *****/
 
     public function user()
@@ -86,7 +61,13 @@ class Protocol extends Eloquent
 
     public function randomQuestions()
     {
+        if($this->questions()->count() >= 10)
+        {
+            return $this->questions->random(10);
+        }
+
         return $this->questions;
+        
     }
 
 	public function isValid($data)
@@ -94,7 +75,7 @@ class Protocol extends Eloquent
         $rules = array(
             'name'     => 'required|max:100|unique:protocol',
             'user_id' => 'required',
-            'url_pdf' => 'mimes:pdf'
+            'url_pdf' => 'mimes:pdf|max:35000'
         );
 
         if ($this->exists)
@@ -118,17 +99,24 @@ class Protocol extends Eloquent
         return false;
     }
 
-    public function validAndSave($data)
+    public function isValidPDF($pdf)
     {
-        if ($this->isValid($data))
+        if(!is_null($pdf) && !$pdf->isValid())
+        {
+            $this->errors = array('El campo PDF debe ser menor que '.ini_get('upload_max_filesize'));
+            return false;
+        }
+
+        return true;
+    }
+
+    public function validAndSave($data, $pdf)
+    {
+        if ($this->isValidPDF($pdf) && $this->isValid($data))
         {
             $this->fill($data);
             $this->save();
-            
-            if(array_key_exists('url_pdf', $data) && !is_null($data['url_pdf']))
-            {
-            	$this->uploadPdf('url_pdf');
-            }
+            $this->uploadPdf($pdf);
 
             if(array_key_exists('areas', $data))
             {
@@ -166,12 +154,12 @@ class Protocol extends Eloquent
         $this->areas()->sync($areas);
     }
 
-    public function uploadPdf($file)
+    public function uploadPdf($pdf)
     {
-        if (Input::file($file)->isValid())
+        if (File::isFile($pdf))
         {
-        	$url = Config::get('constant.path_protocols_pdf').'/'.$this->id.'.pdf';
-            Input::file($file)->move(Config::get('constant.path_protocols_pdf'), $this->id.'.pdf');
+        	$url = Config::get('constant.path_protocols_pdf').'/'.$this->id.'.'.$pdf->getClientOriginalExtension();
+            $pdf->move($url);
         	$this->url_pdf = $url;
         	$this->save();
         }

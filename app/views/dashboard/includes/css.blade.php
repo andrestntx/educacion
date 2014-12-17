@@ -26,7 +26,7 @@
 <!-- Include a specific file here from css/themes/ folder to alter the default theme of the template -->
 
 <!-- The themes stylesheet of this template (for using specific theme color in individual elements - must included last) -->
-<link rel="stylesheet" href="{{url('assets/css/themes/flat.css')}}">
+<link rel="stylesheet" href="{{url('assets/css/themes/system.css')}}">
 <!-- END Stylesheets -->
 
 <link rel="stylesheet" href="{{URL::to('assets/css/fileinput/fileinput.min.css')}}" media="all"  type="text/css" />

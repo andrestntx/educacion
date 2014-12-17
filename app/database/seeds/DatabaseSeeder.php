@@ -100,14 +100,6 @@ class UserRoleTableSeeder extends Seeder {
         )); 
 
         DB::table('user_role')->insert(array(
-            'name' => 'MEDICO GENERAL',
-            'description' => 'MEDG',
-            'company_id' => 2,
-            'created_at' => new DateTime,
-            'updated_at' => new DateTime 
-        )); 
-
-        DB::table('user_role')->insert(array(
             'name' => 'MEDICO ESPECIALISTA',
             'description' => 'MEDE',
             'company_id' => 2,
@@ -170,7 +162,7 @@ class UserTableSeeder extends Seeder {
         ));
 
         DB::table('user')->insert(array(
-            'username' => 'invitado',
+            'username' => 'mmejia',
             'email' => 'invitado@nuestramarca.com',
             'password' => Hash::make('123'),
             'name' => 'Usuario Invitado',

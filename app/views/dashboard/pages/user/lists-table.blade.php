@@ -1,7 +1,6 @@
 @extends('dashboard.pages.layout')
-@section('title_page')
-    Usuarios
-@stop
+@section('class_icon_page') fa fa-users @stop
+@section('title_page') Usuarios @stop
 @section('breadcrumbs')
 
 @stop

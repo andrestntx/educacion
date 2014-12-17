@@ -104,22 +104,11 @@
     </div>
     <!-- END Wrapper for scrolling functionality -->
 
-    <!-- Sidebar Extra Info 
+    <!-- Sidebar Extra Info -->
     <div id="sidebar-extra-info" class="sidebar-content sidebar-nav-mini-hide">
-        <div class="push-bit">
-            <span class="pull-right">
-                <a href="javascript:void(0)" class="text-muted"><i class="fa fa-plus"></i></a>
-            </span>
-            <small><strong>200.000 </strong> / 350.000 Votantes</small>
-        </div>
-        <div class="progress progress-mini push-bit">
-            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%"></div>
-        </div>
-        <div class="text-center">
-            <small>Creado con <i class="fa fa-heart text-danger"></i> por <a href="http://nuestramarca.com" target="_blank">Nuestra Marca</a></small><br>
-            <small><span id="year-copy"></span> &copy; <a href="{{url('/')}}" target="_blank">VINDER 1.0</a></small>
+        <div class="text-center col-md-12">
+            {{ HTML::image(Auth::user()->preferredCompany->logo, Auth::user()->preferredCompany->name, array('style' => 'width:80%;')) }}
         </div>
     </div>
-    -->
     <!-- END Sidebar Extra Info -->
 </div>

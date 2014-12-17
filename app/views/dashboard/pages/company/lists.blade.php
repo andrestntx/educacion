@@ -1,4 +1,5 @@
 @extends('dashboard.pages.layout')
+@section('class_icon_page') fa fa-hospital-o @stop
 @section('title_page')Instituciones registradas @stop
 @section('breadcrumbs')
 	
@@ -6,7 +7,7 @@
 @section('content_body_page')
 	<div class="row" id="title_page" style="margin-bottom: 10px;">
     	<div class="col-md-12">
-            <a href="{{route('instituciones.create')}}" class="btn btn-primary btn-lg"> <i class="fa fa-building"></i> Nueva Institución</a>
+            <a href="{{route('instituciones.create')}}" class="btn btn-primary btn-lg"> <i class="fa fa-plus-square"></i> Nueva Institución</a>
         </div>
     </div>
 	<div class="row">
@@ -28,10 +29,10 @@
 		            <div class="widget-content">
 		                <div class="row text-center">
 		                    <div class="col-xs-6">
-		                        <h3 class="widget-heading"><small>USUARIOS</small><br><a href="javascript:void(0)" class="themed-color-flat">{{$company->users()->count()}}</a></h3>
+		                        <h3 class="widget-heading"><small>USUARIOS</small><br><a href="javascript:void(0)" class="themed-color-system">{{$company->users()->count()}}</a></h3>
 		                    </div>
 		                    <div class="col-xs-6">
-		                        <h3 class="widget-heading"><small>PROTOCOLOS</small><br><a href="javascript:void(0)" class="themed-color-flat">{{$company->protocols()->count()}}</a></h3>
+		                        <h3 class="widget-heading"><small>PROTOCOLOS</small><br><a href="javascript:void(0)" class="themed-color-system">{{$company->protocols()->count()}}</a></h3>
 		                    </div>
 		                </div>
 		            </div>
