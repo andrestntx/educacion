@@ -4,7 +4,7 @@
 		'path_protocols_pdf' => 'uploads/protocols',
 		'path_annex' => 'uploads/annex',
 		'path_users_photos' => 'img/avatars',
-		'url_company_logo_demo' => 'img/companies/logos/demo.png',
-		'url_user_photo' => 'img/user.png'
+		'url_company_logo_demo' => 'img/company_demo.png',
+		'url_user_photo' => 'img/user_demo.png'
 	);
  ?>
