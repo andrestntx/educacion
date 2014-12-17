@@ -159,7 +159,8 @@ class Protocol extends Eloquent
         if (File::isFile($pdf))
         {
         	$url = Config::get('constant.path_protocols_pdf').'/'.$this->id.'.'.$pdf->getClientOriginalExtension();
-            $pdf->move($url);
+            
+            $pdf->move(Config::get('constant.path_protocols_pdf'), $this->id.'.'.$pdf->getClientOriginalExtension());
         	$this->url_pdf = $url;
         	$this->save();
         }
