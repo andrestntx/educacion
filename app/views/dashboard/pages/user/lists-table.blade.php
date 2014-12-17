@@ -16,7 +16,7 @@
                 <thead>
                     <tr>
                         <th class="text-center" style="width: 50px;" title="Número de Cédula del Votante">Imagen</th>
-                        <th title="Nombre del Votante">Usuario</th>
+                        <th title="Usuario del Votante">Usuario</th>
                         <th title="Nombre del Votante">Nombre</th>
                         <th>Email</th>
                         <th title="Ultima actulaización del Usuario">Actualización</th>

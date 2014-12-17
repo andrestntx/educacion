@@ -1,6 +1,6 @@
 @extends('dashboard.pages.form-layouts.horizontal')
 @section('class_icon_page') fa fa-hospital-o @stop
-@section('title_page') Nueva Institución @stop
+@section('title_page') @if($company->exists) Editar Institución: {{$company->name}} @else Nueva Institución @endif @stop
 @section('title_form') Datos de la Institución @stop
 @section('form')
   {{ Form::model($company, $form_data) }}

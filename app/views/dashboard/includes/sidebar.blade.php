@@ -20,12 +20,7 @@
                             <i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-gift sidebar-nav-icon"></i>
                             <span class="sidebar-nav-mini-hide">Configuración</span></a>
                         <ul>
-                            <li>
-                                <a href="{{url('dashboard/config/models')}}">
-                                    <i class="fa fa-angle-double-right sidebar-nav-icon"></i>
-                                    <span class="sidebar-nav-mini-hide">Modelos</span>
-                                </a>
-                            </li>
+                            <li></li>
                         </ul>
                     </li>
                     <li>

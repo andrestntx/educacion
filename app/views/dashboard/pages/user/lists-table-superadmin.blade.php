@@ -16,6 +16,7 @@
                 <thead>
                     <tr>
                         <th class="text-center" style="width: 50px;" title="Número de Cédula del Votante">Imagen</th>
+                        <th title="Usuario del Votante">Usuario</th>
                         <th title="Nombre del Votante">Nombre</th>
                         <th>Email</th>
                         <th title="Ultima actulaización del Usuario">Actualización</th>
@@ -26,6 +27,7 @@
                     @foreach($users as $user)
                         <tr>
                             <td class="text-center">{{ HTML::image($user->image, 'a picture', array('class' => 'thumb', 'style' => 'width:50px;')) }}</td>
+                            <td>{{$user->username}}</td>
                             <td><strong>{{$user->name}}</strong></td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->updated_at }}</td>
