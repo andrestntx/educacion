@@ -4,11 +4,11 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"require": {
+		"ext-gd": "*",
 		"laravel/framework": "4.2.*",
 		"doctrine/dbal": "v2.4.2",
 		"intervention/image": "2.*",
-		"barryvdh/laravel-debugbar": "*",
-		"ext-gd": "*"
+		"barryvdh/laravel-debugbar": "*"
 	},
 	"autoload": {
 		"classmap": [
