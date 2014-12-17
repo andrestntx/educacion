@@ -12,7 +12,7 @@
 			            <table id="datatable" class="table table-striped table-bordered table-vcenter">
 			                <thead>
 			                    <tr>
-			                        <th title="Nombre del Protocolo">Nombre</th>
+			                        <th title="Nombre del Protocolo">Protocolo Evaluado</th>
 			                        <th title="Descripción del Protocolo">Descripción</th>
 			                        <th class="text-center" title="Número de Intentos">Número de Intentos</th>
 			                        <th class="text-center" title="Mejor Calificación">Mejor Calificación</th>
