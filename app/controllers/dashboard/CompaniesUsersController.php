@@ -39,9 +39,11 @@ class CompaniesUsersController extends \BaseController {
 	{
         $user = new User;
         $data = Input::all();
+        $image = Input::file('url_photo');
         $data['preferred_company_id'] = $company_id;
         $data['system_role_id'] = 2; 
-        if ($user->validAndSave($data))
+
+        if ($user->validAndSave($data, $image))
         {
         	$user->syncCompanies(array($company_id));
             return Redirect::route('instituciones.usuarios.index', $company_id);
@@ -99,9 +101,10 @@ class CompaniesUsersController extends \BaseController {
 	public function update($company_id, $id)
 	{
 		$user = User::findOrFail($id);
-        
         $data = Input::all();
-        if ($user->validAndSave($data))
+        $image = Input::file('url_photo');
+        
+        if ($user->validAndSave($data, $image))
         {
             return Redirect::route('instituciones.usuarios.index', $company_id);
         }

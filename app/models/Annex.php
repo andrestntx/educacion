@@ -25,7 +25,18 @@ class Annex extends Eloquent
         return $this->belongsTo('User', 'user_id');
     }
 
-	public function isValid($data)
+    public function isValidFile($file)
+    {
+        if(!is_null($file) && !$file->isValid())
+        {
+            $this->errors = array('El Archivo debe ser menor que '.ini_get('upload_max_filesize'));
+            return false;
+        }
+
+        return true;
+    }
+
+	public function isValid($data, $file)
     {
         $rules = array(
             'name'     => 'required|max:100|unique:annex',
@@ -51,7 +62,7 @@ class Annex extends Eloquent
 
     public function validAndSave($data)
     {
-        if ($this->isValid($data))
+        if ($this->isValidFile($file) && $this->isValid($data))
         {
             $this->fill($data);
             $this->save();

@@ -236,15 +236,26 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     {
         if (File::exists($this->url_photo))
         {
-            return $this->url_photo;
+            return $this->url_photo.'?'.time();
         }
         else
         {
-            return Config::get('constant.url_user_photo');
+            return Config::get('constant.url_user_photo').'?'.time();
         }
     }
 
     /*** End Mutators **/ 
+
+    public function isValidImage($imagen)
+    {
+        if(!is_null($imagen) && !$imagen->isValid())
+        {
+            $this->errors = array('La imagen debe ser menor que '.ini_get('upload_max_filesize'));
+            return false;
+        }
+
+        return true;
+    }
 
     public function isValid($data)
     {
@@ -279,17 +290,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return false;
     }
 
-    public function validAndSave($data)
+    public function validAndSave($data, $image)
     {
-        if ($this->isValid($data))
+        if ($this->isValidImage($image) && $this->isValid($data))
         {
             $this->fill($data);
             $this->save();
-
-            if(array_key_exists('url_photo', $data))
-            {
-                $this->uploadLogo($data['url_photo']);
-            }
+            $this->uploadImage($image);
 
             if(array_key_exists('roles', $data))
             {
@@ -327,12 +334,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         $this->companies()->sync($data_companies);
     }
 
-    public function uploadLogo($file)
+    public function uploadImage($image)
     {
-        if(is_file($file))
+        if(File::isFile($image))
         {
-            $url = Config::get('constant.path_users_photos').'/'.$this->id.'.'.$file->getClientOriginalExtension();
-            Image::make($file)->widen(300)->save($url);
+            $url = Config::get('constant.path_users_photos').'/'.$this->id.'.'.$image->getClientOriginalExtension();
+            Image::make($image)->widen(300)->save($url);
             $this->url_photo = $url;
             $this->save();
         }

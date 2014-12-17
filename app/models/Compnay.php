@@ -51,11 +51,11 @@ class Company extends Eloquent
 	{
 		if (File::exists($this->url_logo))
 		{
-			return $this->url_logo;
+			return $this->url_logo.'?'.time();
 		}
 		else
 		{
-			return Config::get('constant.url_company_logo_demo');
+			return Config::get('constant.url_company_logo_demo').'?'.time();
 		}
 	}
 
@@ -70,6 +70,17 @@ class Company extends Eloquent
 			return Company::find($id);
 		}
 	}
+
+	public function isValidLogo($logo)
+    {
+        if(!is_null($logo) && !$logo->isValid())
+        {
+            $this->errors = array('El logo debe ser menor que '.ini_get('upload_max_filesize'));
+            return false;
+        }
+
+        return true;
+    }
 
 	public function isValid($data)
     {
@@ -99,16 +110,13 @@ class Company extends Eloquent
         return false;
     }
 
-    public function validAndSave($data)
+    public function validAndSave($data, $logo)
     {
-        if ($this->isValid($data))
+        if ($this->isValidLogo($logo) && $this->isValid($data))
         {
             $this->fill($data);
             $this->save();
-            /*if(array_key_exists('url_logo', $data))
-            {
-            	$this->uploadLogo($data['url_logo']);
-            }*/
+            $this->uploadLogo($logo);
             
             return true;
         }
@@ -118,7 +126,7 @@ class Company extends Eloquent
 
     public function uploadLogo($file)
     {
-    	if(is_file($file))
+    	if(File::isFile($file))
     	{
 	    	$url_logo = Config::get('constant.path_companies_logos').'/'.$this->id.'.'.$file->getClientOriginalExtension();
 	    	Image::make($file)->widen(225)->save($url_logo);

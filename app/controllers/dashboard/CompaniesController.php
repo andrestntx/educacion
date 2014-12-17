@@ -39,8 +39,9 @@ class CompaniesController extends \BaseController {
 	{
         $company = new Company;
         $data = Input::all();
-        
-        if ($company->validAndSave($data))
+        $image = Input::file('url_logo');
+
+        if ($company->validAndSave($data, $image))
         {
         	$company->createDefaultData();
             return Redirect::route('instituciones.index');
@@ -92,8 +93,9 @@ class CompaniesController extends \BaseController {
 	{
 		$company = Company::findOrFail($id);
         $data = Input::all();
+        $image = Input::file('url_logo');
 
-        if ($company->validAndSave($data))
+        if ($company->validAndSave($data, $image))
         {
             return Redirect::route('instituciones.index');
         }
