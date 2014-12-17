@@ -42,7 +42,9 @@ class AnnexController extends \BaseController {
 	{
         $annex = new Annex;
         $data = Input::all();
-        if ($annex->validAndSave($data))
+        $file = Input::file('url');
+
+        if ($annex->validAndSave($data, $file))
         {
             return Redirect::route('protocolos.show', $protocol_id);
         }
@@ -96,9 +98,10 @@ class AnnexController extends \BaseController {
 	public function update($protocol_id, $id)
 	{
 		$annex = Annex::findOrFail($id);
-        
         $data = Input::all();
-        if ($annex->validAndSave($data))
+        $file = Input::file('url');
+
+        if ($annex->validAndSave($data, $file))
         {
             return Redirect::route('protocolos.show', $protocol_id);
         }

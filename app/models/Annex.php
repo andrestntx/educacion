@@ -36,11 +36,12 @@ class Annex extends Eloquent
         return true;
     }
 
-	public function isValid($data, $file)
+	public function isValid($data)
     {
         $rules = array(
             'name'     => 'required|max:100|unique:annex',
-            'protocol_id' => 'required'
+            'protocol_id' => 'required',
+            'url' => 'max:1500'
         );
 
         if ($this->exists)
@@ -60,16 +61,13 @@ class Annex extends Eloquent
         return false;
     }
 
-    public function validAndSave($data)
+    public function validAndSave($data, $file)
     {
         if ($this->isValidFile($file) && $this->isValid($data))
         {
             $this->fill($data);
             $this->save();
-            if(array_key_exists('url', $data))
-            {
-            	$this->uploadAnnex('url');
-            }
+            $this->uploadFile($file);
             
             return true;
         }
@@ -77,14 +75,14 @@ class Annex extends Eloquent
         return false;
     }
 
-    public function uploadAnnex($file)
+    public function uploadFile($file)
     {
-        if(Input::file($file))
+        if(File::isFile($file))
         {
             $path = Config::get('constant.path_annex');
-            $name = $this->id.'.'.Input::file($file)->getClientOriginalExtension();
+            $name = $this->id.'.'.$file->getClientOriginalExtension();
             $url = $path.'/'.$name;
-            Input::file($file)->move($path, $name);
+            $file->move($path, $name);
             $this->url = $url;
             $this->save();
         }
