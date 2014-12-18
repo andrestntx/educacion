@@ -124,14 +124,14 @@
 							<i class="fa fa-bar-chart-o"></i> Mejor Calificación
 						</div>
 						<div class="widget-content text-center">
-							<div class="pie-chart easyPieChart" data-percent="{{Auth::user()->bestExamProtocol_score($protocol->id)}}" data-line-width="3" data-bar-color="#cccccc" data-track-color="#f9f9f9" style="width: 80px; height: 80px; line-height: 80px;">
-								<span><strong>{{Auth::user()->bestExamProtocol_score($protocol->id)}}%</strong></span>
+							<div class="pie-chart easyPieChart" data-percent="{{$user->best_exam_score}}" data-line-width="3" data-bar-color="#cccccc" data-track-color="#f9f9f9" style="width: 80px; height: 80px; line-height: 80px;">
+								<span><strong>{{$user->best_exam_score}}%</strong></span>
 								<canvas width="80" height="80"></canvas>
 							</div>
 						</div>
 						<div class="widget-content themed-background-muted">
 							<div class="progress progress-striped progress-mini active remove-margin">
-								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{Auth::user()->bestExamProtocol_score($protocol->id)}}" aria-valuemin="0" aria-valuemax="100" style="width: {{Auth::user()->bestExamProtocol_score($protocol->id)}}%"></div>
+								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{$user->best_exam_score}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$user->best_exam_score}}%"></div>
 							</div>
 						</div>
 					</a>

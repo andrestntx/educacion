@@ -8,7 +8,12 @@
 		public function studyProtocol($protocol_id)
 		{
 			$protocol = Protocol::findOrFail($protocol_id);
-			return View::make('dashboard.pages.protocol.show', compact('protocol'));
+			$user = User::with(array('examScores' => function($query) use($protocol)
+			{
+			    $query->whereProtocolId($protocol->id);
+
+			}))->whereId(Auth::user()->id)->first();	
+			return View::make('dashboard.pages.protocol.show', compact('protocol', 'user'));
 		}
 
 		public function create($protocol_id)
