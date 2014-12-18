@@ -24,7 +24,7 @@
 					<h2>{{$protocol->description}}</h2>
 				</div>
 				<div class="block-section">
-					<embed src="{{url($protocol->url_pdf)}}" width="500" height="375">
+					<iframe src="https://drive.google.com/viewerng/viewer?url={{URL::to($protocol->url_pdf)}}&embedded=true" style="width:718px; height:700px;" frameborder="0"></iframe>
 					<object width="100%" height="550" type="application/pdf" data="{{url($protocol->url_pdf)}}" id="pdf_content">
 						<p>El navegador no es compatilbe</p>
 					</object>
