@@ -24,10 +24,11 @@
 					<h2>{{$protocol->description}}</h2>
 				</div>
 				<div class="block-section">
-					<iframe src="https://drive.google.com/viewerng/viewer?url={{URL::to($protocol->url_pdf)}}&embedded=true" style="width:718px; height:700px;" frameborder="0"></iframe>
-					<object width="100%" height="550" type="application/pdf" data="{{url($protocol->url_pdf)}}" id="pdf_content">
-						<p>El navegador no es compatilbe</p>
-					</object>
+					@if($protocol->isPdfCorrect())
+						<iframe src="https://drive.google.com/viewerng/viewer?url={{URL::to($protocol->pdf)}}&embedded=true" style="width:100%; height:550px;" frameborder="0"></iframe>
+					@else
+						<h4>El protocolo no se ha subido</h4>
+					@endif
 				</div>
 			</div>
 		</div>
