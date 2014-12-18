@@ -13,7 +13,6 @@
 			                <thead>
 			                    <tr>
 			                        <th title="Nombre del Protocolo">Protocolo Evaluado</th>
-			                        <th title="Descripción del Protocolo">Descripción</th>
 			                        <th class="text-center" title="Número de Intentos">Intentos</th>
 			                        <th class="text-center" title="Mejor Calificación">Mejor Calificación</th>
 			                        <th title="Ultima actulaización del Protocolo">Último Intento</th>
@@ -29,7 +28,6 @@
 			                            @else
 			                            	<td><a href="{{route('estudiar', $protocol->id)}}" title="Estudiar Protocolo">{{$protocol->name}}</a></td>
 			                            @endif
-			                            <td>{{ $protocol->description }}</td>
 			                            <td class="text-center">{{ $user->examScores->count() }}</a></td>
 			                            <td class="text-center">{{ $user->best_exam_score }}</td>
 			                            <td> {{ $user->last_exam_update }} </td>
