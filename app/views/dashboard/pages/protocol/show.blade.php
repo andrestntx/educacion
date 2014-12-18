@@ -2,7 +2,7 @@
 @section('title_page')Protocolo: {{$protocol->name}} @stop
 @section('content_body_page')
 	<div class="row">
-		<div class="col-lg-8">
+		<div class="col-lg-9">
 			<div class="block">
 				<div class="block-title">
 					<div class="block-options pull-right">
@@ -24,15 +24,14 @@
 					<h2>{{$protocol->description}}</h2>
 				</div>
 				<div class="block-section">
-					<div class="box-body" style="font-size:16px;">
-						<object width="100%" height="550" type="application/pdf" data="{{url($protocol->url_pdf)}}" id="pdf_content">
-							<p>El navegador no es compatilbe</p>
-						</object>
-	            	</div>
+					<embed src="{{url($protocol->url_pdf)}}" width="500" height="375">
+					<object width="100%" height="550" type="application/pdf" data="{{url($protocol->url_pdf)}}" id="pdf_content">
+						<p>El navegador no es compatilbe</p>
+					</object>
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-4">
+		<div class="col-lg-3">
 			<div class="row">
 				<div class="block">
 					<div class="block-title">
