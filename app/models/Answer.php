@@ -22,4 +22,14 @@ class Answer extends Eloquent
     {
         return $this->belongsTo('Question', 'question_id');
     }
+
+    public function scopeCorrects($query)
+    {
+        return $query->whereCorrect(true);
+    }
+
+    public function scopeIncorrects($query)
+    {
+        return $query->whereCorrect(false);
+    }
 }

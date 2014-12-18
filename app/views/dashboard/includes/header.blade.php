@@ -44,7 +44,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="page_app_social.html">
+                    <a href="{{route('usuarios.show-profile')}}">
                         <i class="fa fa-pencil-square fa-fw pull-right"></i>
                         Mi Perfil
                     </a>

@@ -19,7 +19,7 @@ class CreateSystemRoleTable extends Migration {
 			$table->timestamps();
 		});
 
-		Schema::table('user', function($table)
+		Schema::table('users', function($table)
 		{
 		    $table->integer('system_role_id')->unsigned();
 		    $table->foreign('system_role_id')
@@ -38,9 +38,9 @@ class CreateSystemRoleTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('user', function($table)
+		Schema::table('users', function($table)
 		{
-			$table->dropForeign('user_system_role_id_foreign');
+			$table->dropForeign('users_system_role_id_foreign');
 		});
 		
 		Schema::drop('system_role');

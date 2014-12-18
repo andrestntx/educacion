@@ -1,5 +1,5 @@
 @extends('dashboard.pages.layout')
-@section('title_page') Institución {{Auth::user()->preferredCompany->name}} @stop
+@section('title_page') @if(Auth::user()->isAdmin()) Calificaciones: {{$user->name}} @else Institución {{$user->preferredCompany->name}} @endif @stop
 @section('content_body_page')
 	<div class="row">
 		<div class="col-sm-12">
@@ -14,21 +14,40 @@
 			                    <tr>
 			                        <th title="Nombre del Protocolo">Protocolo Evaluado</th>
 			                        <th title="Descripción del Protocolo">Descripción</th>
-			                        <th class="text-center" title="Número de Intentos">Número de Intentos</th>
+			                        <th class="text-center" title="Número de Intentos">Intentos</th>
 			                        <th class="text-center" title="Mejor Calificación">Mejor Calificación</th>
 			                        <th title="Ultima actulaización del Protocolo">Último Intento</th>
 			                        <th class="text-center" title="Última Calificación">Última Calificación</th>
+			                    	<th class="text-center" style="width: 95px;"><i class="fa fa-flash"></i></th>
 			                    </tr>
 			                </thead>
 			                <tbody>
 			                    @foreach($protocols as $protocol)
 			                        <tr>
-			                            <td><a href="{{route('estudiar', $protocol->id)}}" title="Ver Protocolo">{{$protocol->name}}</a></td>
+			                        	@if(Auth::user()->isAdmin())
+			                            	<td><a href="{{route('protocolos.show', $protocol->id)}}" title="Ver Protocolo">{{$protocol->name}}</a></td>
+			                            @else
+			                            	<td><a href="{{route('estudiar', $protocol->id)}}" title="Estudiar Protocolo">{{$protocol->name}}</a></td>
+			                            @endif
 			                            <td>{{ $protocol->description }}</td>
-			                            <td class="text-center">{{ Auth::user()->numberExamsProtocol($protocol->id) }}</a></td>
-			                            <td class="text-center">{{ Auth::user()->bestExamProtocol_score($protocol->id) }}</td>
-			                            <td> {{ Auth::user()->lastExamProtocol_update($protocol->id) }} </td>
-			                        	<td class="text-center"> {{ Auth::user()->lastExamProtocol_score($protocol->id) }}</td>
+			                            <td class="text-center">{{ $user->examScores->count() }}</a></td>
+			                            <td class="text-center">{{ $user->best_exam_score }}</td>
+			                            <td> {{ $user->last_exam_update }} </td>
+			                        	<td class="text-center"> {{ $user->last_exam_score  }}</td>
+			                        	<td class="text-center">
+				                        	@if(Auth::user()->isAdmin())
+				                        		<a href="{{route('protocolos.show', $protocol->id)}}" data-toggle="tooltip" title="Ver Protocolo" class="btn btn-effect-ripple btn-info">
+				                                    <i class="fa fa-eye"></i>
+				                                </a>
+				                        	@else
+				                        		<a href="{{route('estudiar', $protocol->id)}}" data-toggle="tooltip" title="Estudiar Protocolo" class="btn btn-effect-ripple btn-info">
+				                                    <i class="fa fa-eye"></i>
+				                                </a>
+				                                <a href="{{route('examenes.create', $protocol->id)}}" data-toggle="tooltip" title="Presentar examen" class="btn btn-effect-ripple btn-success">
+				                                    <i class="fa fa-line-chart"></i>
+				                                </a>
+			                                @endif
+		                            	</td>
 			                        </tr>
 			                    @endforeach
 			                </tbody>

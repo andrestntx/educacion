@@ -32,7 +32,7 @@ Route::group(array('prefix' => 'api'), function()
 Route::group(array('before' => 'auth'), function()
 {	
 	Route::post('actualizar-perfil/{user}', array('as' => 'usuarios.update-profile', 'uses' => 'UsersController@updateProfile'));
-	
+	Route::get('mi-perfil', array('as' => 'usuarios.show-profile', 'uses' => 'UsersController@profile'));
 	/***** Only acces Role 1 => Super Admin *****/
 	Route::group(array('before' => 'system_roles:1'), function()
 	{
@@ -45,10 +45,12 @@ Route::group(array('before' => 'auth'), function()
 	{
 		Route::resource('areas', 'AreasController');
 		Route::resource('usuarios/perfiles', 'UserRolesController');
+		Route::get('usuarios/{user}/calificaciones', array('as' => 'usuarios.calificaciones', 'uses' => 'UsersController@scores'));
 		Route::resource('usuarios', 'UsersController');
 		
 		
 		Route::resource('protocolos/categorias', 'ProtocolCategoriesController');
+		Route::get('protocolos/{protocol}/estadisticas', array('as' => 'protocolos.estadisticas', 'uses' => 'ProtocolsController@stats'));
 		Route::resource('protocolos', 'ProtocolsController');
 		Route::resource('protocolos.anexos', 'AnnexController');
 		Route::resource('protocolos.preguntas', 'QuestionsController');

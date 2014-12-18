@@ -64,9 +64,21 @@ class ProtocolsController extends \BaseController {
 		$number_annex = $protocol->annex()->count();
 		$number_questions = $protocol->questions()->count();
 
-		return View::make('dashboard.pages.protocol.show', compact('action_protocol', 'protocol', 
+		return View::make('dashboard.pages.protocol.show', compact('protocol', 
 			 'number_questions', 'number_annex'
 		));
+	}
+
+	public function stats($id)
+	{
+		$protocol = Protocol::findOrFail($id);
+		$users = User::with(array('examScores' => function($query) use($protocol)
+		{
+		    $query->whereProtocolId($protocol->id);
+
+		}))->canStudyProtocol($protocol->id)->get();	
+
+		return View::make('dashboard.pages.protocol.exams', compact('protocol', 'users'));
 	}
 
 

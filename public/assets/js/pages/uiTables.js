@@ -20,6 +20,24 @@ var UiTables = function() {
                 "order": [[ 3, "desc" ]]
             });
 
+            /* Initialize Datatables */
+            $('#datatable2').dataTable({
+                "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1 ] } ],
+                "iDisplayLength": 10,
+                "aLengthMenu": [[5, 10, 20], [5, 10, 20]],
+                "ordering": true,
+                "order": [[ 1, "desc" ]]
+            });
+
+             /* Initialize Datatables */
+            $('#datatable3').dataTable({
+                "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1 ] } ],
+                "iDisplayLength": 10,
+                "aLengthMenu": [[5, 10, 20], [5, 10, 20]],
+                "ordering": true,
+                "order": [[ 1, "desc" ]]
+            });
+
             /* Add placeholder attribute to the search input */
             $('.dataTables_filter input').attr('placeholder', 'Busacar..');
 

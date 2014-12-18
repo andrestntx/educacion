@@ -21,7 +21,7 @@
                         <th class="text-center" title="Número de Anexos"># Anexos</th>
                         <th class="text-center" title="Número de Preguntas"># Preguntas</th>
                         <th title="Ultima actulaización del Protocolo">Actualización</th>
-                        <th class="text-center" style="width: 105px;"><i class="fa fa-flash"></i></th>
+                        <th class="text-center" style="width: 145px;"><i class="fa fa-flash"></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +33,10 @@
                             <td class="text-center"><a href="{{route('protocolos.preguntas.index', $protocol->id)}}">{{ $protocol->questions()->count() }}</a></td>
                             <td>{{ $protocol->updated_at }}</td>
                             <td class="text-center">
-                                <a href="{{route('protocolos.show', $protocol->id)}}" data-toggle="tooltip" title="Ver Protocolo" class="btn btn-effect-ripple btn-info">
+                                <a href="{{route('protocolos.estadisticas', $protocol->id)}}" data-toggle="tooltip" title="Ver Estadisticas" class="btn btn-effect-ripple btn-info">
+                                    <i class="fa fa-bar-chart-o"></i>
+                                </a>
+                                <a href="{{route('protocolos.show', $protocol->id)}}" data-toggle="tooltip" title="Ver Protocolo" class="btn btn-effect-ripple btn-success">
                                     <i class="fa fa-eye"></i>
                                 </a>
                                 <a href="{{route('protocolos.edit', $protocol->id)}}" data-toggle="tooltip" title="Editar Protocolo" class="btn btn-effect-ripple btn-warning">

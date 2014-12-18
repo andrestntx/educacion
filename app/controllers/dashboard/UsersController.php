@@ -102,6 +102,19 @@ class UsersController extends \BaseController {
 		);
 	}
 
+	public function scores($id)
+	{
+		$user = User::findOrFail($id);
+		$protocols = $user->protocolsForStudy();
+
+		$protocols = Protocol::with(array('examScores' => function($query) use($user)
+		{
+		    $query->whereUserId($user->id);
+
+		}))->userCanStudy($user->id)->get();	
+
+		return View::make('dashboard.pages.user.scores', compact('protocols','user'));
+	}
 
 	/**
 	 * Update the specified resource in storage.
@@ -154,16 +167,24 @@ class UsersController extends \BaseController {
 	public function updateProfile($id)
 	{
 		$user = User::findOrFail($id);
-        
+        $image = Input::file('url_photo');
         $data = Input::all();
 
-        if ($user->validAndSave($data))
+        if ($user->validAndSave($data, $image))
         {
-            return Redirect::to('/');
+            return Redirect::to('mi-perfil');
         }
         else
         {
-        	return Redirect::intended('/')->withErrors($user->errors);
+        	return Redirect::intended('mi-perfil')->withErrors($user->errors);
         }	
+	}
+
+	public function profile()
+	{
+		$user = Auth::user();
+		$form_data = array('route' => array('usuarios.update-profile', $user->id), 'method' => 'POST', 'files' => true);
+
+		return View::make('dashboard.pages.user.profile', compact('user', 'form_data'));
 	}
 }

@@ -15,7 +15,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 * @var string
 	 */
 
-	protected $table = 'user';
+	protected $table = 'users';
 	protected $primaryKey = 'id';
 	protected $fillable = array(
         'username', 'password', 'email', 'name', 'tel','preferred_company_id', 'system_role_id', 
@@ -30,84 +30,76 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = array('password', 'remember_token');
 
-
     /* Exams */
 
-    public function hasExmasProtocol($protocol_id)
+    public function lastExam()
     {
-        if($this->numberExamsProtocol($protocol_id) > 0)
+        $examScore = $this->examScores->sortByDesc('updated_at')->first();
+
+        if(!is_null($examScore))
         {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function examsProtocol($protocol_id)
-    {
-        return $this->exams()->whereProtocolId($protocol_id);
-    }
-
-    public function numberExamsProtocol($protocol_id)
-    {
-        return $this->examsProtocol($protocol_id)->count();
-    }
-
-    public function lastExamProtocol($protocol_id)
-    {
-        $exam = $this->examsProtocol($protocol_id)->get()->sortByDesc('updated_at')->first();
-
-        if(!is_null($exam))
-        {
-            return $exam;
+            return $examScore;
         }
 
         return null;
     }
 
-    public function lastExamProtocol_update($protocol_id)
+    public function getLastExamUpdateAttribute()
     {
-        if($this->hasExmasProtocol($protocol_id))
+        if($examScore = $this->lastExam())
         {
-            return $this->lastExamProtocol($protocol_id)->updated_at;
-        }
+            return $examScore->updated_at;
+        } 
 
-        return 'Sin examenes';
+        return 'SIN EXAMEN';
     }
 
-    public function lastExamProtocol_score($protocol_id)
+    public function getLastExamScoreAttribute()
     {
-        if($this->hasExmasProtocol($protocol_id))
+        if($examScore = $this->lastExam())
         {
-            return $this->lastExamProtocol($protocol_id)->score;
+            return $examScore->score;
         } 
 
         return 'NA';
     }
 
-    public function bestExamProtocol($protocol_id)
+    public function bestExam()
     {
-        $exam = $this->examsProtocol($protocol_id)->get()->sortByDesc(function($exam)
-        {
-            return $exam->score;
-        })->first();
+        $examScore = $this->examScores->sortByDesc('score')->first();
 
-        if(!is_null($exam))
+        if(!is_null($examScore))
         {
-            return $exam;
+            return $examScore;
         }
 
         return null;
     }
 
-    public function bestExamProtocol_score($protocol_id)
+    public function getBestExamScoreAttribute()
     {
-        if($this->hasExmasProtocol($protocol_id))
+        if($exam = $this->bestExam())
         {
-            return $this->bestExamProtocol($protocol_id)->score;
+            return $exam->score;
         }
 
         return 'NA';
+    }
+
+    public function getbestExamStatusAttribute()
+    {
+        if($exam = $this->bestExam())
+        {
+            if($exam->score > 80){
+                return 'APROBADO';
+            }
+            else
+            {
+                return 'SIN APROBAR';
+            }
+        }
+
+        return 'NO PRESENTADO';
     }
 
     /* End Exams */
@@ -163,13 +155,26 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $query->where('system_role_id', '=', 3);
     }
 
-    /*** End Scopes ***/
+    public function scopeCanStudyProtocol($query, $protocol_id)
+    {
+        return $query->joinCanStudyProtocols()
+            ->where('protocol_id', $protocol_id);
+    }
+
+    public function scopeJoinCanStudyProtocols($query)
+    {
+        return $query->join('users_can_study_protocols', 'user_id', '=', 'users.id');
+    }
+
+    
+    /****** End Scopes ******/
+
 
     /*** Relations ***/
 
     public function protocolsForStudy()
     {
-        return $this->preferredCompany->protocols()->orderBy('id')->get();
+        return Protocol::userCanStudy($this->id)->orderBy('id')->get();
     }
 
     public function exams()
@@ -177,7 +182,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->hasMany('Exam', 'user_id');
     }
 
-    public function protocols()
+    public function examScores()
+    {
+        return $this->hasMany('ExamScores', 'user_id');
+    }
+
+    public function protocolsCreated()
     {
         return $this->hasMany('Protocol', 'user_id');
     }
@@ -260,8 +270,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     public function isValid($data)
     {
         $rules = array(
-            'username'     => 'required|max:100|unique:user',
-            'email'     => 'required|max:100|unique:user',
+            'username'     => 'required|max:100|unique:users',
+            'email'     => 'required|max:100|unique:users',
             'password' =>  'confirmed',
             'url_photo' => 'mimes:jpeg,png,bmp|max:1500'
         );
@@ -290,7 +300,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return false;
     }
 
-    public function validAndSave($data, $image)
+    public function validAndSave($data, $image = null)
     {
         if ($this->isValidImage($image) && $this->isValid($data))
         {

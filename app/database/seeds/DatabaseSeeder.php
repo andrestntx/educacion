@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder {
         $this->call('UserTableSeeder');
 		$this->call('UserRoleTableSeeder');
 		$this->call('UsersHasRolesTableSeeder');
-        $this->call('UsersHasCompaniesTableSeeder');
-        
         $this->call('AreaTableSeeder');
+        $this->call('UsersHasAreasTableSeeder');
+        $this->call('UsersHasCompaniesTableSeeder');
         
         $this->call('ProtocolCategoryTableSeeder');
         $this->call('ProtocolTableSeeder');
@@ -84,8 +84,8 @@ class UserRoleTableSeeder extends Seeder {
         ));
 
         DB::table('user_role')->insert(array(
-            'name' => 'Perfil de Prueba',
-            'description' => 'Perfil de Prueba',
+            'name' => 'Perfil Por Defecto',
+            'description' => 'Perfil Por Defecto',
             'company_id' => 2,
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
@@ -137,7 +137,7 @@ class UserTableSeeder extends Seeder {
  
     public function run()
     {
-        DB::table('user')->insert(array(
+        DB::table('users')->insert(array(
             'username' => 'superadmin',
             'email' => 'andres@nuestramarca.com',
             'password' => Hash::make('123'),
@@ -149,7 +149,7 @@ class UserTableSeeder extends Seeder {
             'updated_at' => new DateTime            
         ));
 
-        DB::table('user')->insert(array(
+        DB::table('users')->insert(array(
             'username' => 'miguel',
             'email' => 'miguel@nuestramarca.com',
             'password' => Hash::make('123'),
@@ -161,7 +161,7 @@ class UserTableSeeder extends Seeder {
             'updated_at' => new DateTime            
         ));
 
-        DB::table('user')->insert(array(
+        DB::table('users')->insert(array(
             'username' => 'mmejia',
             'email' => 'invitado@nuestramarca.com',
             'password' => Hash::make('123'),
@@ -191,31 +191,7 @@ class UsersHasRolesTableSeeder extends Seeder {
 
         DB::table('users_has_roles')->insert(array(
             'user_id' => 3,
-            'role_id' => 1,
-        ));
-    }
-}
-
-class UsersHasCompaniesTableSeeder extends Seeder {
- 
-    public function run()
-    {
-        DB::table('users_has_companies')->insert(array(
-            'user_id' => 1,
-            'company_id' => 1,
-            'active' => true
-        ));
-
-        DB::table('users_has_companies')->insert(array(
-            'user_id' => 2,
-            'company_id' => 2,
-            'active' => true
-        ));
-
-        DB::table('users_has_companies')->insert(array(
-            'user_id' => 3,
-            'company_id' => 2,
-            'active' => true
+            'role_id' => 2,
         ));
     }
 }
@@ -225,7 +201,7 @@ class AreaTableSeeder extends Seeder
     public function run()
     {
         DB::table('area')->insert(array(
-            'name' => 'Toda la Institución',
+            'name' => 'Área por defecto',
             'description' => 'Área general',
             'company_id' => 2,
             'created_at' => new DateTime,
@@ -258,12 +234,57 @@ class AreaTableSeeder extends Seeder
     }
 }
 
+class UsersHasAreasTableSeeder extends Seeder {
+ 
+    public function run()
+    {
+        DB::table('users_has_areas')->insert(array(
+            'user_id' => 1,
+            'area_id' => 1,
+        ));
+
+        DB::table('users_has_areas')->insert(array(
+            'user_id' => 2,
+            'area_id' => 1,
+        ));
+
+        DB::table('users_has_areas')->insert(array(
+            'user_id' => 3,
+            'area_id' => 1,
+        ));
+    }
+}
+
+class UsersHasCompaniesTableSeeder extends Seeder {
+ 
+    public function run()
+    {
+        DB::table('users_has_companies')->insert(array(
+            'user_id' => 1,
+            'company_id' => 1,
+            'active' => true
+        ));
+
+        DB::table('users_has_companies')->insert(array(
+            'user_id' => 2,
+            'company_id' => 2,
+            'active' => true
+        ));
+
+        DB::table('users_has_companies')->insert(array(
+            'user_id' => 3,
+            'company_id' => 2,
+            'active' => true
+        ));
+    }
+}
+
 class ProtocolCategoryTableSeeder extends Seeder
 {
     public function run()
     {
        DB::table('protocol_category')->insert(array(
-            'name' => 'Todos los Protocolos',
+            'name' => 'Categoría general',
             'description' => 'Categoría general',
             'company_id' => 2,
             'created_at' => new DateTime,
@@ -327,7 +348,7 @@ class ProtocolHasRolesTableSeeder extends Seeder {
     {
         DB::table('protocols_has_roles')->insert(array(
             'protocol_id' => 1,
-            'role_id' => 1,
+            'role_id' => 2,
         ));
     }
 }

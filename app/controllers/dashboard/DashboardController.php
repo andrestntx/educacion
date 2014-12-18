@@ -21,8 +21,9 @@ class DashboardController extends BaseController
 		}
 		else if(Auth::user()->isRegistred())
 		{
-			$protocols = Auth::user()->preferredCompany->protocols;
-			return View::make('dashboard.pages.user.scores', compact('protocols'));
+			$user = Auth::user();
+			$protocols = $user->protocolsForStudy();
+			return View::make('dashboard.pages.user.scores', compact('protocols', 'user'));
 		}
 
 		return Redirect::to('instituciones');

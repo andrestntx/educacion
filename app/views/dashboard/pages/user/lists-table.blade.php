@@ -20,7 +20,7 @@
                         <th title="Nombre del Votante">Nombre</th>
                         <th>Email</th>
                         <th title="Ultima actulaización del Usuario">Actualización</th>
-                        <th class="text-center" style="width: 75px;"><i class="fa fa-flash"></i></th>
+                        <th class="text-center" style="width: 115px;"><i class="fa fa-flash"></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,6 +32,9 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->updated_at }}</td>
                             <td class="text-center">
+                                <a href="{{route('usuarios.calificaciones', $user->id)}}" data-toggle="tooltip" title="Ver Calificaciones" class="btn btn-effect-ripple btn-info">
+                                    <i class="fa fa-bar-chart-o"></i>
+                                </a>
                                 <a href="{{route('usuarios.edit', $user->id)}}" data-toggle="tooltip" title="Editar Administrador" class="btn btn-effect-ripple btn-warning">
                                     <i class="fa fa-pencil"></i>
                                 </a>

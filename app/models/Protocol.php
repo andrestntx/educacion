@@ -5,26 +5,120 @@ class Protocol extends Eloquent
 	protected $table = 'protocol';
 	protected $primaryKey = 'id';
 	protected $fillable = array('name', 'description', 'user_id');
-	protected $globalModel = 2;
 	public $timestamps = true;
 	public $increments = true;
 	public $errors;
-	protected $attributeNames = array('url_pdf' => 'Pdf', 'id' => 'Id', 'description' => 'Descripción', 
-        'name' => 'Nombre', 'user_id' => 'Autor', 'created_at' => 'Creación', 'updated_at' => 'Actualización',
-    );
-	protected $mainAttributes = array('id', 'name', 'user_id');
-    protected $relationsArray = array('user_id' => 'user');
+    
 
     public function getUserValueAttribute()
     {
         return $this->user->name;
     }
 
+    /* Exams */
+
+    public function lastExam()
+    {
+        $examScore = $this->examScores->sortByDesc('updated_at')->first();
+
+        if(!is_null($examScore))
+        {
+            return $examScore;
+        }
+
+        return null;
+    }
+
+    public function isPdfCorrect()
+    {
+        if(File::isFile($this->url_pdf))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getPdfAttribute()
+    {
+        if(File::isFile($this->url_pdf))
+        {
+            return $this->url_pdf;
+        }
+
+        return '#';
+    }
+
+    public function getLastExamUpdateAttribute()
+    {
+        if($examScore = $this->lastExam())
+        {
+            return $examScore->updated_at;
+        } 
+
+        return 'SIN EXAMEN';
+    }
+
+    public function getLastExamScoreAttribute()
+    {
+        if($examScore = $this->lastExam())
+        {
+            return $examScore->score;
+        } 
+
+        return 'NA';
+    }
+
+    public function bestExam()
+    {
+        $examScore = $this->examScores->sortByDesc('score')->first();
+
+        if(!is_null($examScore))
+        {
+            return $examScore;
+        }
+
+        return null;
+    }
+
+    public function getBestExamScoreAttribute()
+    {
+        if($exam = $this->bestExam())
+        {
+            return $exam->score;
+        }
+
+        return 'NA';
+    }
+
+    public function getbestExamStatusAttribute()
+    {
+        if($exam = $this->bestExam())
+        {
+            if($exam->score > 80){
+                return 'APROBADO';
+            }
+            else
+            {
+                return 'SIN APROBAR';
+            }
+        }
+
+        return 'NO PRESENTADO';
+    }
+
+    /* End Exams */
+
     /***** Relations *****/
 
     public function user()
     {
         return $this->belongsTo('User', 'user_id');
+    }
+
+    public function usersHasExam()
+    {
+        return $this->belongsToMany('User', 'exam', 'protocol_id', 'user_id');
     }
 
     public function areas()
@@ -57,7 +151,27 @@ class Protocol extends Eloquent
         return $this->hasMany('Exam', 'protocol_id');
     }
 
+    public function examScores()
+    {
+        return $this->hasMany('ExamScores', 'protocol_id');
+    }
+
     /***** End Relations *****/
+
+    /***** Scopes *****/
+
+    public function scopeUserCanStudy($query, $user_id)
+    {
+        return $query->joinCanStudyProtocols()
+            ->where('users_can_study_protocols.user_id', $user_id);
+    }
+
+    public function scopeJoinCanStudyProtocols($query)
+    {
+        return $query->join('users_can_study_protocols', 'protocol_id', '=', 'protocol.id');
+    }
+
+    /****** End Scopes ******/
 
     public function randomQuestions()
     {
