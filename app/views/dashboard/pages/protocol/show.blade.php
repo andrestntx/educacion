@@ -121,7 +121,7 @@
 				<div class="row">
 					<a href="{{route('examenes.create', $protocol->id)}}" class="widget" title="Presentar Examen">
 						<div class="widget-content widget-content-mini themed-background-muted text-center">
-							<i class="fa fa-bar-chart-o"></i> Mejor Calificación
+							<i class="fa fa-bar-chart-o"></i> @if($user->best_exam_score > 0) Mejorar Calificación @else Presentar Examen @endif
 						</div>
 						<div class="widget-content text-center">
 							<div class="pie-chart easyPieChart" data-percent="{{$user->best_exam_score}}" data-line-width="3" data-bar-color="#cccccc" data-track-color="#f9f9f9" style="width: 80px; height: 80px; line-height: 80px;">

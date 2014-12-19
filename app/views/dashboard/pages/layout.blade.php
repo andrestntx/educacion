@@ -3,12 +3,12 @@
 	<!-- Blank Header -->
     <div class="content-header">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-7">
                 <div class="header-section">
                     <h1><i class="@yield('class_icon_page')"></i> @yield('title_page', 'Educación Continuada')</h1>
                 </div>
             </div>
-            <div class="col-sm-6 hidden-xs">
+            <div class="col-sm-5 hidden-xs">
                 <div class="header-section">
                     @yield('breadcrumbs')
                 </div>
