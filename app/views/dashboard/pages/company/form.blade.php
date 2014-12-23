@@ -39,4 +39,6 @@
       maxFileCount: 1, 
     }); 
   </script>
+  
+  {{ HTML::script('assets/js/plugins/forms/file-validator.js') }}
 @stop

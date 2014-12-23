@@ -29,9 +29,20 @@
 			                            	<td><a href="{{route('estudiar', $protocol->id)}}" title="Estudiar Protocolo">{{$protocol->name}}</a></td>
 			                            @endif
 			                            <td class="text-center">{{ $user->examScores->count() }}</a></td>
-			                            <td class="text-center">{{ $user->best_exam_score }}</td>
+
+			                            <td class="text-center">
+			                            	<div class="progress progress-striped progress-mini active" style="margin:0;">
+												<div class="progress-bar progress-bar-flat" role="progressbar" aria-valuenow="{{ $user->best_exam_score }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $user->best_exam_score }}%"></div>
+											</div>
+											{{ $user->best_exam_score }}%
+			                            </td>
 			                            <td> {{ $user->last_exam_update }} </td>
-			                        	<td class="text-center"> {{ $user->last_exam_score  }}</td>
+			                        	<td class="text-center"> 
+			                        		<div class="progress progress-striped progress-mini active" style="margin:0;">
+												<div class="progress-bar progress-bar-flat" role="progressbar" aria-valuenow="{{ $user->last_exam_score }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $user->last_exam_score }}%"></div>
+											</div>
+											{{ $user->last_exam_score }}%
+			                        	</td>
 			                        	<td class="text-center">
 				                        	@if(Auth::user()->isAdmin())
 				                        		<a href="{{route('protocolos.show', $protocol->id)}}" data-toggle="tooltip" title="Ver Protocolo" class="btn btn-effect-ripple btn-info">
@@ -42,7 +53,7 @@
 				                                    <i class="fa fa-eye"></i>
 				                                </a>
 				                                <a href="{{route('examenes.create', $protocol->id)}}" data-toggle="tooltip" title="Presentar examen" class="btn btn-effect-ripple btn-success">
-				                                    <i class="fa fa-line-chart"></i>
+				                                    <i class="fa fa-graduation-cap"></i>
 				                                </a>
 			                                @endif
 		                            	</td>

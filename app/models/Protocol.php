@@ -107,6 +107,11 @@ class Protocol extends Eloquent
         return 'NO PRESENTADO';
     }
 
+    public function getNumberAnnexAttribute()
+    {
+        return $this->annex->count();
+    }
+
     /* End Exams */
 
     /***** Relations *****/

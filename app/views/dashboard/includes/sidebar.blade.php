@@ -100,7 +100,7 @@
     <!-- END Wrapper for scrolling functionality -->
 
     <!-- Sidebar Extra Info -->
-    <div id="sidebar-extra-info" class="sidebar-content sidebar-nav-mini-hide">
+    <div id="sidebar-extra-info" class="sidebar-content sidebar-nav-mini-hide" style="margin-bottom:10px;">
         <div class="text-center col-md-12">
             {{ HTML::image(Auth::user()->preferredCompany->logo, Auth::user()->preferredCompany->name, array('style' => 'width:80%;')) }}
         </div>

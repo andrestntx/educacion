@@ -9,9 +9,11 @@
             </a>
         </li>
         <!-- END Main Sidebar Toggle Button -->
+        <li>
+          <strong class="hidden-xs" style="height: 50px; line-height: 50px; padding: 0 10px; margin: 0; font-weight: 200; font-size: 18px; color:white;">{{ Auth::user()->preferredCompany->name }}</strong>  
+        </li>
     </ul>
     <!-- END Left Header Navigation -->
-    
     <!-- Right Header Navigation -->
     <ul class="nav navbar-nav-custom pull-right">
         <!-- Search Form -->

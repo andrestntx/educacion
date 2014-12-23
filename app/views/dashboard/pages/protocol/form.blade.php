@@ -1,7 +1,6 @@
 @extends('dashboard.pages.form-layouts.horizontal')
 @section('title_page')
-  @if($protocol->exists) Editar Protocolo: {{$protocol->name}}
-  @else Nuevo Protocolo @endif
+  @if($protocol->exists) Editar Protocolo: {{$protocol->name}} @else Nuevo Protocolo @endif
 @stop
 @section('title_form') Datos del Protocolo @stop
 @section('form')
@@ -29,7 +28,7 @@
       <label class="col-md-4 control-label" for="url_pdf">PDF del Protocolo </label>
       <div class="col-md-6">
           <div class="input-group">
-              <input id="url_pdf" name="url_pdf" type="file"></input>
+              <input id="url_pdf" name="url_pdf" type="file" class="file"></input>
           </div>
       </div>
     </div>   
@@ -78,4 +77,5 @@
 @stop
 
 @section('js_aditional')
+  {{ HTML::script('assets/js/plugins/forms/file-validator.js') }}
 @stop

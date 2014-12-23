@@ -27,7 +27,8 @@ class Exam extends Eloquent
     	$numberAnswers = $this->numberAnswers();
     	if($numberAnswers > 0)
     	{
-    		return $this->answers()->corrects()->count() / $numberAnswers * 100;
+            $score = $this->answers()->corrects()->count() / $numberAnswers * 100;
+            return number_format($score,1);
     	}
 
     	return 0;

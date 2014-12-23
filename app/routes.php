@@ -53,6 +53,7 @@ Route::group(array('before' => 'auth'), function()
 		Route::get('protocolos/{protocol}/estadisticas', array('as' => 'protocolos.estadisticas', 'uses' => 'ProtocolsController@stats'));
 		Route::resource('protocolos', 'ProtocolsController');
 		Route::resource('protocolos.anexos', 'AnnexController');
+		Route::resource('protocolos.enlaces', 'LinksController');
 		Route::resource('protocolos.preguntas', 'QuestionsController');
 	});
 

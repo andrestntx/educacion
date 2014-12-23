@@ -58,7 +58,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     {
         if($examScore = $this->lastExam())
         {
-            return $examScore->score;
+            return $examScore->formated_score;
         } 
 
         return 'NA';
@@ -80,7 +80,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     {
         if($exam = $this->bestExam())
         {
-            return $exam->score;
+            return $exam->formated_score;
         }
 
         return 'NA';

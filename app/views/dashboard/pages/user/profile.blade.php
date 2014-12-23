@@ -20,26 +20,11 @@
                 <div class="widget-content widget-content-full border-bottom">
                     <div class="row text-center">
                         <div class="col-xs-6 push-inner-top-bottom border-right">
-                            <h3 class="widget-heading"><i class="gi gi-heart text-danger push"></i> <br><small><strong>1.5k</strong> Favorites</small></h3>
+                            <h3 class="widget-heading"><i class="fa fa-file-text text-danger push"></i> <br><small><strong>{{ $number_protocols }}</strong> Protocolos </small></h3>
                         </div>
                         <div class="col-xs-6 push-inner-top-bottom">
-                            <h3 class="widget-heading"><i class="gi gi-group themed-color-social push"></i> <br><small><strong>58.6k</strong> Followers</small></h3>
+                            <h3 class="widget-heading"><i class="gi gi-folder_closed themed-color-social push"></i> <br><small><strong>{{ $number_exams }}</strong> Examenes</small></h3>
                         </div>
-                    </div>
-                </div>
-                <div class="widget-content border-bottom">
-                    <h4>About</h4>
-                    <p>Proin ac nibh rutrum lectus rhoncus eleifend. Sed porttitor pretium venenatis. Suspendisse potenti. Aliquam quis ligula elit. Aliquam at orci ac neque semper dictum. Sed tincidunt scelerisque ligula, et facilisis nulla hendrerit non. Suspendisse potenti.</p>
-                    <p>Sed porttitor pretium venenatis. Suspendisse potenti. Aliquam quis ligula elit. Aliquam at orci ac neque semper dictum.</p>
-                </div>
-                <div class="widget-content">
-                    <h4>Social</h4>
-                    <div class="btn-group">
-                        <a href="javascript:void(0)" class="btn btn-default" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook fa-fw"></i></a>
-                        <a href="javascript:void(0)" class="btn btn-default" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter fa-fw"></i></a>
-                        <a href="javascript:void(0)" class="btn btn-default" data-toggle="tooltip" title="Google Plus"><i class="fa fa-google-plus fa-fw"></i></a>
-                        <a href="javascript:void(0)" class="btn btn-default" data-toggle="tooltip" title="Pinterest"><i class="fa fa-pinterest fa-fw"></i></a>
-                        <a href="javascript:void(0)" class="btn btn-default" data-toggle="tooltip" title="Dribbble"><i class="fa fa-dribbble fa-fw"></i></a>
                     </div>
                 </div>
             </div>

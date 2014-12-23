@@ -21,7 +21,7 @@
                         <th class="text-center" title="Número de Anexos"># Anexos</th>
                         <th class="text-center" title="Número de Preguntas"># Preguntas</th>
                         <th title="Ultima actulaización del Protocolo">Actualización</th>
-                        <th class="text-center" style="width: 145px;"><i class="fa fa-flash"></i></th>
+                        <th class="text-center" style="width: 155px;"><i class="fa fa-flash"></i></th>
                     </tr>
                 </thead>
                 <tbody>

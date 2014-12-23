@@ -184,7 +184,9 @@ class UsersController extends \BaseController {
 	{
 		$user = Auth::user();
 		$form_data = array('route' => array('usuarios.update-profile', $user->id), 'method' => 'POST', 'files' => true);
-
-		return View::make('dashboard.pages.user.profile', compact('user', 'form_data'));
+		$number_protocols = $user->protocolsForStudy()->count();
+		$number_exams = $user->examScores()->count();
+		
+		return View::make('dashboard.pages.user.profile', compact('user', 'form_data', 'number_protocols', 'number_exams'));
 	}
 }

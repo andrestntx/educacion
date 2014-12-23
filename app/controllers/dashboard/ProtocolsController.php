@@ -61,11 +61,24 @@ class ProtocolsController extends \BaseController {
 	public function show($id)
 	{
 		$protocol = Protocol::findOrFail($id);
-		$number_annex = $protocol->annex()->count();
-		$number_questions = $protocol->questions()->count();
+		$protocol->load('annex', 'questions');
 
-		return View::make('dashboard.pages.protocol.show', compact('protocol', 
-			 'number_questions', 'number_annex'
+		$annex = $protocol->annex->filter(function($annex)
+		{
+		    return $annex->isFile();
+		});
+
+		$links = $protocol->annex->filter(function($annex)
+		{
+		    return $annex->isLink();
+		});
+
+		$number_annex = $annex->count();
+		$number_links = $links->count();
+		$number_questions = $protocol->questions->count();
+
+		return View::make('dashboard.pages.protocol.show-admin', compact('protocol', 
+			 'number_questions', 'number_annex', 'annex', 'number_links', 'links'
 		));
 	}
 

@@ -9,11 +9,6 @@ class Annex extends Eloquent
 	public $timestamps = true;
 	public $increments = true;
 	public $errors;
-	protected $attributeNames = array('url' => 'Archivo', 'id' => 'Id', 'description' => 'Descripción', 
-        'name' => 'Nombre', 'created_at' => 'Creación', 'updated_at' => 'Actualización',
-    );
-	protected $mainAttributes = array('name');
-    protected $relationsArray = array('user_id' => 'user');
 
     public function getUserValueAttribute()
     {
@@ -30,6 +25,7 @@ class Annex extends Eloquent
         if(!is_null($file) && !$file->isValid())
         {
             $this->errors = array('El Archivo debe ser menor que '.ini_get('upload_max_filesize'));
+            echo " el archivo falla ";
             return false;
         }
 
@@ -41,7 +37,7 @@ class Annex extends Eloquent
         $rules = array(
             'name'     => 'required|max:100|unique:annex',
             'protocol_id' => 'required',
-            'url' => 'max:1500'
+            'url' => 'mimes:jpeg,bmp,png,mp4,pdf|max:1500'
         );
 
         if ($this->exists)
@@ -57,17 +53,54 @@ class Annex extends Eloquent
         }
         
         $this->errors = $validator->errors();
+        return false;
+    }
+
+    public function isValidLink($data)
+    {
+        $rules = array(
+            'name'     => 'required|max:100|unique:annex',
+            'protocol_id' => 'required',
+            'url' => 'required'
+        );
+
+        if ($this->exists)
+        {
+            $rules['name'] .= ',name,'.$this->id.',id';
+        }
         
+        $validator = Validator::make($data, $rules);
+        
+        if ($validator->passes())
+        {
+            return true;
+        }
+        
+        $this->errors = $validator->errors();
         return false;
     }
 
     public function validAndSave($data, $file)
     {
-        if ($this->isValidFile($file) && $this->isValid($data))
+        if ($this->isValid($data) && $this->isValidFile($file))
         {
             $this->fill($data);
             $this->save();
             $this->uploadFile($file);
+            
+            return true;
+        }
+        
+        return false;
+    }
+
+    public function validAndSaveLink($data)
+    {
+        if ($this->isValidLink($data))
+        {
+            $this->fill($data);
+            $this->url = $data['url'];
+            $this->save();
             
             return true;
         }
@@ -85,6 +118,107 @@ class Annex extends Eloquent
             $file->move($path, $name);
             $this->url = $url;
             $this->save();
+        }
+    }
+
+    public function getTypeAttribute()
+    {
+        $extension = File::extension($this->url);
+        if($extension == 'png' || $extension == 'jpg' || $extension == 'bmp')
+        {
+            return 'image';
+        }
+        else if($extension == 'mp4')
+        {
+            return 'video';
+        }
+        else if($extension == 'pdf')
+        {
+            return 'pdf';
+        }
+        else if($extension == '')
+        {
+            return 'link';
+        }
+
+        return 'other';
+    }
+
+    public function isImage()
+    {
+        if($this->type == 'image')
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isPdf()
+    {
+        if($this->type == 'pdf')
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isVideo()
+    {
+        if($this->type == 'video')
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isLink()
+    {
+        if($this->type == 'link')
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isFile()
+    {
+        if(!$this->isLink())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getIconAttribute()
+    {
+        if($this->isFile())
+        {
+            if($this->isImage())
+            {
+                return 'fa fa-picture-o';
+            }
+            else if($this->isPdf())
+            {
+                return 'fa fa-file-text'; 
+            }
+            else if($this->isVideo())
+            {
+                return 'fa fa-film'; 
+            }
+            else
+            {
+                return 'fa fa-download';
+            }
+            
+        }
+        else if($this->isLink())
+        {
+            return 'fa fa-share';
         }
     }
 }
