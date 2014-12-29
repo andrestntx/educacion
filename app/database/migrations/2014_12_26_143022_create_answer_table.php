@@ -15,7 +15,9 @@ class CreateAnswerTable extends Migration {
 		Schema::create('answer', function($table)
 		{
 		    $table->increments('id');
-		    $table->string('text', 200);
+		    $table->text('text');
+		    $table->text('observation')->nullable();
+		    $table->integer('value')->nullable();
 		    $table->boolean('correct')->nullable();
 
 		    $table->integer('question_id')->unsigned();	    

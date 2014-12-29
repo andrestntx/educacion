@@ -65,7 +65,15 @@ class SurveyTypeTableSeeder extends Seeder {
         ));
 
         DB::table('survey_type')->insert(array(
-            'name' => 'Lista de Chequeo de Paciente',
+            'name' => 'Chequeo Paciente',
+        ));
+
+        DB::table('survey_type')->insert(array(
+            'name' => 'Formula',
+        ));
+
+        DB::table('survey_type')->insert(array(
+            'name' => 'Observaciones',
         ));
     }
 }

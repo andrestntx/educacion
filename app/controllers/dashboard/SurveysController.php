@@ -9,8 +9,9 @@ class SurveysController  extends \BaseController {
 	 */
 	public function index()
 	{
-		$surveys = Auth::user()->preferredCompany->surveysTypeCheck();
-		return View::make('dashboard.pages.survey.lists-table', compact('surveys'));
+		$surveys = Auth::user()->preferredCompany->surveysNotExam();
+		$survey_types = SurveyType::whereNotExam()->lists('name', 'id');
+		return View::make('dashboard.pages.survey.lists-table', compact('surveys', 'survey_types'));
 	}
 
 
@@ -23,9 +24,9 @@ class SurveysController  extends \BaseController {
 	{
 		$survey = new Survey;
 		$user = Auth::user();
-		$type_id = 2;
+		$survey->type_id = Input::get('tipo');
 		$form_data = array('route' => 'formularios.store', 'method' => 'POST', 'files' => false);
-		return View::make('dashboard.pages.survey.form', compact('survey', 'form_data', 'user', 'type_id'));
+		return View::make('dashboard.pages.survey.form', compact('survey', 'form_data', 'user'));
 	}
 
 
@@ -72,9 +73,8 @@ class SurveysController  extends \BaseController {
 	{
 		$survey = Survey::findOrFail($id);
 		$user = Auth::user();
-		$type_id = 2;
 		$form_data = array('route' => array('formularios.update', $survey->id), 'method' => 'PUT', 'files' => false);
-		return View::make('dashboard.pages.survey.form', compact('survey', 'form_data', 'user', 'type_id'));
+		return View::make('dashboard.pages.survey.form', compact('survey', 'form_data', 'user'));
 	}
 
 

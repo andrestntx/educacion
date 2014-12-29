@@ -1,6 +1,6 @@
 @extends('dashboard.pages.form-layouts.horizontal')
 @section('title_page')
-  {{$survey->name}} -
+  {{$survey->type->name}}, {{$survey->name}} -
   @if($question->exists) Editar Pregunta
   @else Nueva Pregunta @endif
 @stop
@@ -26,12 +26,16 @@
         @for($i=1; $i <= $number_answers; $i++ )
           <div class="form-group">
             <label class="col-md-3 control-label" for="answers[{{$i}}][text]">Respuesta {{$i}} <span class="text-danger">*</span></label> 
-            <div class="col-md-7"> 
+            <div class="col-md-8"> 
               <div class="input-group">     
                 {{ Form::text('answers['.$i.'][text]', null, array('required' => 'required', 
                   'placeholder' => 'Respuesta '.$i, 'class' => 'form-control')) }}
                 <span class="input-group-addon"><i class="fa fa-bars"></i></span>
               </div>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+              {{ Form::textarea('answers['.$i.'][observation]', null, array('required' => 'required', 
+                  'placeholder' => 'Observación '.$i, 'class' => 'form-control', 'rows' => '2')) }}
             </div>
           </div>
         @endfor
@@ -39,12 +43,16 @@
         @foreach($question->answers as $answer)
             <div class="form-group">
               <label class="col-md-3 control-label" for="answers[{{$answer->id}}][text]">Respuesta <span class="text-danger">*</span></label>     
-              <div class="col-md-7">     
+              <div class="col-md-8">     
                 <div class="input-group"> 
                   {{ Form::text('answers['.$answer->id.'][text]', $answer->text, array('required' => 'required', 
                     'placeholder' => 'Respuesta ', 'class' => 'form-control')) }}
                   <span class="input-group-addon"><i class="fa fa-bars"></i></span>
                 </div>
+              </div>
+              <div class="col-md-10 col-md-offset-1">
+                {{ Form::textarea('answers['.$answer->id.'][observation]', $answer->observation, array('required' => 'required', 
+                    'placeholder' => 'Valor ', 'class' => 'form-control', 'rows' => '2')) }}
               </div>
             </div>
           @endforeach

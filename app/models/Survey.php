@@ -42,16 +42,6 @@ class Survey extends Eloquent
         return $this->questions;
     }
 
-    public function isTypeCheck()
-    {
-        if($this->type_id == 2)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
     public function isValid($data)
     {
         $rules = array(

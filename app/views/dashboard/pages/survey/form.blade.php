@@ -5,7 +5,7 @@
 @section('form')
   {{ Form::model($survey, $form_data) }}
     {{ Form::input('hidden', 'created_by', $user->id) }}
-    {{ Form::input('hidden', 'type_id', $type_id) }}
+    {{ Form::input('hidden', 'type_id', null) }}
     <div class="form-group">
       <label class="col-md-4 control-label" for="name">Nombre <span class="text-danger">*</span></label>
       <div class="col-md-6">

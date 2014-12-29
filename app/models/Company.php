@@ -52,11 +52,11 @@ class Company extends Eloquent
 	}
 	/***** End Relations *****/
 
-	public function surveysTypeCheck()
+	public function surveysNotExam()
     {
         $checks = $this->surveys->filter(function($survey)
         {
-            return $survey->isTypeCheck();
+            return $survey->type->isNotExam();
         });
 
         return $checks;

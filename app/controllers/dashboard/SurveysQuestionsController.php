@@ -25,7 +25,7 @@ class SurveysQuestionsController extends \BaseController {
 	{
 		$survey = Survey::findOrFail($survey_id);
 		$question = new Question;		
-		$form_data = array('route' => array('listas-chequeo.preguntas.store', $survey_id), 'method' => 'POST');
+		$form_data = array('route' => array('formularios.preguntas.store', $survey_id), 'method' => 'POST');
 
 		$number_answers = Input::get('respuestas');
 		if(is_null($number_answers))
@@ -36,7 +36,18 @@ class SurveysQuestionsController extends \BaseController {
 		else
 		{
 			$type_id = 1;
-			return View::make('dashboard.pages.survey.question.multiple.form', compact('question', 'form_data', 'survey', 'number_answers', 'type_id'));
+			if($survey->type->isCheck())
+			{
+				return View::make('dashboard.pages.survey.question.multiple.form-check', compact('question', 'form_data', 'survey', 'number_answers', 'type_id'));
+			}
+			else if($survey->type->isMath())
+			{
+				return View::make('dashboard.pages.survey.question.multiple.form-math', compact('question', 'form_data', 'survey', 'number_answers', 'type_id'));
+			}
+			else if($survey->type->isObservations())
+			{
+				return View::make('dashboard.pages.survey.question.multiple.form-observation', compact('question', 'form_data', 'survey', 'number_answers', 'type_id'));
+			}
 		}	
 	}
 
@@ -53,11 +64,11 @@ class SurveysQuestionsController extends \BaseController {
 
         if ($question->validAndSave($data))
         {
-            return Redirect::route('listas-chequeo.preguntas.index', $survey_id);
+            return Redirect::route('formularios.preguntas.index', $survey_id);
         }
         else
         {
-			return Redirect::route('listas-chequeo.preguntas.create', array($survey_id, 'respuestas='.count($data['answers'])))->withInput()->withErrors($question->errors);
+			return Redirect::route('formularios.preguntas.create', array($survey_id, 'respuestas='.count($data['answers'])))->withInput()->withErrors($question->errors);
         } 
 	}
 
@@ -86,7 +97,7 @@ class SurveysQuestionsController extends \BaseController {
 		$question = $survey->questions()->findOrFail($id);
 		
 		$form_data = array(
-			'route' => array('listas-chequeo.preguntas.update', $survey->id, $question->id), 
+			'route' => array('formularios.preguntas.update', $survey->id, $question->id), 
 			'method' => 'PUT', 
 			'files' => true
 		);
@@ -94,12 +105,24 @@ class SurveysQuestionsController extends \BaseController {
 		if($question->isMultiple())
 		{
 			$type_id = 1;
-			return View::make('dashboard.pages.survey.question.multiple.form', compact('question', 'form_data', 'survey', 'type_id'));
+			if($survey->type->isCheck())
+			{
+				return View::make('dashboard.pages.survey.question.multiple.form-check', compact('question', 'form_data', 'survey', 'type_id'));
+			}
+			else if($survey->type->isMath())
+			{
+				return View::make('dashboard.pages.survey.question.multiple.form-math', compact('question', 'form_data', 'survey', 'type_id'));
+			}
+			else if($survey->type->isObservations())
+			{
+				return View::make('dashboard.pages.survey.question.multiple.form-observation', compact('question', 'form_data', 'survey', 'type_id'));
+			}
+			
 		}
 		else
 		{
 			$type_id = 2;
-			return View::make('dashboard.pages.survey.question.simple.form', compact('question', 'form_data', 'survey', 'type_id'));	
+			return View::make('dashboard.pages.survey.question.simple.form', compact('question', 'form_data', 'survey', 'type_id'));
 		}
 		
 	}
@@ -119,11 +142,11 @@ class SurveysQuestionsController extends \BaseController {
 
         if ($question->validAndSave($data))
         {
-            return Redirect::route('listas-chequeo.preguntas.index', $survey_id);
+            return Redirect::route('formularios.preguntas.index', $survey_id);
         }
         else
         {
-			return Redirect::route('listas-chequeo.preguntas.edit', array($survey_id, $id))->withInput()->withErrors($question->errors);
+			return Redirect::route('formularios.preguntas.edit', array($survey_id, $id))->withInput()->withErrors($question->errors);
         } 
 	}
 

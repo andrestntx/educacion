@@ -1,15 +1,20 @@
 @extends('dashboard.pages.layout')
 @section('class_icon_page') fa fa-check @stop
-@section('title_page') Listas de Chequeo de la Institución @stop
+@section('title_page') Formularios de la Institución @stop
 @section('breadcrumbs')
 
 @stop
 @section('content_body_page')
-    <div class="row" id="title_page" style="margin-bottom: 10px;">
-    	<div class="col-md-12">
-            <a href="{{route('formularios.create')}}" class="btn btn-primary"><i class="fa fa-plus-square"></i> Nueva Lista de Chequeo</a>
+    @if(Auth::user()->isAdmin())
+        <div class="row" id="title_page" style="margin-bottom: 10px;">
+        	<div class="col-md-12">
+                {{Form::open(array('route' => array('formularios.create'), 'method' => 'GET', 'class' => 'form-inline'))}}
+                    {{Form::select('tipo', $survey_types, null, array('class' => 'form-control', 'required' => 'required'))}}
+                    <button type="submit" class="btn btn-effect-ripple btn-primary" data-toggle="tooltip" data-original-title="Nuevo Formulario"><i class="fa fa-plus"></i> Nuevo Formulario</button>
+                {{Form::close()}}
+            </div>
         </div>
-    </div>
+    @endif
     <div class="block full">
         <div class="table-responsive">
             <table id="datatable" class="table table-striped table-bordered table-vcenter">
@@ -17,6 +22,7 @@
                     <tr>
                         <th title="Nombre del Area">Nombre</th>
                         <th title="Descripción del Area">Descripción</th>
+                        <th title="Descripción del Area">Tipo</th>
                         <th title="Ultima actulaización del Area">Actualización</th>
                         <th class="text-center" style="width:95px;"><i class="fa fa-flash"></i></th>
                     </tr>
@@ -26,6 +32,7 @@
                         <tr>
                             <td><strong>{{ $survey->name }}</strong></td>
                             <td>{{ $survey->description }}</td>
+                            <td>{{ $survey->type->name }}</td>
                             <td>{{ $survey->updated_at }}</td>
                             <td class="text-center">
                                 @if(Auth::user()->isAdmin())

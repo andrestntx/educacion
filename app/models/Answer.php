@@ -4,7 +4,7 @@ class Answer extends Eloquent
 {
 	protected $table = 'answer';
 	protected $primaryKey = 'id';
-	protected $fillable = array('text', 'question_id', 'correct');
+	protected $fillable = array('text', 'value', 'observation', 'question_id', 'correct');
 	public $timestamps = true;
 	public $increments = true;
 	public $errors;
