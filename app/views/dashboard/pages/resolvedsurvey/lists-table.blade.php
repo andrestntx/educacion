@@ -21,10 +21,10 @@
                             <td class="text-center"><strong>{{ $resolvedSurvey->id }}</strong></td>
                             <td class="text-center"><strong>{{ $resolvedSurvey->created_at }}</strong></td>
                             <td class="text-center">
-                                <a href="{{route('formularios.show', array($survey->id, $resolvedSurvey->id))}}" data-toggle="tooltip" title="Ver Registro" class="btn btn-effect-ripple btn-info">
+                                <a href="{{route('formularios.registros.show', array($survey->id, $resolvedSurvey->id))}}" data-toggle="tooltip" title="Ver Registro" class="btn btn-effect-ripple btn-info">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{route('formularios.export', array($survey->id, $resolvedSurvey->id))}}" data-toggle="tooltip" title="Exportar a PDF" class="btn btn-effect-ripple btn-success">
+                                <a href="{{route('formularios.registros.export', array($survey->id, $resolvedSurvey->id))}}" data-toggle="tooltip" title="Exportar a PDF" class="btn btn-effect-ripple btn-success">
                                     <i class="fa fa-file-pdf-o"></i>
                                 </a>
                             </td>

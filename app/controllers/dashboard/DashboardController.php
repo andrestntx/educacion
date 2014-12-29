@@ -16,7 +16,7 @@ class DashboardController extends BaseController
 			$number_roles = $user->preferredCompany->roles->count();
 			$number_protocols = $user->preferredCompany->protocols->count();
 			$number_categories = $user->preferredCompany->protocolCategories->count();
-			$number_checks = $user->preferredCompany->surveysTypeCheck()->count();
+			$number_checks = $user->preferredCompany->surveys()->count();
 
 			return View::make('dashboard.pages.company.show', compact('number_areas', 'number_users',
 				'number_roles', 'number_protocols', 'number_categories', 'number_checks'
