@@ -1,7 +1,5 @@
 @extends('dashboard.pages.layout')
-@section('title_page')
-    Todos los Protocolos
-@stop
+@section('title_page') Todos los Protocolos @stop
 @section('breadcrumbs')
 
 @stop
@@ -29,8 +27,8 @@
                         <tr>
                             <td><a href="{{route('protocolos.show', $protocol->id)}}" title="Ver Protocolo">{{$protocol->name}}</a></td>
                             <td>{{ $protocol->description }}</td>
-                            <td class="text-center"><a href="{{route('protocolos.anexos.index', $protocol->id)}}">{{ $protocol->annex()->count() }}</a></td>
-                            <td class="text-center"><a href="{{route('protocolos.preguntas.index', $protocol->id)}}">{{ $protocol->questions()->count() }}</a></td>
+                            <td class="text-center"><a href="{{route('protocolos.anexos.index', $protocol->id)}}">{{ $protocol->number_annex }}</a></td>
+                            <td class="text-center"><a href="{{route('protocolos.preguntas.index', $protocol->id)}}">{{ $protocol->number_questions }}</a></td>
                             <td>{{ $protocol->updated_at }}</td>
                             <td class="text-center">
                                 <a href="{{route('protocolos.estadisticas', $protocol->id)}}" data-toggle="tooltip" title="Ver Estadisticas" class="btn btn-effect-ripple btn-info">

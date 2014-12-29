@@ -15,6 +15,22 @@ class Protocol extends Eloquent
         return $this->user->name;
     }
 
+    public function getCategoriesListsAttribute()
+    {
+        return $this->categories->lists('id');
+    }
+
+    public function getAreasListsAttribute()
+    {
+        return $this->areas->lists('id');
+    }
+
+    public function getRolesListsAttribute()
+    {
+        return $this->roles->lists('id');
+    }
+
+
     /* Exams */
 
     public function lastExam()
@@ -112,18 +128,28 @@ class Protocol extends Eloquent
         return $this->annex->count();
     }
 
+    public function getNumberQuestionsAttribute()
+    {
+        return $this->survey->number_questions;
+    }
+
     /* End Exams */
 
     /***** Relations *****/
 
+    public function survey()
+    {
+        return $this->belongsTo('Survey', 'survey_id');
+    }
+
+    public function examScores()
+    {
+        return $this->hasMany('ExamScores', 'survey_id');
+    }
+
     public function user()
     {
         return $this->belongsTo('User', 'user_id');
-    }
-
-    public function usersHasExam()
-    {
-        return $this->belongsToMany('User', 'exam', 'protocol_id', 'user_id');
     }
 
     public function areas()
@@ -146,22 +172,27 @@ class Protocol extends Eloquent
         return $this->hasMany('Annex', 'protocol_id');
     }
 
-    public function questions()
-    {
-        return $this->hasMany('Question', 'protocol_id');
-    }
-
-    public function exams()
-    {
-        return $this->hasMany('Exam', 'protocol_id');
-    }
-
-    public function examScores()
-    {
-        return $this->hasMany('ExamScores', 'protocol_id');
-    }
-
     /***** End Relations *****/
+
+    public function getAnnexFileAttribute()
+    {
+        $annex = $this->annex->filter(function($annex)
+        {
+            return $annex->isFile();
+        });
+
+        return $annex;
+    }
+
+    public function getAnnexLinkAttribute()
+    {
+        $links = $this->annex->filter(function($annex)
+        {
+            return $annex->isLink();
+        });
+
+        return $links;
+    }
 
     /***** Scopes *****/
 
@@ -178,17 +209,6 @@ class Protocol extends Eloquent
 
     /****** End Scopes ******/
 
-    public function randomQuestions()
-    {
-        if($this->questions()->count() >= 10)
-        {
-            return $this->questions->random(10);
-        }
-
-        return $this->questions;
-        
-    }
-
 	public function isValid($data)
     {
         $rules = array(
@@ -204,6 +224,7 @@ class Protocol extends Eloquent
         else 
         {
             $rules['url_pdf'] .= '|required';
+            $rules['survey_id'] .= '|required';
         }
         
         $validator = Validator::make($data, $rules);
@@ -234,6 +255,11 @@ class Protocol extends Eloquent
         if ($this->isValidPDF($pdf) && $this->isValid($data))
         {
             $this->fill($data);
+            if(!$this->exists)
+            {
+                $survey = Survey::create(array('name' => 'Examen de Protocolo ' + $data['name'], 'created_by' => Auth::user()->id, 'type_id' => 2));
+                $this->survey_id = $survey->id;
+            }
             $this->save();
             $this->uploadPdf($pdf);
 

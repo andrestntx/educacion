@@ -75,11 +75,23 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="{{url('formularios')}}">
+                            <i class="fa fa-check sidebar-nav-icon"></i>
+                            <span class="sidebar-nav-mini-hide">Formularios</span>
+                        </a>
+                    </li>
                 @else
                     <li>
                         <a href="{{url('/')}}">
                             <i class="fa fa-bar-chart-o sidebar-nav-icon"></i>
                             <span class="sidebar-nav-mini-hide">Mis Notas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url('formularios')}}">
+                            <i class="fa fa-check sidebar-nav-icon"></i>
+                            <span class="sidebar-nav-mini-hide">Formularios</span>
                         </a>
                     </li>
                     <li class="sidebar-separator">Protocolos</li>

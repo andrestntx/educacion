@@ -4,6 +4,7 @@
 @section('title_form') Datos de la Institución @stop
 @section('form')
   {{ Form::model($company, $form_data) }}
+    {{Form::input('hidden', 'type_id', $type_id)}}
     <div class="form-group">
       <label class="col-md-4 control-label" for="name">Nombre de la Institución <span class="text-danger">*</span></label>
       <div class="col-md-6">

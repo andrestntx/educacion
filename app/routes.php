@@ -33,6 +33,7 @@ Route::group(array('before' => 'auth'), function()
 {	
 	Route::post('actualizar-perfil/{user}', array('as' => 'usuarios.update-profile', 'uses' => 'UsersController@updateProfile'));
 	Route::get('mi-perfil', array('as' => 'usuarios.show-profile', 'uses' => 'UsersController@profile'));
+	Route::get('formularios', array('as' => 'formularios.index', 'uses' => 'SurveysController@index'));
 	/***** Only acces Role 1 => Super Admin *****/
 	Route::group(array('before' => 'system_roles:1'), function()
 	{
@@ -55,11 +56,15 @@ Route::group(array('before' => 'auth'), function()
 		Route::resource('protocolos.anexos', 'AnnexController');
 		Route::resource('protocolos.enlaces', 'LinksController');
 		Route::resource('protocolos.preguntas', 'QuestionsController');
+		Route::resource('formularios', 'SurveysController', array('except' => array('index')));
+		Route::resource('formularios.preguntas', 'SurveysQuestionsController');
 	});
 
 	/***** Only acces Roles 3=> Registrered *****/
 	Route::group(array('before' => 'system_roles:3'), function()
 	{
+		Route::get('formularios/{survey}/registros/{resolvedSurvey}/descargar', array('as' => 'formularios.registros.export', 'uses' => 'ResolvedSurveysController@export'));
+		Route::resource('formularios.registros', 'ResolvedSurveysController');
 		Route::get('estudiar/{protocol}', array('as' => 'estudiar', 'uses' => 'ExamsController@studyProtocol'));
 		Route::get('examenes/presentar/{protocol}', array('as' => 'examenes.create', 'uses' => 'ExamsController@create'));
 		Route::post('examenes/presentar/{protocol}', array('as' => 'examenes.store', 'uses' => 'ExamsController@store'));
@@ -67,6 +72,7 @@ Route::group(array('before' => 'auth'), function()
 	
 	/***** Acces All Roles *****/
 	Route::controller('/', 'DashboardController');
+
 
 });
 

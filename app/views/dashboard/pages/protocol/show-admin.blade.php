@@ -45,7 +45,7 @@
 	                            <li title="{{$a->description}}">
 	                            	<div class="row">
 		                            	<div class="col-sm-7">
-		                            		<h4><a href="{{url($a->url)}}" target="_blank">{{$a->name}}</a></h4>
+		                            		<h4><a href="{{url($a->url)}}" target="_blank">{{$a->name}} - {{$a->type}}</a></h4>
 		                            	</div>
 		                            	<div class="col-sm-5">
 				                            <a href="{{route('protocolos.anexos.edit', array($protocol->id, $a->id))}}" data-toggle="tooltip" title="Editar Anexo" class="btn btn-sm btn-effect-ripple btn-warning">
@@ -104,13 +104,13 @@
 							{{Form::open(array('route' => array('protocolos.preguntas.create', $protocol->id), 'method' => 'GET', 'class' => 'form-inline'))}}
 								{{Form::text('respuestas', null, array('class' => 'form-control', 'placeholder' => '# Respuestas', 'required' => 'required'))}}
 								<button type="submit" class="btn btn-effect-ripple btn-info" data-toggle="tooltip" style="overflow: hidden; position: relative;" data-original-title="Nueva Pregunta"><i class="fa fa-plus"></i></button>
-							</form>
+							{{Form::close()}}
 						</div>
 						<h2>{{$number_questions}} Preguntas </h2>
 					</div>
 					<div class="block-section">
 						<ul class="list-unstyled">
-	                    @foreach($protocol->questions as $question)
+	                    @foreach($protocol->survey->questions as $question)
                             <li title="Pregunta">
                             	<div class="row">
 	                            	<div class="col-sm-8">

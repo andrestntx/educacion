@@ -7,21 +7,23 @@ class DashboardController extends BaseController
 	
 	public function getIndex()
 	{
-		if(Auth::user()->isAdmin())
+		$user = Auth::user();
+		if($user->isAdmin())
 		{
-			$number_areas = $models = Auth::user()->preferredCompany->areas()->count();
-			$number_users = $models = Auth::user()->preferredCompany->users()->registred()->count();
-			$number_roles = $models = Auth::user()->preferredCompany->roles()->count();
-			$number_protocols = $models = Auth::user()->preferredCompany->protocols()->count();
-			$number_categories = $models = Auth::user()->preferredCompany->protocolCategories()->count();
+			$user->load('preferredCompany');
+			$number_areas = $user->preferredCompany->areas->count();
+			$number_users = $user->preferredCompany->users()->registred()->count();
+			$number_roles = $user->preferredCompany->roles->count();
+			$number_protocols = $user->preferredCompany->protocols->count();
+			$number_categories = $user->preferredCompany->protocolCategories->count();
+			$number_checks = $user->preferredCompany->surveysTypeCheck()->count();
 
 			return View::make('dashboard.pages.company.show', compact('number_areas', 'number_users',
-				'number_roles', 'number_protocols', 'number_categories'
+				'number_roles', 'number_protocols', 'number_categories', 'number_checks'
 			));
 		}
-		else if(Auth::user()->isRegistred())
+		else if($user->isRegistred())
 		{
-			$user = Auth::user();
 			$protocols = $user->protocolsForStudy();
 			return View::make('dashboard.pages.user.scores', compact('protocols', 'user'));
 		}

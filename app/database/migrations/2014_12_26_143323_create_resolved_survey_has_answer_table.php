@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExamsHasAnswersTable extends Migration {
+class CreateResolvedSurveyHasAnswerTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,12 @@ class CreateExamsHasAnswersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('exams_has_answers', function($table)
+		Schema::create('resolved_survey_has_answer', function($table)
 		{
 	    
-		    $table->integer('exam_id')->unsigned();
-		    $table->foreign('exam_id')
-		      ->references('id')->on('exam')
+		    $table->integer('resolved_survey_id')->unsigned();
+		    $table->foreign('resolved_survey_id')
+		      ->references('id')->on('resolved_survey')
 		      ->onUpdate('cascade');
 	
 			$table->integer('answer_id')->unsigned();	    
@@ -25,7 +25,7 @@ class CreateExamsHasAnswersTable extends Migration {
 		      ->references('id')->on('answer')
 		      ->onUpdate('cascade');
 
-		    $table->primary(array('exam_id', 'answer_id'));
+		    $table->primary(array('resolved_survey_id', 'answer_id'));
 		});
 	}
 
@@ -36,7 +36,7 @@ class CreateExamsHasAnswersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('exams_has_answers');
+		Schema::drop('resolved_survey_has_answer');
 	}
 
 }

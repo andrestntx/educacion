@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExamTable extends Migration {
+class CreateSurveyTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,17 +12,14 @@ class CreateExamTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('exam', function($table)
+		Schema::create('survey', function($table)
 		{
 		    $table->increments('id');
+		    $table->string('name');
+		    $table->text('description')->nullable();
 
-		    $table->integer('protocol_id')->unsigned();	    
-		    $table->foreign('protocol_id')
-		      ->references('id')->on('protocol')
-		      ->onUpdate('cascade');
-
-		    $table->integer('user_id')->unsigned();	    
-		    $table->foreign('user_id')
+		    $table->integer('created_by')->unsigned();	    
+		    $table->foreign('created_by')
 		      ->references('id')->on('users')
 		      ->onUpdate('cascade');
 
@@ -37,7 +34,7 @@ class CreateExamTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('exam');
+		Schema::drop('survey');
 	}
 
 }

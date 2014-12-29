@@ -22,11 +22,12 @@ class QuestionsController extends \BaseController {
 	public function create($protocol_id)
 	{
 		$protocol = Protocol::findOrFail($protocol_id);
+		$type_id = 1;
 		$question = new Question;
 
 		$number_answers = Input::get('respuestas');
 		$form_data = array('route' => array('protocolos.preguntas.store', $protocol_id), 'method' => 'POST', 'files' => true);
-		return View::make('dashboard.pages.question.form', compact('question', 'form_data', 'protocol', 'number_answers'));
+		return View::make('dashboard.pages.question.form', compact('question', 'form_data', 'protocol', 'number_answers', 'type_id'));
 	}
 
 
@@ -40,7 +41,7 @@ class QuestionsController extends \BaseController {
         $question = new Question;
         $data = Input::all();
 
-        if ($question->validAndSave($data) && $question->saveAnswers($data['answers']))
+        if ($question->validAndSave($data))
         {
             return Redirect::route('protocolos.preguntas.index', $protocol_id);
         }
@@ -72,8 +73,8 @@ class QuestionsController extends \BaseController {
 	public function edit($protocol_id, $id)
 	{
 		$protocol = Protocol::findOrFail($protocol_id);
-		$question = $protocol->questions()->findOrFail($id);
-		$number_answers = $question->answers->count();
+		$type_id = 1;
+		$question = $protocol->survey->questions()->findOrFail($id);
 
 		$form_data = array(
 			'route' => array('protocolos.preguntas.update', $protocol->id, $question->id), 
@@ -81,7 +82,7 @@ class QuestionsController extends \BaseController {
 			'files' => true
 		);
 
-		return View::make('dashboard.pages.question.form', compact('question', 'form_data', 'protocol', 'number_answers'));
+		return View::make('dashboard.pages.question.form', compact('question', 'form_data', 'protocol', 'type_id'));
 	}
 
 
@@ -96,7 +97,7 @@ class QuestionsController extends \BaseController {
         $question = Question::find($id);
         $data = Input::all();
 
-        if ($question->validAndSave($data) && $question->updateAnswers($data['answers']))
+        if ($question->validAndSave($data))
         {
             return Redirect::route('protocolos.preguntas.index', $protocol_id);
         }

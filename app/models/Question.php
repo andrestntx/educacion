@@ -4,19 +4,22 @@ class Question extends Eloquent
 {
 	protected $table = 'question';
 	protected $primaryKey = 'id';
-	protected $fillable = array('text', 'protocol_id');
+	protected $fillable = array('text', 'survey_id', 'type_id');
 	public $timestamps = true;
 	public $increments = true;
-    protected $relationsArray = array('protocol_id' => 'protocol');
 
-    public function getUserValueAttribute()
+
+
+    /* Relations */
+     
+    public function survey()
     {
-        return $this->protocol->name;
+        return $this->belongsTo('Survey', 'survey_id');
     }
 
-    public function protocol()
+    public function type()
     {
-        return $this->belongsTo('Protocol', 'protocol_id');
+        return $this->belongsTo('QuestionType', 'type_id');
     }
 
     public function answers()
@@ -24,11 +27,33 @@ class Question extends Eloquent
         return $this->hasMany('Answer', 'question_id');
     }
 
+    /* End Relations */
+
+    public function isMultiple()
+    {
+        if($this->type_id == 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isSimple()
+    {
+        if($this->type_id == 2)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 	public function isValid($data)
     {
         $rules = array(
             'text'     => 'required|max:150',
-            'protocol_id' => 'required'
+            'survey_id' => 'required'
         );
         
         $validator = Validator::make($data, $rules);
@@ -47,46 +72,42 @@ class Question extends Eloquent
     {
         if ($this->isValid($data))
         {
+            $isUpdate = $this->exists;
+
             $this->fill($data);
             $this->save();
-            
+
+            if($this->isMultiple())
+            {
+                $this->saveAnswers($data['answers'], $isUpdate);
+            }
+
             return true;
         }
         
         return false;
     }
 
-    public function saveAnswers($data)
-    {
-        foreach ($data as $value) 
-        {
-            if(array_key_exists('correct', $value))
-            {
-                $answer = new Answer($value);
-            }
-            else
-            {
-                $answer = new Answer(array('text' => $value['text'], 'correct' => false));
-            }
-            
-            $this->answers()->save($answer);
-        }
-        return true;
-    }
-
-    public function updateAnswers($data)
+    public function saveAnswers($data, $isUpdate = false)
     {
         foreach ($data as $id => $value) 
         {
-            if(array_key_exists('correct', $value))
+            if(!array_key_exists('correct', $value))
             {
-                $answer = Answer::where('id', $id)->update($value);
+                $value['correct'] = false;
+            }
+            
+            if($isUpdate)
+            {
+                Answer::where('id', $id)->update($value);
             }
             else
             {
-                $answer = Answer::where('id', $id)->update(array('text' => $value['text'], 'correct' => false));
+                $answer = new Answer($value);
+                $this->answers()->save($answer);
             }
         }
+
         return true;
     }
 }

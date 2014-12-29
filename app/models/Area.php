@@ -7,14 +7,9 @@
 		protected $table = 'area';
 		protected $primaryKey = 'id';
 		protected $fillable = array('name', 'description', 'company_id');
-		protected  $globalModel = 4;
 		public $timestamps = true;
 		public $increments = true;
 		public $errors;
-		protected $attributeNames = array('id' => 'Id', 'name' => 'Nombre', 'description' => 'Descripción', 
-			'created_at' => 'Creación', 'company_id' => 'Institución',
-	        'updated_at' => 'Actualización');
-		protected $mainAttributes = array('id', 'name', 'description', 'created_at');
 
 
 		public function isValid($data)

@@ -136,7 +136,7 @@ class Annex extends Eloquent
         {
             return 'pdf';
         }
-        else if($extension == '')
+        else if($extension == '' || $extension == 'com')
         {
             return 'link';
         }

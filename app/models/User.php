@@ -177,9 +177,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return Protocol::userCanStudy($this->id)->orderBy('id')->get();
     }
 
-    public function exams()
+    public function resolvedSurveys()
     {
-        return $this->hasMany('Exam', 'user_id');
+        return $this->hasMany('resolvedSurvey', 'user_id');
     }
 
     public function examScores()

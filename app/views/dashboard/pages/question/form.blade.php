@@ -7,7 +7,8 @@
 @section('title_form') Datos de la Pregunta @stop
 @section('form')
   {{ Form::model($question, $form_data) }}
-    {{ Form::input('hidden', 'protocol_id', $protocol->id) }}
+    {{ Form::input('hidden', 'survey_id', $protocol->survey_id) }}
+    {{ Form::input('hidden', 'type_id', $type_id) }}
     <div class="row">
       <div class="form-group">
         <label class="col-md-3 control-label" for="text">Pregunta <span class="text-danger">*</span></label>

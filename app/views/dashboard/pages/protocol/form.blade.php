@@ -36,7 +36,7 @@
       <label class="col-md-4 control-label" for="categories[]">Categorias <span class="text-danger">*</span></label>
       <div class="col-md-6">
           <div class="input-group">
-              {{Form::select('categories[]', $categories, $protocol->categories()->lists('id'), 
+              {{Form::select('categories[]', $categories, $protocol->categories_lists, 
                 array('class' => 'form-control', 'placeholder' => 'Categorías del Protocolo', 
                   'multiple' => 'multiple', 'required' => 'required'))
               }}
@@ -48,7 +48,7 @@
       <label class="col-md-4 control-label" for="areas[]">Áreas <span class="text-danger">*</span></label>
       <div class="col-md-6">
           <div class="input-group">
-              {{Form::select('areas[]', $areas, $protocol->areas()->lists('id'), 
+              {{Form::select('areas[]', $areas, $protocol->areas_lists, 
                 array('class' => 'form-control', 'placeholder' => 'Áreas del Protocolo', 
                   'multiple' => 'multiple', 'required' => 'required'))
               }}
@@ -60,7 +60,7 @@
       <label class="col-md-4 control-label" for="roles[]">Perfiles <span class="text-danger">*</span></label>
       <div class="col-md-6">
           <div class="input-group">
-              {{Form::select('roles[]', $roles, $protocol->roles()->lists('id'), 
+              {{Form::select('roles[]', $roles, $protocol->roles_lists, 
                 array('class' => 'form-control', 'placeholder' => 'Categorías del Protocolo', 
                   'multiple' => 'multiple', 'required' => 'required'))
               }}

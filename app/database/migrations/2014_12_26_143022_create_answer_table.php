@@ -16,7 +16,7 @@ class CreateAnswerTable extends Migration {
 		{
 		    $table->increments('id');
 		    $table->string('text', 200);
-		    $table->boolean('correct');
+		    $table->boolean('correct')->nullable();
 
 		    $table->integer('question_id')->unsigned();	    
 		    $table->foreign('question_id')

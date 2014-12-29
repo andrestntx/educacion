@@ -34,7 +34,6 @@
 				<div class="block">
 					<div class="block-title">
 						<div class="block-options pull-right">
-							<a href="{{route('protocolos.anexos.create', $protocol->id)}}" class="btn btn-effect-ripple btn-info" data-toggle="tooltip" title="" style="overflow: hidden; position: relative;" data-original-title="Nuevo Anexo"><i class="fa fa-plus"></i></a>
 						</div>
 						<h2>{{$protocol->number_annex}} Anexos </h2>
 					</div>
@@ -43,13 +42,13 @@
 		                    @foreach($protocol->annex as $annex)
 	                            <li title="{{$annex->description}}">
 	                            	<i class="{{$annex->icon}} fa-li"></i>
-	                            	@if($annex->type == 'link')
+	                            	@if($annex->isLink())
 	                            		<h4><a href="{{URL::to($annex->url)}}" target="_blank">{{$annex->name}}</a></h4>	
 	                            	@else
 		                           		<h4><a href="#modal-annex-{{$annex->id}}" data-toggle="modal">{{$annex->name}}</a></h4>	
 		                           	@endif		                            	
 	                            </li>	
-	                            @if($annex->type != 'link')	
+	                            @if($annex->isFile())	
 		                            <div id="modal-annex-{{$annex->id}}" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 		                                <div class="modal-dialog modal-lg">
 		                                    <div class="modal-content">
@@ -58,14 +57,14 @@
 		                                            <h3 class="modal-title"><strong>{{$annex->name}}</strong></h3>
 		                                        </div>
 		                                        <div class="modal-body">
-		                                        	@if($annex->type == 'image')
+		                                        	@if($annex->isImage())
 		                                        		<img src="{{URL::to($annex->url)}}" class="text-center" style="max-height:400px; margin: 0 auto; display:block;">
-		                                        	@elseif($annex->type == 'video')
+		                                        	@elseif($annex->isVideo())
 		                                        		<video style="max-height:400px; max-width:100%; margin: 0 auto; display:block;" controls>
 														 	<source src="{{URL::to($annex->url)}}" type="video/mp4">
 															El navegador no soporta HTML5
 														</video>
-		                                        	@elseif($annex->type == 'pdf')
+		                                        	@elseif($annex->isPdf())
 		                                        		<iframe src="https://drive.google.com/viewerng/viewer?url={{URL::to($annex->url)}}&embedded=true" style="width:100%; height:450px;" frameborder="0"></iframe>
 		                                        	@else
 		                                        		<h3>El tipo de archivo no se puede visuarlizar. Miralo aquí <a href="{{URL::to($annex->url)}}" target="_blank">Anexo {{var_dump($annex->type)}}</a></h3>

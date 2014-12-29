@@ -12,6 +12,9 @@ class DatabaseSeeder extends Seeder {
 		Eloquent::unguard();
 
         $this->call('SystemRoleTableSeeder');
+        $this->call('SurveyTypeTableSeeder');
+        $this->call('QuestionTypeTableSeeder');
+        $this->call('CompanyTypeTableSeeder');
 		$this->call('CompanyTableSeeder');
 		
         $this->call('UserTableSeeder');
@@ -22,6 +25,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('UsersHasCompaniesTableSeeder');
         
         $this->call('ProtocolCategoryTableSeeder');
+        $this->call('SurveyTableSeeder');
         $this->call('ProtocolTableSeeder');
         $this->call('ProtocolHasCategoriesTableSeeder');
         $this->call('ProtocolHasRolesTableSeeder');
@@ -52,6 +56,56 @@ class SystemRoleTableSeeder extends Seeder {
     }
 }
 
+class SurveyTypeTableSeeder extends Seeder {
+ 
+    public function run()
+    {
+        DB::table('survey_type')->insert(array(
+            'name' => 'Examen de Protocolo',
+        ));
+
+        DB::table('survey_type')->insert(array(
+            'name' => 'Lista de Chequeo de Paciente',
+        ));
+    }
+}
+
+class QuestionTypeTableSeeder extends Seeder {
+ 
+    public function run()
+    {
+        DB::table('question_type')->insert(array(
+            'name' => 'Pregunta con multiples opciones',
+        ));
+
+        DB::table('question_type')->insert(array(
+            'name' => 'Pregunta simple con respuesta abierta',
+        ));
+
+    }
+}
+
+class CompanyTypeTableSeeder extends Seeder {
+ 
+    public function run()
+    {
+        DB::table('company_type')->insert(array(
+            'name' => 'Institución Súper Administradora',
+            'description' => 'Institución que administra toda la aplicación'
+        ));
+
+        DB::table('company_type')->insert(array(
+            'name' => 'Institución Registrada',
+            'description' => 'Institución que paga por la aplicación'
+        ));
+
+        DB::table('company_type')->insert(array(
+            'name' => 'Institución EPS',
+            'description' => 'Institución de tipo eps, no usa el sistema'
+        ));
+    }
+}
+
 class CompanyTableSeeder extends Seeder {
  
     public function run()
@@ -59,6 +113,7 @@ class CompanyTableSeeder extends Seeder {
         DB::table('company')->insert(array(
             'name' => 'Institución Administradora del Sistema',
             'url_logo' => 'img/logo_sistema.jpg',
+            'type_id' => 1,
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
         ));
@@ -66,6 +121,15 @@ class CompanyTableSeeder extends Seeder {
         DB::table('company')->insert(array(
             'name' => 'Angiografía de Colombia',
             'url_logo' => 'img/logo_sistema.jpg',
+            'type_id'   => 2,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        ));
+
+        DB::table('company')->insert(array(
+            'name' => 'EPS Salud Total',
+            'url_logo' => 'img/logo_sistema.jpg',
+            'type_id'   => 3,
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
         ));
@@ -317,6 +381,21 @@ class ProtocolCategoryTableSeeder extends Seeder
     }
 }
 
+class SurveyTableSeeder extends Seeder
+{
+    public function run()
+    {
+       DB::table('survey')->insert(array(
+            'name' => 'Examen de Protocolo de Prueba',
+            'description' => 'Examen de Protocolo de Prueba',
+            'created_by' => 2,
+            'type_id' => 1,
+            'created_at' => new DateTime,
+            'updated_at' => new DateTime 
+        )); 
+    }
+}
+
 class ProtocolTableSeeder extends Seeder
 {
     public function run()
@@ -325,6 +404,7 @@ class ProtocolTableSeeder extends Seeder
             'name' => 'Protocolo de Prueba',
             'description' => 'Protocolo de Prueba',
             'user_id' => 2,
+            'survey_id' => 1,
             'created_at' => new DateTime,
             'updated_at' => new DateTime 
         )); 

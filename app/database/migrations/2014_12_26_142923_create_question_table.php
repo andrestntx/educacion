@@ -15,11 +15,11 @@ class CreateQuestionTable extends Migration {
 		Schema::create('question', function($table)
 		{
 		    $table->increments('id');
-		    $table->string('text', 200);
+		    $table->text('text');
 
-		    $table->integer('protocol_id')->unsigned();	    
-		    $table->foreign('protocol_id')
-		      ->references('id')->on('protocol')
+		    $table->integer('survey_id')->unsigned();	    
+		    $table->foreign('survey_id')
+		      ->references('id')->on('survey')
 		      ->onUpdate('cascade');
 
 		    $table->timestamps();

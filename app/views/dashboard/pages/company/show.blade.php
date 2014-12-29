@@ -68,6 +68,19 @@
                 </div>
             </a>
         </div>
+        <div class="col-sm-6 col-lg-3">
+            <a href="{{route('formularios.index')}}" class="widget">
+                <div class="widget-content widget-content-mini text-right clearfix">
+                    <div class="widget-icon pull-left themed-background-info" style="width:95px; height: 95px; line-height: 90px;">
+                        <i class="fa fa-check text-light-op"></i>
+                    </div>
+                    <h2 class="widget-heading h2">
+                        <strong>+ <span data-toggle="counter" data-to="{{$number_checks}}"></span></strong>
+                    </h2>
+                    <span class="text-muted">FORMULARIOS</span>
+                </div>
+            </a>
+        </div>
     </div>
 @stop
 

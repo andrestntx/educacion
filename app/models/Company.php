@@ -4,18 +4,18 @@ class Company extends Eloquent
 {
 	protected $table = 'company';
 	protected $primaryKey = 'id';
-	protected $fillable = array('name');
-	protected $globalModel = 2;
+	protected $fillable = array('name', 'type_id');
 	public $timestamps = true;
 	public $increments = true;
 	public $errors;
-	protected $attributeNames = array('id' => 'Id', 'name' => 'Nombre', 'tel' => 'Telefono', 
-        'email' => 'Correco electrónico', 'created_at' => 'Creación', 
-        'updated_at' => 'Actualización', 'url_logo' => 'Logo');
-	protected $mainAttributes = array('id', 'name', 'created_at');
 
 
 	/***** Relations *****/
+	public function type()
+	{
+	    return $this->belongsTo('CompanyType', 'type_id');
+	}
+
 	public function usersPreferCompany()
 	{
 	    return $this->hasMany('User', 'preferred_company_id');
@@ -29,6 +29,11 @@ class Company extends Eloquent
 	public function protocols()
     {
         return $this->hasManyThrough('Protocol', 'User', 'preferred_company_id', 'user_id');
+    }
+
+    public function surveys()
+    {
+        return $this->hasManyThrough('Survey', 'User', 'preferred_company_id', 'created_by');
     }
 
 	public function roles()
@@ -46,6 +51,16 @@ class Company extends Eloquent
 		return $this->belongsToMany('User', 'users_has_companies', 'company_id', 'user_id');
 	}
 	/***** End Relations *****/
+
+	public function surveysTypeCheck()
+    {
+        $checks = $this->surveys->filter(function($survey)
+        {
+            return $survey->isTypeCheck();
+        });
+
+        return $checks;
+    }
 
 	public function getLogoAttribute()
 	{
@@ -96,6 +111,7 @@ class Company extends Eloquent
         else 
         {
             $rules['url_logo'] .= '|required';
+            $rules['type_id'] .= '|required';
         }
         
         $validator = Validator::make($data, $rules);

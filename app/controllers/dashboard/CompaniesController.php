@@ -10,7 +10,7 @@ class CompaniesController extends \BaseController {
 
 	public function index()
 	{
-		$companies = Company::where('id', '<>', 1)->orderBy('id')->paginate(10);
+		$companies = Company::whereTypeId('2')->orderBy('id')->paginate(10);
 		return View::make('dashboard.pages.company.lists', compact('companies'));
 		
 	}
@@ -24,9 +24,9 @@ class CompaniesController extends \BaseController {
 	public function create()
 	{
 		$company = new Company;
-		
+		$type_id = 2;
 		$form_data = array('route' => 'instituciones.store', 'method' => 'POST', 'files' => true);
-		return View::make('dashboard.pages.company.form', compact('company', 'form_data'));
+		return View::make('dashboard.pages.company.form', compact('company', 'form_data', 'type_id'));
 	}
 
 
@@ -77,9 +77,9 @@ class CompaniesController extends \BaseController {
 	public function edit($id)
 	{
 		$company = Company::findOrFail($id);
-
+		$type_id = 2;
 		$form_data = array('route' => array('instituciones.update', $company->id), 'method' => 'PUT', 'files' => true);
-		return View::make('dashboard.pages.company.form', compact('company', 'form_data'));
+		return View::make('dashboard.pages.company.form', compact('company', 'form_data', 'type_id'));
 	}
 
 

@@ -61,21 +61,14 @@ class ProtocolsController extends \BaseController {
 	public function show($id)
 	{
 		$protocol = Protocol::findOrFail($id);
-		$protocol->load('annex', 'questions');
+		$protocol->load('annex', 'survey.questions');
 
-		$annex = $protocol->annex->filter(function($annex)
-		{
-		    return $annex->isFile();
-		});
-
-		$links = $protocol->annex->filter(function($annex)
-		{
-		    return $annex->isLink();
-		});
+		$annex = $protocol->annex_file;
+		$links = $protocol->annex_link;
 
 		$number_annex = $annex->count();
 		$number_links = $links->count();
-		$number_questions = $protocol->questions->count();
+		$number_questions = $protocol->survey->questions->count();
 
 		return View::make('dashboard.pages.protocol.show-admin', compact('protocol', 
 			 'number_questions', 'number_annex', 'annex', 'number_links', 'links'
@@ -148,22 +141,22 @@ class ProtocolsController extends \BaseController {
 	public function destroy($id)
 	{
 		$protocol = Protocol::findOrFail($id);
-    	
-        $protocol->delete();
+
+    	try {
+    		$protocol->delete();
+    		$result = array('success' => true, 'msg' => 'Protocolo "' . $protocol->name . '" eliminada', 'id' => $protocol->id);
+    	} catch (Exception $e) {
+    		$result = array('success' => false, 'msg' => '.', 'id' => $protocol->id);
+    	}
+   
 
         if (Request::ajax())
         {
-            return Response::json(array (
-                'success' => true,
-                'msg'     => 'Protocolo "' . $protocol->name . '" eliminado',
-                'id'      => $protocol->id
-            ));
+            return Response::json($result);
         }
         else
         {
             return Redirect::route('protocolos.index');
         }
 	}
-
-
 }
