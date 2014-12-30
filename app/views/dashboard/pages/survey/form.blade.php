@@ -1,7 +1,7 @@
 @extends('dashboard.pages.form-layouts.horizontal')
 @section('class_icon_page') fa fa-check @stop
-@section('title_page') @if($survey->exists) Editar Lista de Chequeo: {{$survey->name}} @else Nueva Lista de Chequeo @endif @stop
-@section('title_form') Datos de la Lista de Chequeo @stop
+@section('title_page') @if($survey->exists) Editar Formulario: {{$survey->name}} @else Nuevo Formulario @endif @stop
+@section('title_form') Datos del Formulario @stop
 @section('form')
   {{ Form::model($survey, $form_data) }}
     {{ Form::input('hidden', 'created_by', $user->id) }}

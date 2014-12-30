@@ -39,11 +39,12 @@ class ResolvedSurveysController extends \BaseController {
 	public function store($survey_id)
 	{
 		$survey = Survey::findOrFail($survey_id);
+
 		$multipleAnswers = Input::get('answers');
 		$simpleAnswers = Input::get('simpleAnswers');
 
 		$resolvedSurvey = new ResolvedSurvey;
-		$resolvedSurvey->validAndSave($survey->id, Auth::user()->id, $multipleAnswers, $simpleAnswers);
+		$resolvedSurvey->validAndSave($survey->id, Auth::user(), $multipleAnswers, $simpleAnswers);
 		
 		return Redirect::route('formularios.registros.show', array($survey->id, $resolvedSurvey->id));
 	}
@@ -74,8 +75,17 @@ class ResolvedSurveysController extends \BaseController {
 	{
 		$survey = Survey::findOrFail($survey_id);
 		$resolvedSurvey = ResolvedSurvey::findOrFail($id);
-		$pdf = PDF::loadView('dashboard.pages.resolvedsurvey.export', compact('survey', 'resolvedSurvey'));
-		return $pdf->download('invoice.pdf');
+		$pdf = $resolvedSurvey->generatePdf();
+		return $pdf->download('formulario.pdf');
+	}
+
+	public function send($survey_id, $id)
+	{
+		$survey = Survey::findOrFail($survey_id);
+		$resolvedSurvey = ResolvedSurvey::findOrFail($id);
+		$resolvedSurvey->sendViaEmail(Auth::user());
+
+		return Redirect::route('formularios.registros.show', array($survey->id, $resolvedSurvey->id));
 	}
 
 

@@ -64,6 +64,7 @@ Route::group(array('before' => 'auth'), function()
 	Route::group(array('before' => 'system_roles:3'), function()
 	{
 		Route::get('formularios/{survey}/registros/{resolvedSurvey}/descargar', array('as' => 'formularios.registros.export', 'uses' => 'ResolvedSurveysController@export'));
+		Route::get('formularios/{survey}/registros/{resolvedSurvey}/enviar', array('as' => 'formularios.registros.send', 'uses' => 'ResolvedSurveysController@send'));
 		Route::resource('formularios.registros', 'ResolvedSurveysController');
 		Route::get('estudiar/{protocol}', array('as' => 'estudiar', 'uses' => 'ExamsController@studyProtocol'));
 		Route::get('examenes/presentar/{protocol}', array('as' => 'examenes.create', 'uses' => 'ExamsController@create'));

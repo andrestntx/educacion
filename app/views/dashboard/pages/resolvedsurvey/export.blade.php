@@ -16,5 +16,6 @@
 			  <p style="margin:0; font-size:14px;">{{$answer->text}}</p>
 			</blockquote>
 		@endforeach()
+		<p>Elaborado por: {{$resolvedSurvey->user->name}}</p>
 	</body>
 </html>

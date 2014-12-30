@@ -5,14 +5,22 @@
 
 @stop
 @section('content_body_page')
-    <div class="block full">
+    <div class="block full"> 
+        <div class="block-title">
+            <div class="block-options pull-right">
+                <a title="" data-toggle="tooltip" class="btn btn-effect-ripple btn-info" href="{{route('formularios.registros.create', $survey->id)}}" style="overflow: hidden; position: relative;" data-original-title="Nuevo Registro">
+                    <i class="fa fa-plus"></i> Nuevo Registro
+                </a>
+            </div>
+            <h2>{{$survey->description}}</h2>
+        </div>
         <div class="table-responsive">
             <table id="datatable" class="table table-striped table-bordered table-vcenter">
                 <thead>
                     <tr>
                         <th class="text-center" title="Código del Registro">Código</th>
                         <th class="text-center" title="Fecha del Registro">Fecha del Registro</th>
-                        <th class="text-center" style="width:95px;"><i class="fa fa-flash"></i></th>
+                        <th class="text-center" style="width:125px;"><i class="fa fa-flash"></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,11 +29,14 @@
                             <td class="text-center"><strong>{{ $resolvedSurvey->id }}</strong></td>
                             <td class="text-center"><strong>{{ $resolvedSurvey->created_at }}</strong></td>
                             <td class="text-center">
-                                <a href="{{route('formularios.registros.show', array($survey->id, $resolvedSurvey->id))}}" data-toggle="tooltip" title="Ver Registro" class="btn btn-effect-ripple btn-info">
+                                <a href="{{route('formularios.registros.show', array($survey->id, $resolvedSurvey->id))}}" data-toggle="tooltip" title="Ver Registro" class="btn btn-sm btn-effect-ripple btn-info">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{route('formularios.registros.export', array($survey->id, $resolvedSurvey->id))}}" data-toggle="tooltip" title="Exportar a PDF" class="btn btn-effect-ripple btn-success">
+                                <a href="{{route('formularios.registros.export', array($survey->id, $resolvedSurvey->id))}}" data-toggle="tooltip" title="Exportar a PDF" class="btn btn-sm btn-effect-ripple btn-success">
                                     <i class="fa fa-file-pdf-o"></i>
+                                </a>
+                                <a href="{{route('formularios.registros.send', array($survey->id, $resolvedSurvey->id))}}" data-toggle="tooltip" title="Enviar al Correo" class="btn btn-sm btn-effect-ripple btn-warning">
+                                    <i class="fa fa-send-o"></i>
                                 </a>
                             </td>
                         </tr>
@@ -42,3 +53,4 @@
         {{ HTML::script('assets/js/pages/onecolumnTables.js'); }}
         <script>$(function(){ UiTables.init(); });</script>
 @stop
+
