@@ -10,7 +10,7 @@
       <label class="col-md-4 control-label" for="name">Nombre <span class="text-danger">*</span></label>
       <div class="col-md-6">
           <div class="input-group">
-              {{Form::text('name', null, array('class' => 'form-control', 'placeholder' => 'Nombre de la Lista de Chequeo', 'required' => 'required'))}}
+              {{Form::text('name', null, array('class' => 'form-control', 'placeholder' => 'Nombre', 'required' => 'required'))}}
               <span class="input-group-addon"><i class="fa fa-bars"></i></span>
           </div>
       </div>
@@ -19,7 +19,7 @@
       <label class="col-md-4 control-label" for="description">Descripción </label>
       <div class="col-md-6">
           <div class="input-group">
-              {{Form::text('description', null, array('class' => 'form-control', 'placeholder' => 'Descripción de la Lista de Chequeo'))}}
+              {{Form::text('description', null, array('class' => 'form-control', 'placeholder' => 'Descripción'))}}
               <span class="input-group-addon"><i class="fa fa-bars"></i></span>
           </div>
       </div>
@@ -27,7 +27,7 @@
     
     <div class="form-group form-actions">
         <div class="col-md-8 col-md-offset-4">
-            <button type="submit" class="btn btn-effect-ripple btn-primary">Guardar Lista de Chequeo</button>
+            <button type="submit" class="btn btn-effect-ripple btn-primary">Guardar Formulario</button>
         </div>
     </div>
   {{Form::close()}}

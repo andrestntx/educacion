@@ -6,7 +6,7 @@
   <div class="block full"> 
     <div class="block-title">
       <div class="block-options pull-right">
-          <a title="" data-toggle="tooltip" class="btn btn-effect-ripple btn-warning" href="{{route('formularios.registros.create', $survey->id)}}" style="overflow: hidden; position: relative;" data-original-title="Enviar al Correo">
+          <a title="" data-toggle="tooltip" class="btn btn-effect-ripple btn-warning" href="{{route('formularios.registros.send', array($survey->id, $resolvedSurvey->id))}}" style="overflow: hidden; position: relative;" data-original-title="Enviar al Correo">
               <i class="fa fa-send-o"></i> Enviar al Correo
           </a>
       </div>

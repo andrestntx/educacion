@@ -80,7 +80,7 @@ class ProtocolsController extends \BaseController {
 		$protocol = Protocol::findOrFail($id);
 		$users = User::with(array('examScores' => function($query) use($protocol)
 		{
-		    $query->whereProtocolId($protocol->id);
+		    $query->whereSurveyId($protocol->survey_id);
 
 		}))->canStudyProtocol($protocol->id)->get();	
 

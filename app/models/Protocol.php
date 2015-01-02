@@ -224,7 +224,6 @@ class Protocol extends Eloquent
         else 
         {
             $rules['url_pdf'] .= '|required';
-            $rules['survey_id'] .= '|required';
         }
         
         $validator = Validator::make($data, $rules);

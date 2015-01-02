@@ -39,10 +39,10 @@
                                     <a href="{{route('formularios.preguntas.index', $survey->id)}}" data-toggle="tooltip" title="Preguntas" class="btn btn-sm btn-effect-ripple btn-info">
                                         <i class="fa fa-question"></i>
                                     </a>
-                                    <a href="{{route('formularios.edit', $survey->id)}}" data-toggle="tooltip" title="Editar Area" class="btn btn-sm btn-effect-ripple btn-warning">
+                                    <a href="{{route('formularios.edit', $survey->id)}}" data-toggle="tooltip" title="Editar Formulario" class="btn btn-sm btn-effect-ripple btn-warning">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-                                    <a href="#" data-id="{{ $survey->id }}" id="btn-delete-{{$survey->id}}" onclick="deleteModel('btn-delete-{{$survey->id}}')"  data-toggle="tooltip" title="Borrar Area" class="btn btn-sm btn-effect-ripple btn-danger">
+                                    <a href="#" data-id="{{ $survey->id }}" id="btn-delete-{{$survey->id}}" onclick="deleteModel('btn-delete-{{$survey->id}}')"  data-toggle="tooltip" title="Borrar Formulario" class="btn btn-sm btn-effect-ripple btn-danger">
                                         <i class="fa fa-times"></i>
                                     </a>
                                 @else
