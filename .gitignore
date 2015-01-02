@@ -1,6 +1,6 @@
 /bootstrap/compiled.php
 /vendor
-/public/uploads
+/public/uploads/forms/*
 /public/img/companies
 /public/img/avatars
 composer.phar
