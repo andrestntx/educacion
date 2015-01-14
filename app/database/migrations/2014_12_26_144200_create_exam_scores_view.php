@@ -12,15 +12,14 @@ class CreateExamScoresView extends Migration {
 	 */
 	public function up()
 	{
-		/*DB::statement("
-			CREATE view exam_scores AS 
-				SELECT resolved_survey.id,
+		DB::statement("
+			SELECT resolved_survey.id,
 			    resolved_survey.survey_id,
 			    resolved_survey.user_id,
 			    total.total_answers,
-			    COALESCE(corrects.correct_answers, 0::bigint),
-			    COALESCE(total.total_answers - corrects.correct_answers, 0::bigint) AS incorrect_answers,
-			    COALESCE(corrects.correct_answers::double precision / total.total_answers::double precision * 100::double precision, 0::double precision) AS score,
+			    COALESCE(corrects.correct_answers, 0),
+			    COALESCE(total.total_answers - corrects.correct_answers, 0) AS incorrect_answers,
+			    COALESCE(corrects.correct_answers / total.total_answers * 100, 0) AS score,
 			    resolved_survey.created_at,
 			    resolved_survey.updated_at
 			   FROM resolved_survey
@@ -36,7 +35,7 @@ class CreateExamScoresView extends Migration {
 			   JOIN resolved_survey_has_answer ON resolved_survey_1.id = resolved_survey_has_answer.resolved_survey_id
 			   JOIN answer ON resolved_survey_has_answer.answer_id = answer.id AND answer.correct IS NOT NULL
 			  GROUP BY resolved_survey_1.id) total ON total.id = resolved_survey.id;"
-		);*/
+		);
 	}
 
 	/**
