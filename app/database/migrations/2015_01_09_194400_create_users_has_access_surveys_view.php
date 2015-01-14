@@ -35,6 +35,6 @@ class CreateUsersHasAccessSurveysView extends Migration {
 	 */
 	public function down()
 	{
-		//DB::statement("DROP VIEW users_has_access_surveys");
+		DB::statement("DROP VIEW users_has_access_surveys");
 	}
 }
