@@ -84,7 +84,7 @@ class Protocol extends Eloquent
     {
         if($examScore = $this->lastExam())
         {
-            return $examScore->score;
+            return $examScore->formated_score;
         } 
 
         return 'NA';
@@ -106,7 +106,7 @@ class Protocol extends Eloquent
     {
         if($exam = $this->bestExam())
         {
-            return $exam->score;
+            return $exam->formated_score;
         }
 
         return 'NA';
