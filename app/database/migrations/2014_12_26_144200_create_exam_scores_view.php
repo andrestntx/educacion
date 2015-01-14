@@ -13,7 +13,8 @@ class CreateExamScoresView extends Migration {
 	public function up()
 	{
 		DB::statement("
-			SELECT resolved_survey.id,
+			CREATE view exam_scores AS 
+				SELECT resolved_survey.id,
 			    resolved_survey.survey_id,
 			    resolved_survey.user_id,
 			    total.total_answers,
@@ -45,7 +46,7 @@ class CreateExamScoresView extends Migration {
 	 */
 	public function down()
 	{
-		DB::statement("DROP VIEW exam_scores");
+		//DB::statement("DROP VIEW exam_scores");
 	}
 
 }
