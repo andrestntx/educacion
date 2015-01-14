@@ -45,7 +45,7 @@ class CreateExamScoresView extends Migration {
 	 */
 	public function down()
 	{
-		//DB::statement("DROP VIEW exam_scores");
+		DB::statement("DROP VIEW exam_scores");
 	}
 
 }
