@@ -17,7 +17,7 @@ return array(
 	| choice installed on your machine before you begin development.
 	|
 	*/
-	'default' => 'pgsqlforge',
+	'default' => 'mysqlforge',
 
 	'connections' => array(
 
@@ -30,6 +30,17 @@ return array(
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
+		),
+
+		'mysqlforge' => array(
+			'driver'    => 'mysql',
+			'host'      => getenv('db_host'),
+			'database'  => getenv('db_name'),
+			'username'  => getenv('db_username'),
+			'password'  => getenv('db_password'),
+			'charset'   => 'utf8',
+			'collation' => 'utf8_unicode_ci',
+			'prefix'    => '',
 		),
 
 	),
