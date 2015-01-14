@@ -17,10 +17,11 @@ return array(
 	| choice installed on your machine before you begin development.
 	|
 	*/
+	'default' => 'pgsqlforge',
 
 	'connections' => array(
 
-		'pgsql' => array(
+		'pgsqlforge' => array(
 			'driver'   => 'pgsql',
 			'host'      => getenv('db_host'),
 			'database'  => getenv('db_name'),
