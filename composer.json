@@ -9,7 +9,6 @@
 		"laravel/framework": "4.2.*",
 		"doctrine/dbal": "v2.4.2",
 		"intervention/image": "2.*",
-		"barryvdh/laravel-debugbar": "*",
 		"barryvdh/laravel-dompdf": "*"
 	},
 	"autoload": {
