@@ -92,9 +92,13 @@ class Question extends Eloquent
     {
         foreach ($data as $id => $value) 
         {
-            if(!array_key_exists('correct', $value))
+            if(array_key_exists('correct', $value))
             {
-                $value['correct'] = false;
+                $value['correct'] = 1;
+            }
+            else
+            {
+                $value['correct'] = 0;
             }
             
             if($isUpdate)
