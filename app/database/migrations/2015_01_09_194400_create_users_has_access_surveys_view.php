@@ -12,9 +12,9 @@ class CreateUsersHasAccessSurveysView extends Migration {
 	 */
 	public function up()
 	{
-		/*DB::statement("
+		DB::statement("
 			CREATE view users_has_access_surveys AS 
-			select DISTINCT ON (users_has_areas.user_id, surveys_has_roles.survey_id) users_has_areas.user_id, surveys_has_roles.survey_id
+			select DISTINCT users_has_areas.user_id, surveys_has_roles.survey_id, users_has_areas.user_id, surveys_has_roles.survey_id
 			from users
 			join users_has_areas on 
 				users_has_areas.user_id = users.id
@@ -25,7 +25,8 @@ class CreateUsersHasAccessSurveysView extends Migration {
 			join surveys_has_roles on 
 				surveys_has_roles.role_id = users_has_roles.role_id
 				and surveys_has_roles.survey_id = surveys_has_areas.survey_id
-		");	*/
+			GROUP BY users_has_areas.user_id, surveys_has_roles.survey_id
+		");	
 	}
 
 	/**
@@ -37,5 +38,4 @@ class CreateUsersHasAccessSurveysView extends Migration {
 	{
 		//DB::statement("DROP VIEW users_has_access_surveys");
 	}
-
 }
