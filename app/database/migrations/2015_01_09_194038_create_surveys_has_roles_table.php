@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProtocolsHasRolesTable extends Migration {
+class CreateSurveysHasRolesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateProtocolsHasRolesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('protocols_has_roles', function($table)
+		Schema::create('surveys_has_roles', function($table)
 		{
-		    $table->integer('protocol_id')->unsigned();
-		    $table->foreign('protocol_id')
-		      ->references('id')->on('protocol')
+		    $table->integer('survey_id')->unsigned();
+		    $table->foreign('survey_id')
+		      ->references('id')->on('survey')
 		      ->onUpdate('cascade');
 	
 			$table->integer('role_id')->unsigned();	    
@@ -24,7 +24,7 @@ class CreateProtocolsHasRolesTable extends Migration {
 		      ->references('id')->on('user_role')
 		      ->onUpdate('cascade');
 
-		    $table->primary(array('protocol_id', 'role_id'));
+		    $table->primary(array('survey_id', 'role_id'));
 		});
 	}
 
@@ -35,7 +35,7 @@ class CreateProtocolsHasRolesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('protocols_has_roles');
+		Schema::drop('surveys_has_roles');
 	}
 
 }

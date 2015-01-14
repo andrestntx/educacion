@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder {
         $this->call('SurveyTableSeeder');
         $this->call('ProtocolTableSeeder');
         $this->call('ProtocolHasCategoriesTableSeeder');
-        $this->call('ProtocolHasRolesTableSeeder');
-        $this->call('ProtocolHasAreasTableSeeder');
+        $this->call('SurveysHasRolesTableSeeder');
+        $this->call('SurveysHasAreasTableSeeder');
 	}
 
 }
@@ -74,6 +74,10 @@ class SurveyTypeTableSeeder extends Seeder {
 
         DB::table('survey_type')->insert(array(
             'name' => 'Observaciones',
+        ));
+
+        DB::table('survey_type')->insert(array(
+            'name' => 'Generador de Protocolo',
         ));
     }
 }
@@ -430,23 +434,23 @@ class ProtocolHasCategoriesTableSeeder extends Seeder {
     }
 }
 
-class ProtocolHasRolesTableSeeder extends Seeder {
+class SurveysHasRolesTableSeeder extends Seeder {
  
     public function run()
     {
-        DB::table('protocols_has_roles')->insert(array(
-            'protocol_id' => 1,
+        DB::table('surveys_has_roles')->insert(array(
+            'survey_id' => 1,
             'role_id' => 2,
         ));
     }
 }
 
-class ProtocolHasAreasTableSeeder extends Seeder {
+class SurveysHasAreasTableSeeder extends Seeder {
  
     public function run()
     {
-        DB::table('protocols_has_areas')->insert(array(
-            'protocol_id' => 1,
+        DB::table('surveys_has_areas')->insert(array(
+            'survey_id' => 1,
             'area_id' => 1,
         ));
     }

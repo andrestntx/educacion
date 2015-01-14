@@ -23,12 +23,35 @@
               <span class="input-group-addon"><i class="fa fa-bars"></i></span>
           </div>
       </div>
-    </div>     
-    
+    </div>      
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="areas[]">Áreas <span class="text-danger">*</span></label>
+      <div class="col-md-6">
+          <div class="input-group">
+              {{Form::select('areas[]', $areas, null, 
+                array('class' => 'form-control', 'placeholder' => 'Áreas del Protocolo', 
+                  'multiple' => 'multiple', 'required' => 'required'))
+              }}
+              <span class="input-group-addon"><i class="gi gi-sort"></i></span>
+          </div>
+      </div>
+    </div>    
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="roles[]">Perfiles <span class="text-danger">*</span></label>
+      <div class="col-md-6">
+          <div class="input-group">
+              {{Form::select('roles[]', $roles, null, 
+                array('class' => 'form-control', 'placeholder' => 'Perfiles del Protocolo', 
+                  'multiple' => 'multiple', 'required' => 'required'))
+              }}
+              <span class="input-group-addon"><i class="gi gi-old_man"></i></span>
+          </div>
+      </div>
+    </div> 
     <div class="form-group form-actions">
-        <div class="col-md-8 col-md-offset-4">
-            <button type="submit" class="btn btn-effect-ripple btn-primary">Guardar Formulario</button>
-        </div>
+      <div class="col-md-8 col-md-offset-4">
+        <button type="submit" class="btn btn-effect-ripple btn-primary">Guardar Formulario</button>
+      </div>
     </div>
   {{Form::close()}}
 @stop

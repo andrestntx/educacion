@@ -9,7 +9,6 @@ class Company extends Eloquent
 	public $increments = true;
 	public $errors;
 
-
 	/***** Relations *****/
 	public function type()
 	{

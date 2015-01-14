@@ -1,22 +1,5 @@
 <?php
 
-	$url = parse_url(getenv("DATABASE_URL"));
-
-	if(is_array($url) && array_key_exists('host', $url))
-	{
-		$host = $url["host"];
-		$username = $url["user"];
-		$password = $url["pass"];
-		$database = substr($url["path"], 1);	
-	}
-	else
-	{
-		$host = 'localhost';
-		$username = 'postgres';
-		$password = 'juliandavid';
-		$database = 'educacion-medica';	
-	}
-	
 
 return array(
 
@@ -85,10 +68,10 @@ return array(
 
 		'pgsql' => array(
 	        'driver'   => 'pgsql',
-	        'host'     => $host,
-	        'database' => $database,
-	        'username' => $username,
-	        'password' => $password,
+	        'host'     => 'default',
+	        'database' => 'default',
+	        'username' => 'default',
+	        'password' => 'default',
 	        'charset'  => 'utf8',
 	        'prefix'   => '',
 	        'schema'   => 'public',

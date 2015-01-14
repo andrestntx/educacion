@@ -25,8 +25,13 @@ class SurveysController  extends \BaseController {
 		$survey = new Survey;
 		$user = Auth::user();
 		$survey->type_id = Input::get('tipo');
+
+		$roles = Auth::user()->preferredCompany->roles()->lists('name', 'id');
+		$areas = Auth::user()->preferredCompany->areas()->lists('name', 'id');
+		$categories = Auth::user()->preferredCompany->protocolCategories()->lists('name', 'id');
+
 		$form_data = array('route' => 'formularios.store', 'method' => 'POST', 'files' => false);
-		return View::make('dashboard.pages.survey.form', compact('survey', 'form_data', 'user'));
+		return View::make('dashboard.pages.survey.form', compact('survey', 'form_data', 'user', 'roles', 'areas', 'categories'));
 	}
 
 
@@ -73,8 +78,13 @@ class SurveysController  extends \BaseController {
 	{
 		$survey = Survey::findOrFail($id);
 		$user = Auth::user();
+		
+		$roles = Auth::user()->preferredCompany->roles()->lists('name', 'id');
+		$areas = Auth::user()->preferredCompany->areas()->lists('name', 'id');
+		$categories = Auth::user()->preferredCompany->protocolCategories()->lists('name', 'id');
+
 		$form_data = array('route' => array('formularios.update', $survey->id), 'method' => 'PUT', 'files' => false);
-		return View::make('dashboard.pages.survey.form', compact('survey', 'form_data', 'user'));
+		return View::make('dashboard.pages.survey.form', compact('survey', 'form_data', 'user', 'roles', 'areas', 'categories'));
 	}
 
 

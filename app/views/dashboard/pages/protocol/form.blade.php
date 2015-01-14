@@ -25,11 +25,29 @@
       </div>
     </div>   
     <div class="form-group">
-      <label class="col-md-4 control-label" for="url_pdf">PDF del Protocolo </label>
+      <label class="col-md-2 control-label" for="description" 
+      title="Active esta casilla si desea subir el archivo Pdf a la Aplicación">
+        PDF
+      </label>
+      <div class="col-md-2">
+        <div class="input-group">
+            <label class="switch switch-info" 
+            title="Active esta casilla si desea subir el archivo Pdf a la Aplicación">
+              <input type="checkbox" name="is_upload" id="is_upload" value="true"><span></span>
+            </label>
+        </div>
+      </div>
       <div class="col-md-6">
-          <div class="input-group">
-              <input id="url_pdf" name="url_pdf" type="file" class="file"></input>
-          </div>
+        <div class="input-group" id="div_file_pdf">
+          <input id="file_pdf" name="url_pdf" type="file" class="file"></input>
+        </div>
+        <div class="input-group" id="div_link_pdf">
+          {{ Form::url('url_pdf', null, array('class' => 'form-control', 'pattern' => 'https?://.+', 
+            'placeholder' => 'http://pagina-externa/archivo.pdf', 'id' => 'link_pdf', 'required' => 'required', 
+            'title' => 'Recuerde escribir la URL con http://')) 
+          }}
+          <span class="input-group-addon"><i class="fa fa-file-text-o"></i></span>
+        </div>
       </div>
     </div>   
     <div class="form-group">
@@ -78,4 +96,31 @@
 
 @section('js_aditional')
   {{ HTML::script('assets/js/plugins/forms/file-validator.js') }}
+
+  <script type="text/javascript">
+    $( document ).ready(function() {
+      //Inicialite the HTML
+      $("#div_file_pdf").hide();
+      $("#div_file_pdf #file_pdf").prop("disabled", true);
+
+      $("#is_upload").change(function() {
+        if($(this).is(":checked"))       
+        {
+          $("#div_link_pdf").hide();
+          $("#div_link_pdf #link_pdf").prop("disabled", true);
+
+          $("#div_file_pdf").show();
+          $("#div_file_pdf #file_pdf").prop("disabled", false);
+        }
+        else
+        {
+          $("#div_file_pdf").hide();
+          $("#div_file_pdf #file_pdf").prop("disabled", true);
+
+          $("#div_link_pdf").show();
+          $("#div_link_pdf #link_pdf").prop("disabled", false);
+        }
+      });
+    });
+  </script>
 @stop

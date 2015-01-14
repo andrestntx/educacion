@@ -17,6 +17,16 @@ class Survey extends Eloquent
         return $this->questions->count();
     }
 
+    public function getAreasListsAttribute()
+    {
+        return $this->areas->lists('id');
+    }
+
+    public function getRolesListsAttribute()
+    {
+        return $this->roles->lists('id');
+    }
+
     public function questions()
     {
         return $this->hasMany('Question', 'survey_id');
@@ -32,6 +42,16 @@ class Survey extends Eloquent
         return $this->belongsTo('SurveyType', 'type_id');
     }
 
+    public function areas()
+    {
+        return $this->belongsToMany('Area', 'surveys_has_areas', 'survey_id', 'area_id');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany('UserRole', 'surveys_has_roles', 'survey_id', 'role_id');
+    }
+
     public function randomQuestions()
     {
         if($this->questions->count() >= 10)
@@ -41,6 +61,9 @@ class Survey extends Eloquent
 
         return $this->questions;
     }
+
+
+
 
     public function isValid($data)
     {
@@ -73,6 +96,16 @@ class Survey extends Eloquent
         }
         
         return false;
+    }
+
+    public function syncRoles($roles = array())
+    {
+        $this->roles()->sync($roles);
+    }
+
+    public function syncAreas($areas = array())
+    {
+        $this->areas()->sync($areas);
     }
 }
 

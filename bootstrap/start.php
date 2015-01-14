@@ -25,8 +25,9 @@ $app = new Illuminate\Foundation\Application;
 */
 
 $env = $app->detectEnvironment(array(
-
-	'local' => array('homestead'),
+	'local' 	=> ['USUARIO-PC', 'homestead', '.local'],
+	'forge'		=> ['solitary-moss'],
+	'heroku'	=> ['sleepy-lowlands-5716']
 
 ));
 

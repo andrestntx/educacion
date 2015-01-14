@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProtocolsHasAreasTable extends Migration {
+class CreateSurveysHasAreasTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateProtocolsHasAreasTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('protocols_has_areas', function($table)
+		Schema::create('surveys_has_areas', function($table)
 		{
-		    $table->integer('protocol_id')->unsigned();
-		    $table->foreign('protocol_id')
-		      ->references('id')->on('protocol')
+		    $table->integer('survey_id')->unsigned();
+		    $table->foreign('survey_id')
+		      ->references('id')->on('survey')
 		      ->onUpdate('cascade');
 	
 			$table->integer('area_id')->unsigned();	    
@@ -24,7 +24,7 @@ class CreateProtocolsHasAreasTable extends Migration {
 		      ->references('id')->on('area')
 		      ->onUpdate('cascade');
 
-		    $table->primary(array('protocol_id', 'area_id'));
+		    $table->primary(array('survey_id', 'area_id'));
 		});
 	}
 
@@ -35,7 +35,6 @@ class CreateProtocolsHasAreasTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('protocols_has_areas');
+		Schema::drop('surveys_has_areas');
 	}
-
 }

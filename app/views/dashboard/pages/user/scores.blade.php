@@ -28,20 +28,20 @@
 			                            @else
 			                            	<td><a href="{{route('estudiar', $protocol->id)}}" title="Estudiar Protocolo">{{$protocol->name}}</a></td>
 			                            @endif
-			                            <td class="text-center">{{ $user->examScores->count() }}</a></td>
+			                            <td class="text-center">{{ $protocol->examScores->count() }}</a></td>
 
 			                            <td class="text-center">
 			                            	<div class="progress progress-striped progress-mini active" style="margin:0;">
-												<div class="progress-bar progress-bar-flat" role="progressbar" aria-valuenow="{{ $user->best_exam_score }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $user->best_exam_score }}%"></div>
+												<div class="progress-bar progress-bar-flat" role="progressbar" aria-valuenow="{{ $protocol->best_exam_score }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $protocol->best_exam_score }}%"></div>
 											</div>
-											{{ $user->best_exam_score }}%
+											{{ $protocol->best_exam_score }}%
 			                            </td>
-			                            <td> {{ $user->last_exam_update }} </td>
+			                            <td> {{ $protocol->last_exam_update }} </td>
 			                        	<td class="text-center"> 
 			                        		<div class="progress progress-striped progress-mini active" style="margin:0;">
-												<div class="progress-bar progress-bar-flat" role="progressbar" aria-valuenow="{{ $user->last_exam_score }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $user->last_exam_score }}%"></div>
+												<div class="progress-bar progress-bar-flat" role="progressbar" aria-valuenow="{{ $protocol->last_exam_score }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $protocol->last_exam_score }}%"></div>
 											</div>
-											{{ $user->last_exam_score }}%
+											{{ $protocol->last_exam_score }}%
 			                        	</td>
 			                        	<td class="text-center">
 				                        	@if(Auth::user()->isAdmin())

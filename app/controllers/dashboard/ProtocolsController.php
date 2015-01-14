@@ -23,6 +23,7 @@ class ProtocolsController extends \BaseController {
 	public function create()
 	{
 		$protocol = new Protocol;
+		
 		$roles = Auth::user()->preferredCompany->roles()->lists('name', 'id');
 		$areas = Auth::user()->preferredCompany->areas()->lists('name', 'id');
 		$categories = Auth::user()->preferredCompany->protocolCategories()->lists('name', 'id');
@@ -41,9 +42,8 @@ class ProtocolsController extends \BaseController {
 	{
         $protocol = new Protocol;
         $data = Input::all();
-        $pdf = Input::file('url_pdf');
-        
-	    if($protocol->validAndSave($data, $pdf))
+
+	    if($protocol->validAndSave($data, $data['url_pdf']))
         {
             return Redirect::route('protocolos.index');
         }
@@ -119,9 +119,8 @@ class ProtocolsController extends \BaseController {
 	{
 		$protocol = Protocol::findOrFail($id);
 		$data = Input::all();
-		$pdf = Input::file('url_pdf');
         
-        if ($protocol->validAndSave($data, $pdf))
+        if ($protocol->validAndSave($data, $data['url_pdf']))
         {
             return Redirect::route('protocolos.index');
         }

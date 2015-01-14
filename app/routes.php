@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 |
 */
 
-/***** Auth *****/
 Route::get('login', array('as' => 'login', 'uses' => 'AuthController@getLogin'));	
 
 /***** Routes Api REST *****/
@@ -28,6 +27,8 @@ Route::group(array('prefix' => 'api'), function()
 		});
 	});
 });
+
+
 
 Route::group(array('before' => 'auth'), function()
 {	

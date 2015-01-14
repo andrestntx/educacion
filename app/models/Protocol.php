@@ -22,14 +22,19 @@ class Protocol extends Eloquent
 
     public function getAreasListsAttribute()
     {
-        return $this->areas->lists('id');
+        if(!is_null($this->survey))
+        {
+            return $this->survey->areas_lists;  
+        }
     }
 
     public function getRolesListsAttribute()
     {
-        return $this->roles->lists('id');
+        if(!is_null($this->survey))
+        {
+            return $this->survey->roles_lists;
+        }
     }
-
 
     /* Exams */
 
@@ -47,7 +52,7 @@ class Protocol extends Eloquent
 
     public function isPdfCorrect()
     {
-        if(File::isFile($this->url_pdf))
+        if(!is_null($this->url_pdf))
         {
             return true;
         }
@@ -57,7 +62,7 @@ class Protocol extends Eloquent
 
     public function getPdfAttribute()
     {
-        if(File::isFile($this->url_pdf))
+        if($this->isPdfCorrect())
         {
             return $this->url_pdf;
         }
@@ -144,7 +149,7 @@ class Protocol extends Eloquent
 
     public function examScores()
     {
-        return $this->hasMany('ExamScores', 'survey_id');
+        return $this->hasMany('ExamScores', 'survey_id', 'survey_id');
     }
 
     public function user()
@@ -152,19 +157,9 @@ class Protocol extends Eloquent
         return $this->belongsTo('User', 'user_id');
     }
 
-    public function areas()
-    {
-        return $this->belongsToMany('Area', 'protocols_has_areas', 'protocol_id', 'area_id');
-    }
-
     public function categories()
     {
         return $this->belongsToMany('ProtocolCategory', 'protocols_has_categories', 'protocol_id', 'category_id');
-    }
-
-    public function roles()
-    {
-        return $this->belongsToMany('UserRole', 'protocols_has_roles', 'protocol_id', 'role_id');
     }
 
     public function annex()
@@ -199,12 +194,12 @@ class Protocol extends Eloquent
     public function scopeUserCanStudy($query, $user_id)
     {
         return $query->joinCanStudyProtocols()
-            ->where('users_can_study_protocols.user_id', $user_id);
+            ->where('users_has_access_surveys.user_id', $user_id);
     }
 
     public function scopeJoinCanStudyProtocols($query)
     {
-        return $query->join('users_can_study_protocols', 'protocol_id', '=', 'protocol.id');
+        return $query->join('users_has_access_surveys', 'users_has_access_surveys.survey_id', '=', 'protocol.survey_id');
     }
 
     /****** End Scopes ******/
@@ -213,8 +208,7 @@ class Protocol extends Eloquent
     {
         $rules = array(
             'name'     => 'required|max:100|unique:protocol',
-            'user_id' => 'required',
-            'url_pdf' => 'mimes:pdf|max:35000'
+            'user_id' => 'required'
         );
 
         if ($this->exists)
@@ -223,7 +217,7 @@ class Protocol extends Eloquent
         }
         else 
         {
-            $rules['url_pdf'] .= '|required';
+            $rules['url_pdf'] = 'required';
         }
         
         $validator = Validator::make($data, $rules);
@@ -251,7 +245,7 @@ class Protocol extends Eloquent
 
     public function validAndSave($data, $pdf)
     {
-        if ($this->isValidPDF($pdf) && $this->isValid($data))
+        if ($this->uploadPdf($pdf) && $this->isValid($data))
         {
             $this->fill($data);
             if(!$this->exists)
@@ -260,21 +254,20 @@ class Protocol extends Eloquent
                 $this->survey_id = $survey->id;
             }
             $this->save();
-            $this->uploadPdf($pdf);
-
-            if(array_key_exists('areas', $data))
-            {
-                $this->syncAreas($data['areas']);
-            }
 
             if(array_key_exists('categories', $data))
             {
                 $this->syncCategories($data['categories']);
             }
 
+            if(array_key_exists('areas', $data))
+            {
+                $this->survey->syncAreas($data['areas']);
+            }          
+
             if(array_key_exists('roles', $data))
             {
-                $this->syncRoles($data['roles']);
+                $this->survey->syncRoles($data['roles']);
             }
             
             return true;
@@ -283,30 +276,34 @@ class Protocol extends Eloquent
         return false;
     }
 
-    public function syncRoles($roles = array())
-    {
-        $this->roles()->sync($roles);
-    }
-
     public function syncCategories($categories = array())
     {
         $this->categories()->sync($categories);
-    }
-
-    public function syncAreas($areas = array())
-    {
-        $this->areas()->sync($areas);
     }
 
     public function uploadPdf($pdf)
     {
         if (File::isFile($pdf))
         {
-        	$url = Config::get('constant.path_protocols_pdf').'/'.$this->id.'.'.$pdf->getClientOriginalExtension();
-            
-            $pdf->move(Config::get('constant.path_protocols_pdf'), $this->id.'.'.$pdf->getClientOriginalExtension());
-        	$this->url_pdf = $url;
-        	$this->save();
+            if($this->isValidPDF($pdf))
+            {
+            	$url = Config::get('constant.path_protocols_pdf').'/'.$this->id.'.'.$pdf->getClientOriginalExtension();
+                
+                $pdf->move(Config::get('constant.path_protocols_pdf'), $this->id.'.'.$pdf->getClientOriginalExtension());
+            	$this->url_pdf = $url;
+
+                return true;
+            }
         }
+        else
+        {
+            if(!is_null($pdf))
+            {
+                $this->url_pdf = $pdf;
+            }
+            return true;
+        }
+
+        return false;
     }
 }

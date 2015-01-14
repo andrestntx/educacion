@@ -24,4 +24,6 @@ class Answer extends Eloquent
     {
         return $query->where('correct', '<>', true);
     }
+
+        
 }
