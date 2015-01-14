@@ -12,7 +12,7 @@ class CreateExamScoresView extends Migration {
 	 */
 	public function up()
 	{
-		DB::statement("
+		/*DB::statement("
 			CREATE view exam_scores AS 
 				SELECT resolved_survey.id,
 			    resolved_survey.survey_id,
@@ -36,7 +36,7 @@ class CreateExamScoresView extends Migration {
 			   JOIN resolved_survey_has_answer ON resolved_survey_1.id = resolved_survey_has_answer.resolved_survey_id
 			   JOIN answer ON resolved_survey_has_answer.answer_id = answer.id AND answer.correct IS NOT NULL
 			  GROUP BY resolved_survey_1.id) total ON total.id = resolved_survey.id;"
-		);
+		);*/
 	}
 
 	/**
@@ -46,7 +46,7 @@ class CreateExamScoresView extends Migration {
 	 */
 	public function down()
 	{
-		DB::statement("DROP VIEW exam_scores");
+		//DB::statement("DROP VIEW exam_scores");
 	}
 
 }
