@@ -9,6 +9,15 @@ class Protocol extends Eloquent
 	public $increments = true;
 	public $errors;
     
+    public function getSurveyAviableAttribute()
+    {
+        if($survey = $this->survey)
+        {
+            return $survey->aviable;
+        }
+
+        return false;
+    }
 
     public function getUserValueAttribute()
     {
@@ -253,7 +262,20 @@ class Protocol extends Eloquent
                 $survey = Survey::create(array('name' => 'Examen de Protocolo ' + $data['name'], 'created_by' => Auth::user()->id, 'type_id' => 2));
                 $this->survey_id = $survey->id;
             }
+
             $this->save();
+            $survey = $this->survey;
+            if(array_key_exists('survey_aviable', $data))
+            {
+                $survey->aviable = true;  
+            }
+            else
+            {
+                $survey->aviable = false;    
+            }
+
+            $survey->save();
+            
 
             if(array_key_exists('categories', $data))
             {

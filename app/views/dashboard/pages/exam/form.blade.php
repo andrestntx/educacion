@@ -22,7 +22,7 @@
     @endforeach
     <div class="form-group form-actions">
       <div class="col-md-8 col-md-offset-4">
-          @if($protocol->survey->questions->isEmpty())
+          @if($protocol->survey->questions->isEmpty() || !$protocol->survey_aviable)
             <button type="submit" class="btn btn-effect-ripple btn-primary" disabled>Enviar Examen</button>
           @else
             <button type="submit" class="btn btn-effect-ripple btn-primary">Enviar Examen</button>

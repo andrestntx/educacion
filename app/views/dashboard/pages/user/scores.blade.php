@@ -52,7 +52,7 @@
 				                        		<a href="{{route('estudiar', $protocol->id)}}" data-toggle="tooltip" title="Estudiar Protocolo" class="btn btn-effect-ripple btn-info">
 				                                    <i class="fa fa-eye"></i>
 				                                </a>
-				                                <a href="{{route('examenes.create', $protocol->id)}}" data-toggle="tooltip" title="Presentar examen" class="btn btn-effect-ripple btn-success">
+				                                <a href="{{route('examenes.create', $protocol->id)}}" data-toggle="tooltip" title="Presentar examen" class="btn btn-effect-ripple btn-success" @if(!$protocol->survey_aviable) disabled @endif >
 				                                    <i class="fa fa-graduation-cap"></i>
 				                                </a>
 			                                @endif

@@ -14,7 +14,15 @@
               <span class="input-group-addon"><i class="fa fa-bars"></i></span>
           </div>
       </div>
-    </div>  
+    </div> 
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="survey_aviable">Habilitar Examen </label>
+      <div class="col-md-6">
+          <div class="input-group">
+              <label class="switch switch-info"><input type="checkbox" name="survey_aviable" value="true" @if($protocol->survey_aviable) checked @endif ><span></span></label>
+          </div>
+      </div>
+    </div> 
     <div class="form-group">
       <label class="col-md-4 control-label" for="description">Descripción del Protocolo </label>
       <div class="col-md-6">

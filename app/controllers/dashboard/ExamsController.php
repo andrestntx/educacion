@@ -20,9 +20,16 @@
 		{
 			$protocol = Protocol::findOrFail($protocol_id);
 			$protocol->load('survey.questions');
+			if(!$protocol->survey_aviable)
+			{
+				App::abort('404');
+			}
+
 			$exam = new ResolvedSurvey;
 			$form_data = array('route' => array('examenes.store', $protocol->id), 'method' => 'POST');
 			return View::make('dashboard.pages.exam.form', compact('protocol', 'exam', 'form_data'));
+
+			
 		}
 
 		public function store($protocol_id)

@@ -62,9 +62,6 @@ class Survey extends Eloquent
         return $this->questions;
     }
 
-
-
-
     public function isValid($data)
     {
         $rules = array(

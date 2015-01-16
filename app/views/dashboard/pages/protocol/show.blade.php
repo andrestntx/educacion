@@ -86,7 +86,11 @@
 				</div>
 			</div>
 			<div class="row">
-				<a href="{{route('examenes.create', $protocol->id)}}" class="widget" title="Presentar Examen">
+				@if($protocol->survey->aviable)
+					<a href=" {{route('examenes.create', $protocol->id)}}" class="widget" title="Presentar Examen">
+				@else
+					<a href="#" class="widget" title="Examen no disponible">
+				@endif
 					<div class="widget-content widget-content-mini themed-background-muted text-center">
 						<i class="fa fa-bar-chart-o"></i> @if($user->best_exam_score > 0) Mejorar Calificación @else Presentar Examen @endif
 					</div>
