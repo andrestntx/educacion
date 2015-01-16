@@ -184,6 +184,26 @@ class Annex extends Eloquent
         return false;
     }
 
+    public function isLinkYoutube()
+    {
+        if($this->type == 'link' &&  strpos($this->url, 'www.youtube.com'))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getIdLinkYoutubeAttribute()
+    {
+        if($this->isLinkYoutube())
+        {
+            $partes = explode("=", $this->url);
+            return $partes[1];
+        }
+        
+    }
+
     public function isFile()
     {
         if(!$this->isLink())

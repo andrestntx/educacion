@@ -42,13 +42,13 @@
 		                    @foreach($protocol->annex as $annex)
 	                            <li title="{{$annex->description}}">
 	                            	<i class="{{$annex->icon}} fa-li"></i>
-	                            	@if($annex->isLink())
+	                            	@if($annex->isLink() && !$annex->islinkYoutube())
 	                            		<h4><a href="{{URL::to($annex->url)}}" target="_blank">{{$annex->name}}</a></h4>	
 	                            	@else
 		                           		<h4><a href="#modal-annex-{{$annex->id}}" data-toggle="modal">{{$annex->name}}</a></h4>	
 		                           	@endif		                            	
 	                            </li>	
-	                            @if($annex->isFile())	
+	                            @if($annex->isFile() || $annex->islinkYoutube())	
 		                            <div id="modal-annex-{{$annex->id}}" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 		                                <div class="modal-dialog modal-lg">
 		                                    <div class="modal-content">
@@ -66,6 +66,8 @@
 														</video>
 		                                        	@elseif($annex->isPdf())
 		                                        		<iframe src="https://drive.google.com/viewerng/viewer?url={{URL::to($annex->url)}}&embedded=true" style="width:100%; height:450px;" frameborder="0"></iframe>
+		                                        	@elseif($annex->islinkYoutube())
+		                                        		<iframe width="100%" height="450" src="//www.youtube.com/embed/{{$annex->id_link_youtube}}" frameborder="0" allowfullscreen></iframe>
 		                                        	@else
 		                                        		<h3>El tipo de archivo no se puede visuarlizar. Miralo aquí <a href="{{URL::to($annex->url)}}" target="_blank">Anexo {{var_dump($annex->type)}}</a></h3>
 		                                        	@endif
