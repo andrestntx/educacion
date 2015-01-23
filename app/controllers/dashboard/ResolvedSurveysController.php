@@ -83,7 +83,7 @@ class ResolvedSurveysController extends \BaseController {
 	{
 		$survey = Survey::findOrFail($survey_id);
 		$resolvedSurvey = ResolvedSurvey::findOrFail($id);
-		$resolvedSurvey->sendViaEmail(Auth::user());
+		//$resolvedSurvey->sendViaEmail(Auth::user());
 
 		return Redirect::route('formularios.registros.show', array($survey->id, $resolvedSurvey->id));
 	}
