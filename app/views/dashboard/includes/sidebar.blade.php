@@ -89,7 +89,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{url('formularios')}}">
+                        <a href="{{url('mis-formularios')}}">
                             <i class="fa fa-check sidebar-nav-icon"></i>
                             <span class="sidebar-nav-mini-hide">Formularios</span>
                         </a>

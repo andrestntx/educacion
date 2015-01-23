@@ -28,7 +28,7 @@
       <label class="col-md-4 control-label" for="areas[]">Áreas <span class="text-danger">*</span></label>
       <div class="col-md-6">
           <div class="input-group">
-              {{Form::select('areas[]', $areas, null, 
+              {{Form::select('areas[]', $areas, $survey->areas_lists, 
                 array('class' => 'form-control', 'placeholder' => 'Áreas del Protocolo', 
                   'multiple' => 'multiple', 'required' => 'required'))
               }}
@@ -40,7 +40,7 @@
       <label class="col-md-4 control-label" for="roles[]">Perfiles <span class="text-danger">*</span></label>
       <div class="col-md-6">
           <div class="input-group">
-              {{Form::select('roles[]', $roles, null, 
+              {{Form::select('roles[]', $roles, $survey->roles_lists, 
                 array('class' => 'form-control', 'placeholder' => 'Perfiles del Protocolo', 
                   'multiple' => 'multiple', 'required' => 'required'))
               }}

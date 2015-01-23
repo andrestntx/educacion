@@ -105,7 +105,6 @@ class UsersController extends \BaseController {
 	public function scores($id)
 	{
 		$user = User::findOrFail($id);
-		$protocols = $user->protocolsForStudy();
 
 		$protocols = Protocol::with(array('examScores' => function($query) use($user)
 		{

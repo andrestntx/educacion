@@ -12,6 +12,11 @@ class Survey extends Eloquent
 	public $increments = true;
 	public $errors;
 
+    public function scopeWhereNotExam($query)
+    {
+        return $query->where('type_id', '<>', 1);
+    }
+
     public function getNumberQuestionsAttribute()
     {
         return $this->questions->count();
@@ -62,6 +67,17 @@ class Survey extends Eloquent
         return $this->questions;
     }
 
+    public function scopeUserCanAcces($query, $user_id)
+    {
+        return $query->joinCanAccess()
+            ->where('users_has_access_surveys.user_id', $user_id);
+    }
+
+    public function scopeJoinCanAccess($query)
+    {
+        return $query->join('users_has_access_surveys', 'users_has_access_surveys.survey_id', '=', 'survey.id');
+    }
+
     public function isValid($data)
     {
         $rules = array(
@@ -88,6 +104,16 @@ class Survey extends Eloquent
         {
             $this->fill($data);
             $this->save();
+
+            if(array_key_exists('areas', $data))
+            {
+                $this->syncAreas($data['areas']);
+            }
+
+            if(array_key_exists('roles', $data))
+            {
+                $this->syncRoles($data['roles']);
+            }
             
             return true;
         }

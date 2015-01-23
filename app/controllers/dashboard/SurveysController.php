@@ -14,6 +14,15 @@ class SurveysController  extends \BaseController {
 		return View::make('dashboard.pages.survey.lists-table', compact('surveys', 'survey_types'));
 	}
 
+	public function listsCanAccess()
+	{
+		$user = Auth::user();
+		$surveys = Survey::userCanAcces($user->id)->whereNotExam()->get();
+
+		return View::make('dashboard.pages.survey.lists-table', compact('surveys'));
+	}
+
+
 
 	/**
 	 * Show the form for creating a new resource.
