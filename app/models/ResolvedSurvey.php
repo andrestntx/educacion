@@ -61,10 +61,15 @@ class ResolvedSurvey extends Eloquent
         $survey_name = $this->survey->name;
         $pdf_path = $this->pdf;
 
-        Mail::send('emails.forms.new', compact('company_logo', 'company_name', 'survey_name', 'pdf_path'), function($message) use ($pdf_path, $user) {
-            $message->to($user->email, $user->name)->subject('Haz realizado un registro de Formulario');
-            $message->attach($pdf_path);
-        });          
+        try {
+            Mail::queue('emails.forms.new', compact('company_logo', 'company_name', 'survey_name', 'pdf_path'), function($message) use ($pdf_path, $user) {
+                $message->to($user->email, $user->name)->subject('Haz realizado un registro de Formulario');
+                $message->attach($pdf_path);
+            });  
+        } catch (Exception $e) {
+            
+        }
+                 
     }
 
     public function getPdfAttribute()
