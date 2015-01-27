@@ -7,9 +7,9 @@
   {{ Form::model($resolvedSurvey, $form_data) }}    
     @foreach($survey->randomQuestions() as $question)
       <div class="form-group">  
-        <label class="col-md-4 control-label h4">{{$question->text}}</label>   
-        <div class="col-md-8"> 
-          @if($question->isMultiple())
+        <label class="col-md-4 h4">{{$question->text}}</label>   
+        @if($question->isMultiple())
+          <div class="col-md-8"> 
             @foreach($question->answers as $answer)
               <div class="radio">
                 <label style="font-size:16px;" for="answers[{{$question->id}}][{{$answer->id}}]">
@@ -18,12 +18,14 @@
                 </label>
               </div>
             @endforeach
-          @else
+          </div>
+        @else
+          <div class="col-md-12"> 
             <div class="input-group">
-              {{Form::textarea('simpleAnswers['.$question->id.']', null, array('rows' => '2', 'required' => 'required'))}}
+              {{Form::textarea('simpleAnswers['.$question->id.']', null, array('class' => 'ckeditor', 'required' => 'required', 'style' => 'width:100%;'))}}
             </div>
-          @endif
-        </div>
+          </div>
+        @endif
       </div>
     @endforeach
     <div class="form-group form-actions">
@@ -39,5 +41,5 @@
 @stop
 
 @section('js_aditional')
-  {{ HTML::script('assets/js/plugins/ckeditor/ckeditor.js'); }}
+  <script src="//cdn.ckeditor.com/4.4.6/standard/ckeditor.js"></script>
 @stop

@@ -54,6 +54,16 @@ class SurveyType extends Eloquent
 
 		return false;
 	}
+
+	public function isGenerator()
+	{
+		if($this->id == 5)
+		{
+			return true;
+		}
+
+		return false;
+	}
 }
 
 ?>

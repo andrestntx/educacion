@@ -27,7 +27,16 @@ class ResolvedSurveysController extends \BaseController {
 		$survey->load('questions');
 		$resolvedSurvey = new ResolvedSurvey;
 		$form_data = array('route' => array('formularios.registros.store', $survey->id), 'method' => 'POST');
-		return View::make('dashboard.pages.resolvedsurvey.form', compact('survey', 'resolvedSurvey', 'form_data'));
+		
+		if($survey->type->isGenerator())
+		{
+			return View::make('dashboard.pages.resolvedsurvey.form-generator', compact('survey', 'resolvedSurvey', 'form_data'));
+		}
+		else
+		{
+			return View::make('dashboard.pages.resolvedsurvey.form', compact('survey', 'resolvedSurvey', 'form_data'));
+		}
+		
 	}
 
 
@@ -61,6 +70,9 @@ class ResolvedSurveysController extends \BaseController {
 	{
 		$survey = Survey::findOrFail($survey_id);
 		$resolvedSurvey = ResolvedSurvey::findOrFail($id);
+		$resolvedSurvey->load(['answers' => function($query){
+			$query->orderBy('created_at', 'desc');
+		}]);
 		return View::make('dashboard.pages.resolvedsurvey.show', compact('survey', 'resolvedSurvey'));
 	}
 
@@ -75,6 +87,9 @@ class ResolvedSurveysController extends \BaseController {
 	{
 		$survey = Survey::findOrFail($survey_id);
 		$resolvedSurvey = ResolvedSurvey::findOrFail($id);
+		$resolvedSurvey->load(['answers' => function($query){
+			$query->orderBy('created_at', 'desc');
+		}]);
 		$pdf = $resolvedSurvey->generatePdf();
 		return $pdf->download('formulario.pdf');
 	}

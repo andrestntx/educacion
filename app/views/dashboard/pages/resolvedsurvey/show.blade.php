@@ -27,6 +27,9 @@
             <div class="row">
               <div class="col-xs-12">
                 <p style="font-size:16px; margin-bottom:5px;">{{$answer->text}}</p>
+                @if($answer->observation)
+                  <p style="font-size:16px; margin-bottom:5px;"><strong>Observación:</strong> {{$answer->observation}}</p>
+                @endif
               </div>
             </div>
           </div>
