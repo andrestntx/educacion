@@ -55,6 +55,16 @@ class Company extends Eloquent
     {
         $checks = $this->surveys->filter(function($survey)
         {
+            return $survey->type->isNotExam();
+        });
+
+        return $checks;
+    }
+
+    public function surveysNotExamAndAviable()
+    {
+        $checks = $this->surveys->filter(function($survey)
+        {
             return $survey->type->isNotExam() && $survey->isAviable();
         });
 

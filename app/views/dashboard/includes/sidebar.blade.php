@@ -94,7 +94,7 @@
                             <span class="sidebar-nav-mini-hide">Formularios</span>
                         </a>
                         <ul>
-                            @foreach(Auth::user()->preferredCompany->surveysNotExam() as $s)
+                            @foreach(Auth::user()->preferredCompany->surveysNotExamAndAviable() as $s)
                                 <li>
                                     <a href="{{route('formularios.registros.index', $s->id)}}">
                                         <span class="sidebar-nav-mini-hide">{{$s->short_name}}</span>
