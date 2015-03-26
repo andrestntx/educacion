@@ -47,7 +47,7 @@ class ResolvedSurvey extends Eloquent
             $this->answers()->attach($multipleAnswers);    
         }
 
-        $this->sendViaEmail($user);
+        //$this->sendViaEmail($user);
     }
 
     public function sendViaEmail($user)

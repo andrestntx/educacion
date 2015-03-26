@@ -23,7 +23,15 @@
               <span class="input-group-addon"><i class="fa fa-bars"></i></span>
           </div>
       </div>
-    </div>      
+    </div>  
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="aviable">Habilitar Formulario </label>
+      <div class="col-md-6">
+          <div class="input-group">
+              <label class="switch switch-info"><input type="checkbox" name="survey_aviable" value="true" @if($survey->aviable) checked @endif ><span></span></label>
+          </div>
+      </div>
+    </div>     
     <div class="form-group">
       <label class="col-md-4 control-label" for="areas[]">Áreas <span class="text-danger">*</span></label>
       <div class="col-md-6">

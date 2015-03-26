@@ -4,7 +4,7 @@
 	</head>
 	<body>
 		<h2 class="text-center"> {{Auth::user()->preferredCompany->name}} </h2>
-		<h3 class="text-center">Formulario - {{$survey->name}}, # {{$resolvedSurvey->id}}</h3>
+		<h3 class="text-center">Formulario - {{$survey->name}}</h3>
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<p>Fecha de Registro: {{$resolvedSurvey->created_at}}</p>

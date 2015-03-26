@@ -49,6 +49,16 @@ class Question extends Eloquent
         return false;
     }
 
+    public function isText()
+    {
+        if($this->type_id == 3)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 	public function isValid($data)
     {
         $rules = array(

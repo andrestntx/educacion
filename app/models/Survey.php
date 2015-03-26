@@ -22,6 +22,38 @@ class Survey extends Eloquent
         return $this->questions->count();
     }
 
+    public function isAviable()
+    {
+        if($this->aviable)
+        {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public function getStateAttribute()
+    {
+        if($this->aviable)
+        {
+            return 'Disponible';
+        }
+
+        return 'No Disponible';
+    }
+
+    public function getShortNameAttribute()
+    {
+        $new_name = substr($this->name, 0, 22);
+        if(strlen($this->name) > 22)
+        {
+            $new_name .= ' ..';
+        }
+
+        return $new_name;
+    }
+
     public function getAreasListsAttribute()
     {
         return $this->areas->lists('id');
@@ -103,6 +135,16 @@ class Survey extends Eloquent
         if ($this->isValid($data))
         {
             $this->fill($data);
+
+            if(array_key_exists('survey_aviable', $data))
+            {
+                $this->aviable = true;  
+            }
+            else
+            {
+                $this->aviable = false;    
+            }
+
             $this->save();
 
             if(array_key_exists('areas', $data))

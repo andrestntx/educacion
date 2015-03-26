@@ -21,10 +21,11 @@
                 <thead>
                     <tr>
                         <th title="Nombre del Area">Nombre</th>
-                        <th title="Descripción del Area">Descripción</th>
-                        <th title="Descripción del Area">Tipo</th>
-                        <th title="Ultima actulaización del Area">Actualización</th>
-                        <th class="text-center" style="width:95px;"><i class="fa fa-flash"></i></th>
+                        <th title="Descripción">Descripción</th>
+                        <th title="Tipo">Tipo</th>
+                        <th title="Estado">Estado</th>
+                        <th title="Ultima actulaización del Formulario">Actualización</th>
+                        <th class="text-center" style="min-width:95px;"><i class="fa fa-flash"></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +34,7 @@
                             <td><strong>{{ $survey->name }}</strong></td>
                             <td>{{ $survey->description }}</td>
                             <td>{{ $survey->type->name }}</td>
+                            <td>{{ $survey->state }}</td>
                             <td>{{ $survey->updated_at }}</td>
                             <td class="text-center">
                                 @if(Auth::user()->isAdmin())

@@ -89,20 +89,36 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{url('mis-formularios')}}">
-                            <i class="fa fa-check sidebar-nav-icon"></i>
+                        <a href="#" class="sidebar-nav-menu">
+                            <i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-check sidebar-nav-icon"></i>
                             <span class="sidebar-nav-mini-hide">Formularios</span>
                         </a>
+                        <ul>
+                            @foreach(Auth::user()->preferredCompany->surveysNotExam() as $s)
+                                <li>
+                                    <a href="{{route('formularios.registros.index', $s->id)}}">
+                                        <span class="sidebar-nav-mini-hide">{{$s->short_name}}</span>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
                     </li>
-                    <li class="sidebar-separator">Protocolos</li>
-                    @foreach(Auth::user()->protocolsForStudy() as $p)
-                        <li>
-                            <a href="{{route('estudiar', $p->id)}}">
-                                <i class="fa fa-file-text sidebar-nav-icon"></i>
-                                <span class="sidebar-nav-mini-hide">{{$p->name}}</span>
-                            </a>
-                        </li>
-                    @endforeach
+                    <li>
+                        <a href="#" class="sidebar-nav-menu">
+                            <i class="fa fa-chevron-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-book sidebar-nav-icon"></i>
+                            <span class="sidebar-nav-mini-hide">Protocolos</span>
+                        </a>
+                        <ul>
+                            @foreach(Auth::user()->protocolsForStudy() as $p)
+                                <li>
+                                    <a href="{{route('estudiar', $p->id)}}">
+                                        <i class="fa fa-file-text sidebar-nav-icon"></i>
+                                        <span class="sidebar-nav-mini-hide">{{$p->name}}</span>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
                 @endif
             </ul>
             <!-- END Sidebar Navigation -->

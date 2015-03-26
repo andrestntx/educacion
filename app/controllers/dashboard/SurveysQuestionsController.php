@@ -28,10 +28,21 @@ class SurveysQuestionsController extends \BaseController {
 		$form_data = array('route' => array('formularios.preguntas.store', $survey_id), 'method' => 'POST');
 
 		$number_answers = Input::get('respuestas');
+		$type = Input::get('tipo');
+
 		if(is_null($number_answers))
 		{
-			$type_id = 2;
-			return View::make('dashboard.pages.survey.question.simple.form', compact('question', 'form_data', 'survey', 'type_id'));
+			if(is_null($type))
+			{
+				$type_id = 2;
+				return View::make('dashboard.pages.survey.question.simple.form', compact('question', 'form_data', 'survey', 'type_id'));
+			}
+			else
+			{
+				$type_id = 3;
+				return View::make('dashboard.pages.survey.question.text.form', compact('question', 'form_data', 'survey', 'type_id'));
+			}
+			
 		}
 		else
 		{
