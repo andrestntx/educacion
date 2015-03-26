@@ -35,7 +35,7 @@
                 <tbody>
                     @foreach($survey->questions as $question)
                         <tr>
-                            <td><strong>{{ $question->text }}</strong></td>
+                            <td><strong>@if($question->isText()) Campo de texto libre @else {{ $question->text }} @endif </strong></td>
                             <td>{{ $question->type->name }}</td>
                             <td>{{ $question->updated_at }}</td>
                             <td class="text-center">

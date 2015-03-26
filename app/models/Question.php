@@ -62,7 +62,7 @@ class Question extends Eloquent
 	public function isValid($data)
     {
         $rules = array(
-            'text'     => 'required|max:150',
+            'text'     => 'required',
             'survey_id' => 'required'
         );
         

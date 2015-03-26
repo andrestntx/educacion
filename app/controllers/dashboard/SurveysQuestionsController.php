@@ -79,7 +79,18 @@ class SurveysQuestionsController extends \BaseController {
         }
         else
         {
-			return Redirect::route('formularios.preguntas.create', array($survey_id, 'respuestas='.count($data['answers'])))->withInput()->withErrors($question->errors);
+        	if(array_key_exists('answers', $data))
+        	{
+        		return Redirect::route('formularios.preguntas.create', array($survey_id, 'respuestas='.count($data['answers'])))->withInput()->withErrors($question->errors);
+        	}
+        	else if(array_key_exists('type', $data))
+        	{
+        		return Redirect::route('formularios.preguntas.create', array($survey_id, 'tipo='.$data['type']))->withInput()->withErrors($question->errors);
+        	}
+        	else
+        	{
+        		return Redirect::route('formularios.preguntas.create', array($survey_id))->withInput()->withErrors($question->errors);	
+        	}
         } 
 	}
 
@@ -130,10 +141,15 @@ class SurveysQuestionsController extends \BaseController {
 			}
 			
 		}
-		else
+		else if($question->isSimple())
 		{
 			$type_id = 2;
 			return View::make('dashboard.pages.survey.question.simple.form', compact('question', 'form_data', 'survey', 'type_id'));
+		}
+		else
+		{
+			$type_id = 3;
+			return View::make('dashboard.pages.survey.question.text.form', compact('question', 'form_data', 'survey', 'type_id'));
 		}
 		
 	}
