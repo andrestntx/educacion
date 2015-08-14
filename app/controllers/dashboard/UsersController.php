@@ -10,7 +10,7 @@ class UsersController extends \BaseController {
 
 	public function index()
 	{
-		$users = Auth::user()->preferredCompany->users()->where('system_role_id', '<>', 2)->orderBy('id')->paginate(20);
+		$users = Auth::user()->preferredCompany->users()->where('system_role_id', '<>', 2)->orderBy('id')->get();
 
 		return View::make('dashboard.pages.user.lists-table', compact('users'));
 	}
