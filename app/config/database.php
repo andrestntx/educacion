@@ -27,7 +27,7 @@ return array(
 	|
 	*/
 
-	'default' => 'pgsql',
+	'default' => 'pgsqlforge',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -76,6 +76,17 @@ return array(
 	        'prefix'   => '',
 	        'schema'   => 'public',
 	    ),
+		
+		'pgsqlforge' => array(
+			'driver'   => 'pgsql',
+			'host'      => getenv('db_host'),
+			'database'  => getenv('db_name'),
+			'username'  => getenv('db_username'),
+			'password'  => getenv('db_password'),
+			'charset'  => 'utf8',
+			'prefix'   => '',
+			'schema'   => 'public',
+		),
 
 		'sqlsrv' => array(
 			'driver'   => 'sqlsrv',
