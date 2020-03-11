@@ -94,6 +94,9 @@ class QuestionTypeTableSeeder extends Seeder {
             'name' => 'Pregunta simple con respuesta abierta',
         ));
 
+        DB::table('question_type')->insert(array(
+            'name' => 'Campo de texto abierto',
+        ));
     }
 }
 
