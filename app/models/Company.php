@@ -111,7 +111,7 @@ class Company extends Eloquent
         $rules = array(
             'name'     => 'required|max:100|unique:company',
             'url_logo' => 'mimes:jpeg,png,bmp|max:1500',
-            'type_id'  => 'string'
+            'type_id'  => 'integer'
         );
 
         if ($this->exists)
