@@ -10,7 +10,7 @@
 		"doctrine/dbal": "v2.4.2",
 		"intervention/image": "2.*",
 		"barryvdh/laravel-dompdf": "*",
-		"guzzlehttp/guzzle": "~4.0"
+		"guzzlehttp/guzzle": "~6.5"
 	},
 	"autoload": {
 		"classmap": [
